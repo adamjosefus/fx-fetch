@@ -1,0 +1,23 @@
+{
+  "entryPoints": ["./src/index.ts"],
+  "packageOptions": {
+    "includeVersion": true
+  },
+  "name": "fx-fetch",
+  "outputs": [
+    {
+      "name": "html",
+      "options": {
+        "navigation": {
+          "excludeReferences": true,
+          "includeCategories": true,
+          "includeFolders": true,
+          "includeGroups": true
+        }
+      },
+      "path": "./docs/dist"
+    }
+  ],
+  "plugin": ["typedoc-github-theme"],
+  "tsconfig": "./tsconfig.json"
+}

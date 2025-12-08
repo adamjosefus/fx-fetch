@@ -1,0 +1,67 @@
+import { dual } from 'effect/Function';
+import * as Url from '../Url';
+import { SearchParamValueInput } from '../Url/SearchParamValueInput';
+import { mapUrl } from './mapUrl';
+import * as Request from './Request';
+
+function appendUrlSearchParamFn(
+  self: Request.Request,
+  key: string,
+  value: SearchParamValueInput
+): Request.Request {
+  return mapUrl(self, (url) => Url.appendSearchParam(url, key, value));
+}
+
+// TODO: Add tests
+
+/**
+ * Appends a search parameter to the URL of a Request.
+ *
+ * @example
+ * ```ts
+ * import { Request } from 'fx-fetch';
+ *
+ * const request = Request.make({ url: 'https://api.example.com' });
+ * const requestWithParam = Request.appendUrlSearchParam(request, 'page', '1');
+ * ```
+ *
+ * @category Combinators
+ * @since 0.1.0
+ */
+export const appendUrlSearchParam: {
+  /**
+   * Appends a search parameter to the URL of a Request.
+   *
+   * @example
+   * ```ts
+   * import { Request } from 'fx-fetch';
+   *
+   * const request = Request.make({ url: 'https://api.example.com' });
+   * const requestWithParam = Request.appendUrlSearchParam(request, 'page', '1');
+   * ```
+   *
+   * @category Combinators
+   * @since 0.1.0
+   */
+  (self: Request.Request, key: string, value: SearchParamValueInput): Request.Request;
+  /**
+   * Appends a search parameter to the URL of a Request.
+   *
+   * @example
+   * ```ts
+   * import { Request } from 'fx-fetch';
+   * import { pipe } from 'effect';
+   *
+   * const request = Request.make({ url: 'https://api.example.com' });
+   *
+   * const requestWithParam = pipe(
+   *   request,
+   *   Request.appendUrlSearchParam('page', '1')
+   * );
+   * ```
+   *
+   * @category Combinators
+   * @since 0.1.0
+   */
+  (key: string, value: SearchParamValueInput): (self: Request.Request) => Request.Request;
+} = dual(3, appendUrlSearchParamFn);
