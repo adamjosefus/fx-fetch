@@ -1,5 +1,5 @@
 {
-  "entryPoints": ["./src/index.ts"],
+  "entryPoints": ["../fx-fetch/src/index.ts"],
   "packageOptions": {
     "includeVersion": true
   },
@@ -15,9 +15,9 @@
           "includeGroups": true
         }
       },
-      "path": "./docs/dist"
+      "path": "./dist"
     }
   ],
   "plugin": ["typedoc-github-theme"],
-  "tsconfig": "./tsconfig.json"
+  "tsconfig": "../fx-fetch/tsconfig.json"
 }

@@ -1,0 +1,72 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "plugins": [
+    {
+      "options": {
+        "build": {
+          "buildDepsName": "build-deps",
+          "configName": "tsconfig.lib.json",
+          "targetName": "build",
+          "watchDepsName": "watch-deps"
+        },
+        "typecheck": {
+          "targetName": "typecheck"
+        }
+      },
+      "plugin": "@nx/js/typescript"
+    }
+  ],
+  "release": {
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": "github"
+      }
+    },
+    "conventionalCommits": {
+      "types": {
+        "docs": false
+      }
+    },
+    "git": {
+      "commitMessage": "chore(release): {version}"
+    },
+    "projects": [
+      "fx-fetch"
+    ],
+    "releaseTag": {
+      "pattern": "release/{version}"
+    },
+    "version": {
+      "conventionalCommits": true
+    }
+  },
+  "targetDefaults": {
+    "build": {
+      "cache": false,
+      "dependsOn": [
+        "^build",
+        "fmt"
+      ],
+      "outputs": [
+        "{projectRoot}/dist"
+      ]
+    },
+    "fmt": {},
+    "fmt:write": {},
+    "validate": {
+      "dependsOn": [
+        "^validate"
+      ]
+    },
+    "test": {
+      "dependsOn": [
+        "^test",
+        "validate",
+        "fmt"
+      ]
+    }
+  },
+  "tui": {
+    "autoExit": true
+  }
+}
