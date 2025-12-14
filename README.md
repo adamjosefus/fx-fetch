@@ -13,7 +13,7 @@ A production-ready solution for safe & simple HTTP fetching built with
 [EffectTS](https://effect.website/). **Designed with great developer
 experience in mind.**
 
-Works everywhere! _Even in [Firefox 🦊](./docs/request-clone_browser-inconsistency-test.js)._
+Works everywhere! _Even in [Firefox 🦊](./packages/docs/request-clone_browser-inconsistency-test.js)._
 
 ## Table of Contents
 
@@ -35,7 +35,7 @@ Works everywhere! _Even in [Firefox 🦊](./docs/request-clone_browser-inconsist
 ✅ **Cross-platform** — Works in all modern browsers, Bun, Deno, and Node.js<br>
 ✅ **Effect-based** — Seamless integration with the Effect ecosystem<br>
 ✅ **Testable** — Easy mocking and testing with service-based architecture<br>
-✅ **Dual API** — Familiar syntax from [EffectTS](https://effect.website/docs/code-style/dual/)<br>
+✅ **Dual API** — Familiar syntax from [EffectTS](https://effect.website/docs/code-style/dual)<br>
 
 ## Installation
 
@@ -87,7 +87,7 @@ await getUser(1).pipe(
 
 ## Documentation
 
-📚 See our [documentation site](https://adamjosefus.github.io/fx-fetch/) for
+📚 See our [documentation site](https://adamjosefus.github.io/fx-fetch) for
 detailed guides and API reference.
 
 ## Comparison with Other Solutions
@@ -101,7 +101,7 @@ detailed guides and API reference.
 
 ---
 
-1. `globalThis.Request` and `globalThis.Response` are not truly clonable. [Why?](./docs/request-clone_browser-inconsistency-test.js)
+1. `globalThis.Request` and `globalThis.Response` are not truly clonable. [Why?](./packages/docs/request-clone_browser-inconsistency-test.js)
 2. Marked as unstable in the official documentation. Some method implementations
    are still missing.
 
@@ -134,7 +134,7 @@ immutable and clonable structures, you may encounter unexpected issues.
 ### Why aren't [`Request.clone()`](https://developer.mozilla.org/en-US/docs/Web/API/Request) and [`Response.clone()`](https://developer.mozilla.org/en-US/docs/Web/API/Response) enough?
 
 > [!CAUTION]
-> First, they don't work properly in some browsers (looking at you, [Firefox 🦊](./docs/request-clone_browser-inconsistency-test.js)).
+> First, they don't work properly in some browsers (looking at you, [Firefox 🦊](./packages/docs/request-clone_browser-inconsistency-test.js)).
 
 Even when they work correctly, they don't solve DX issues or provide key
 features like reading request/response properties multiple times without side
