@@ -30,6 +30,7 @@
     "validate": "tsc"
   },
   "dependencies": {
+    "@types/node": ">=20",
     "effect": "^3"
   },
   "devDependencies": {
