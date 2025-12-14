@@ -1,7 +1,7 @@
 [<img src="https://img.shields.io/npm/v/fx-fetch">](https://npmjs.com/package/fx-fetch)
 [<img src="https://img.shields.io/github/license/adamjosefus/fx-fetch">](./LICENSE)
 
-<img style="margin-bottom: 2em;" width="128" src="https://raw.githubusercontent.com/adamjosefus/fx-fetch/main/docs/images/logo_fx-fetch.svg" alt="fx-fetch logo">
+<img style="margin-bottom: 2em;" width="128" src="https://raw.githubusercontent.com/adamjosefus/fx-fetch/main/packages/docs/images/logo_fx-fetch.svg" alt="fx-fetch logo">
 
 # `fx-fetch` — Fetch with [EffectTS](https://effect.website/)
 
@@ -174,7 +174,7 @@ The `fx-fetch` library was originally designed for TypeScript colleagues at Emat
   </tr>
   <tr>
     <td>
-      <img width="128" src="https://raw.githubusercontent.com/adamjosefus/fx-fetch/main/docs/images/logo_ematiq.svg">
+      <img width="128" src="https://raw.githubusercontent.com/adamjosefus/fx-fetch/main/packages/docs/images/logo_ematiq.svg">
     </td>
   </tr>
 </table>
