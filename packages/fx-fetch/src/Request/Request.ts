@@ -68,7 +68,7 @@ export namespace Request {
     readonly priority?: RequestPriority;
     readonly redirect?: RequestRedirect;
     readonly referrer?: string;
-    readonly referrerPolicy?: NormalizedReferrerPolicy;
+    readonly referrerPolicy?: ReferrerPolicy;
     readonly signal?: AbortSignal;
     readonly url: Url.Url.Input;
   };
