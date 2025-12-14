@@ -50,6 +50,9 @@ importers:
 
   packages/fx-fetch:
     dependencies:
+      '@types/node':
+        specifier: '>=20'
+        version: 24.10.4
       effect:
         specifier: ^3
         version: 3.19.11
@@ -63,9 +66,6 @@ importers:
       '@effect/language-service':
         specifier: 0.62.3
         version: 0.62.3
-      '@types/node':
-        specifier: ^24
-        version: 24.10.4
       dpdm:
         specifier: ^3.14.0
         version: 3.14.0

@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build": "typedoc --options ./typedoc.json",
+    "build": "nx build fx-fetch",
     "docgen": "nx build docs",
     "fmt": "biome check . --error-on-warnings",
     "fmt:write": "nx run-many --target=fmt:write",

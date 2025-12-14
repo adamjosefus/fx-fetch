@@ -30,6 +30,7 @@
     "validate": "tsc"
   },
   "dependencies": {
+    "@types/node": ">=20",
     "effect": "^3"
   },
   "devDependencies": {
@@ -41,9 +42,6 @@
     "typescript": "^5.9.3",
     "vitest": "^4.0.15",
     "zshy": "^0.6.0"
-  },
-  "peerDependencies": {
-    "effect": "^3"
   },
   "zshy": {
     "exports": "./src/index.ts",

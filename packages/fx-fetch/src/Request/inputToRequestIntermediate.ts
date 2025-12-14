@@ -197,7 +197,7 @@ function partsToRequestIntermediate(
     priority: parts.priority,
     redirect: parts.redirect,
     referrer: parts.referrer,
-    referrerPolicy: parts.referrerPolicy,
+    referrerPolicy: normalizeReferrerPolicy(parts.referrerPolicy),
   };
 
   return Either.right(request);
