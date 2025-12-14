@@ -1,0 +1,38 @@
+name: 💯 Checks
+run-name: 💯 Checks | ${{ github.event.head_commit.message }}
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  # Single deploy job since we're just deploying
+  checks:
+    name: 💯 Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: 💻 Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - name: ☁️ Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔍 Validate
+        run: pnpm validate
+
+      - name: 🧪 Test
+        run: pnpm test
+
+      - name: 📐 Format & Lint
+        run: pnpm fmt

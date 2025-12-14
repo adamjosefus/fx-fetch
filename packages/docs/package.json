@@ -1,0 +1,15 @@
+{
+  "name": "docs",
+  "private": true,
+  "scripts": {
+    "build": "typedoc --options ./typedoc.json",
+    "fmt": "biome check . --error-on-warnings",
+    "fmt:write": "biome check . --write --error-on-warnings"
+  },
+  "devDependencies": {
+    "@/shared": "workspace:*",
+    "@biomejs/biome": "^2.3.8",
+    "typedoc": "^0.28.15",
+    "typedoc-github-theme": "^0.3.1"
+  }
+}

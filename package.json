@@ -1,53 +1,25 @@
 {
-  "name": "fx-fetch",
-  "version": "0.1.2",
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    }
-  },
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "private": true,
   "scripts": {
-    "build": "zshy --project tsconfig.build.json",
-    "circular": "dpdm --exit-code circular:1 ./src/index.ts",
-    "docgen": "typedoc --options ./typedoc.json",
+    "build": "typedoc --options ./typedoc.json",
+    "docgen": "nx build docs",
     "fmt": "biome check . --error-on-warnings",
-    "fmt:write": "biome check . --write --error-on-warnings",
-    "prepare": "pnpm run /prepare:/",
-    "prepare:effect-language-service": "effect-language-service patch",
-    "prepare:husky": "husky",
-    "prepublishOnly": "pnpm run validate && pnpm run test && pnpm run fmt && pnpm run build",
-    "test": "vitest run ./src",
-    "test:watch": "vitest watch ./src",
-    "validate": "tsc"
+    "fmt:write": "nx run-many --target=fmt:write",
+    "local:fmt": "biome check . --error-on-warnings",
+    "local:fmt:write": "biome check . --write --error-on-warnings",
+    "prepare": "husky",
+    "test": "nx run-many --target=test",
+    "validate": "nx run-many --target=validate"
   },
-  "dependencies": {
-    "effect": "^3"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@/shared": "workspace:*",
     "@biomejs/biome": "^2.3.8",
-    "@effect/language-service": "0.62.1",
-    "@types/node": "^20",
-    "dpdm": "^3.14.0",
+    "@nx/js": "^22.2.3",
+    "@swc-node/register": "~1.11.1",
+    "@swc/core": "~1.15.4",
+    "@swc/helpers": "~0.5.17",
     "husky": "^9.1.7",
-    "typedoc": "^0.28.15",
-    "typedoc-github-theme": "^0.3.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.15",
-    "zshy": "^0.6.0"
-  },
-  "peerDependencies": {
-    "effect": "^3"
-  },
-  "zshy": {
-    "exports": "./src/index.ts",
-    "cjs": false,
-    "esm": true
+    "nx": "^22.2.3"
   }
 }

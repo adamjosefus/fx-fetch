@@ -1,0 +1,53 @@
+{
+  "name": "fx-fetch",
+  "version": "0.1.2",
+  "description": "Simple, immutable, clonable, and effect-based HTTP fetching.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adamjosefus/fx-fetch.git",
+    "directory": "packages/fx-fetch"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "zshy --project tsconfig.build.json",
+    "circular": "dpdm --exit-code circular:1 ./src/index.ts",
+    "fmt": "biome check . --error-on-warnings",
+    "fmt:write": "biome check . --write --error-on-warnings",
+    "prepare": "effect-language-service patch",
+    "prepublishOnly": "pnpm run validate && pnpm run test && pnpm run fmt && pnpm run build",
+    "test": "vitest run ./src",
+    "validate": "tsc"
+  },
+  "dependencies": {
+    "effect": "^3"
+  },
+  "devDependencies": {
+    "@/shared": "workspace:*",
+    "@biomejs/biome": "^2.3.8",
+    "@effect/language-service": "0.62.3",
+    "@types/node": "^24",
+    "dpdm": "^3.14.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.15",
+    "zshy": "^0.6.0"
+  },
+  "peerDependencies": {
+    "effect": "^3"
+  },
+  "zshy": {
+    "exports": "./src/index.ts",
+    "cjs": false,
+    "esm": true
+  }
+}
