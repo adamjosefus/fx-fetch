@@ -19,21 +19,21 @@
 
   const req2 = req1.clone();
 
-  console.log('Are requests equal?', req1 === req2);
+  console.log('Are requests equal?', req1 === req2, '(should be false)');
   /*
   ┌──────────┬───────┐
   │ Browser  │ >.    │
   ├──────────┼───────┤
   │ Bun      │ false │
   │ Deno     │ false │
-  │ Firefox  │ true  │ ← 👀
+  │ Firefox  │ false │
   │ Chromium │ false │
   │ NodeJS   │ false │
   │ Safari   │ false │
   └──────────┴───────┘
   */
 
-  console.log('Are bodies equal?', req1.body === req2.body);
+  console.log('Are bodies equal?', req1.body === req2.body, '(should be false)');
   /*
   ┌──────────┬───────┐
   │ Browser  │ >.    │
@@ -57,8 +57,8 @@
       }
     });
 
-  console.log('Is req1 body used?', req1.bodyUsed);
-  console.log('Is req2 body used?', req2.bodyUsed);
+  console.log('Is req1 body used?', req1.bodyUsed, '(should be true)');
+  console.log('Is req2 body used?', req2.bodyUsed, '(should be false)');
   /*
   ┌──────────┬───────┬───────┐
   │ Browser  │ >. 1  │ >. 2  │
