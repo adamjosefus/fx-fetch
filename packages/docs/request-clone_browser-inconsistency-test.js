@@ -1,6 +1,8 @@
 // This code demonstrates the behavior of the Request.clone() method across different JavaScript environments.
 // You can copy-paste and run this code in various environments to observe the differences.
 
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1911164
+
 // Bun: 1.3.4
 // Deno: 2.5.6
 // Firefox: 146.0
