@@ -3,7 +3,21 @@
   "packageOptions": {
     "includeVersion": true
   },
-  "name": "fx-fetch",
+  "name": "FxFetch",
+  "favicon": "./public/favicon.svg",
+  "projectDocuments": [
+    "./contents/00-introduction.md",
+    "./contents/01-request.md",
+    "./contents/02-fetch.md",
+    "./contents/03-response.md",
+    "./contents/04-url.md"
+  ],
+  "headings": {
+    "readme": false,
+    "document": false
+  },
+  "customCss": "./overwrite.css",
+  "groupOrder": ["Docs", "*"],
   "outputs": [
     {
       "name": "html",

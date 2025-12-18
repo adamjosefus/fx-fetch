@@ -1,0 +1,85 @@
+---
+title: Url
+group: Docs
+---
+
+# Url Module
+
+> [!NOTE]
+> Documentation is a work in progress. Please excuse any inconsistencies or missing information.
+
+The `Url` module is one of the core building blocks of `fx-fetch`.
+The module contains functions and types to create and manipulate URLs.
+
+```ts
+import { Url } from 'fx-fetch';
+```
+
+## Constructors
+
+You can make a Url from any of `Url.Url.Input`. This this is a just an union of all possible inputs that can be used.
+
+- `string` — a simple string URL
+- [`globalThis.URL`](https://developer.mozilla.org/en-US/docs/Web/API/URL) — the built-in JavaScript URL class
+- `Url.Url.Parts` — an object containing individual parts of a URL
+- `Url.Url.Options` — an object containing a URL string and optional search parameters
+- `Url.Url` — another `Url` instance (deep cloned)
+
+```ts
+const urlString: string = 'https://example.com/path?query=param#hash'; // Simple string URL. Don't worry, validation is done internally.
+
+const jsUrl = new URL('https://example.com/path?query=param#hash'); // Vanilla JS URL object.
+
+const urlOptions: Url.Url.Options = {
+  url: 'https://example.com/path?query=param#hash',
+  searchParams: {
+    id: '123',
+    page: 1,
+    category: ['books', 'electronics'], // Arrays are supported too!
+    'is-active': undefined, // Keys with `undefined` values are omitted from the final URL
+  }, // `searchParams` is a `SearchParamsInput` type. Rich ways to specify search params! DX is important.
+};
+
+const urlParts: Url.Url.Parts = {
+  protocol: 'https:', // Smartly handles trailing ':' character
+  username: 'john',
+  password: '123',
+  hostname: 'example.com',
+  pathname: '/path', // Smartly handles leading '/' character
+  hash: '#hash', // Smartly handles leading '#' character
+  searchParams: undefined, // `searchParams` is optional. Has the same type as `Url.Url.Options['searchParams']` ↑.
+  port: 443, // Port can be a string or number
+};
+
+declare const url: Url.Url; // Of course, you can create Urls from other Urls too. Deep cloning is done internally.
+```
+
+### make vs unsafeMake
+
+Because a URL input can be anything, even something nonsensical,
+there are two ways to create a URL object: Safe and unsafe.
+
+The safe way is recommended especially in non-manual use cases (like when a URL comes from user input, external API, etc.)
+<br>But if you place the URL manually and are sure it's valid, you can use the unsafe way.
+
+### make
+
+```ts
+// Safe way returns `Option.Option<Url.Url>`
+//
+//        ┌── Option.Option<Url.Url>
+//        ▼
+const maybeUrl = Url.make(urlString); // Validates the input URL. If invalid, returns `Option.none()`.
+
+const nonsenseJsUrl = new globalThis.URL('Hello nonsense'); // Throws an error. Uncaught ReferenceError: Url is not defined
+const maybeNonsenseUrl = Url.make('Hello nonsense'); // Returns `Option.none()` instead of throwing.
+```
+
+### unsafeMake
+
+```ts
+// Unsafe way returns `Url.Url` or throws
+//
+//        ┌── Url.Url
+//        ▼
+const certainUrl = Url.unsafeMake(urlString); // If URL is invalid, `Effect.die` is called internally.
