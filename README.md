@@ -13,7 +13,7 @@ A production-ready solution for safe & simple HTTP fetching built with
 [EffectTS](https://effect.website/). **Designed with great developer
 experience in mind.**
 
-Works everywhere! _Even in [Firefox 🦊](./packages/docs/request-clone_browser-inconsistency-test.js)._
+Works everywhere! _Even in [Firefox 🦊](./packages/docs/firefox-request-clone-bug.js)._
 
 ## Table of Contents
 
@@ -101,7 +101,7 @@ detailed guides and API reference.
 
 ---
 
-1. `globalThis.Request` and `globalThis.Response` are not truly clonable. [Why?](./packages/docs/request-clone_browser-inconsistency-test.js)
+1. `globalThis.Request` and `globalThis.Response` are not truly clonable. [Why?](./packages/docs/firefox-request-clone-bug.js)
 2. Marked as unstable in the official documentation. Some method implementations
    are still missing.
 
@@ -134,7 +134,7 @@ immutable and clonable structures, you may encounter unexpected issues.
 ### Why aren't [`Request.clone()`](https://developer.mozilla.org/en-US/docs/Web/API/Request) and [`Response.clone()`](https://developer.mozilla.org/en-US/docs/Web/API/Response) enough?
 
 > [!CAUTION]
-> First, they don't work properly in some browsers (looking at you, [Firefox 🦊](./packages/docs/request-clone_browser-inconsistency-test.js)).
+> First, they don't work properly in some browsers (looking at you, [Firefox 🦊](./packages/docs/firefox-request-clone-bug.js)).
 
 Even when they work correctly, they don't solve DX issues or provide key
 features like reading request/response properties multiple times without side
