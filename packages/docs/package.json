@@ -1,15 +1,28 @@
 {
   "name": "docs",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "typedoc --options ./typedoc.json",
+    "build": "astro build",
+    "build:typedoc": "typedoc --options ./typedoc.json",
+    "dev": "astro dev",
     "fmt": "biome check . --error-on-warnings",
-    "fmt:write": "biome check . --write --error-on-warnings"
+    "fmt:write": "biome check . --write --error-on-warnings",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.37.1",
+    "@expressive-code/plugin-line-numbers": "^0.41.5",
+    "@types/node": "^25.0.3",
+    "astro": "^5.16.6",
+    "effect": "^3",
+    "expressive-code-twoslash": "^0.5.3",
+    "fx-fetch": "workspace:*",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@/shared": "workspace:*",
     "@biomejs/biome": "^2.3.8",
-    "typedoc": "^0.28.15",
-    "typedoc-github-theme": "^0.3.1"
+    "typedoc": "^0.28.15"
   }
 }
