@@ -5,6 +5,8 @@ import expressiveCodeTwoslash from 'expressive-code-twoslash';
 
 // https://astro.build/config
 export default defineConfig({
+  base: '/fx-fetch',
+  trailingSlash: 'never',
   integrations: [
     starlight({
       title: 'FxFetch',
