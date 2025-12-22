@@ -7,7 +7,7 @@ import expressiveCodeTwoslash from 'expressive-code-twoslash';
 export default defineConfig({
   integrations: [
     starlight({
-      title: 'Fx-Fetch',
+      title: 'FxFetch',
       markdown: {
         processedDirs: ['./src/content/api-reference'],
       },
