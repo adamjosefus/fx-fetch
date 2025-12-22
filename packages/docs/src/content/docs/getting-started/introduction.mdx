@@ -3,51 +3,31 @@ title: Introduction
 description: Get started with FxFetch, a type-safe and ergonomic HTTP fetching library built with EffectTS.
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
-import { Icon } from '@astrojs/starlight/components';
-
+import { Tabs, TabItem, Icon } from '@astrojs/starlight/components';
 
 A production-ready solution for safe & simple HTTP fetching built with
 [EffectTS](https://effect.website/). **Designed with great developer
 experience in mind.**
 
+- ✅ **Production-ready** — Used in production by [Ematiq](https://www.ematiq.com) since February 2025
+- ✅ **Immutable & Clonable** — Follows functional programming principles
+- ✅ **Safe by default** — Prevents common pitfalls with HTTP fetching
+- ✅ **Cross-platform** — Works in all modern browsers, Bun, Deno, and Node.js
+- ✅ **Effect-based** — Seamless integration with the Effect ecosystem
+- ✅ **Testable** — Easy mocking and testing with service-based architecture
+- ✅ **Dual API** — Familiar syntax from [EffectTS](https://effect.website/docs/code-style/dual)
+- ✅ **Simple** — It is just fetch! No more complex concepts to learn.
+
+:::tip[Did you know?]{icon="open-book"}
+FxFetch is not another HTTP client. **Is a just fetch but for EffectTS ecosystem.**
+:::
 
 
+### „And what about `@effect/platform` HttpApi?“
 
-## Modules Overview
+`@effect/platform` HttpApi is an unstable package nowadays. Some methods are still implemented using `Effect.die`.
+Most importantly, however, it is an HTTP client. This makes it mostly useful for backend and full-stack applications.
+In many real-world scenarios, however, your server is not under your direct control _(e.g. other teams, third-party services,
+other language edge functions, etc.)._
 
-- [Request](./01-request.md) — Constructors and helpers for Http requests
-- [Fetch](./02-fetch.md) — Services and functions for performing Http requests
-- [Response](./03-response.md) — Constructors and utilities for handling Http responses
-- [Url](./04-url.md) — Constructors and helpers for Url manipulation.
-
-
-## Installation
-
-
-
-<Tabs syncKey="dependency-manager">
-	<TabItem label="npm" icon="seti:npm">
-```bash
-npm install fx-fetch
-```
-	</TabItem>
-  
-	<TabItem label="pnpm" icon="pnpm">
-```bash
-pnpm add fx-fetch
-```
-	</TabItem>
-
-	<TabItem label="Bun" icon="bun">
-```bash
-bun add fx-fetch
-```
-	</TabItem>
-
-	<TabItem label="Deno" icon="deno">
-```bash
-deno install npm:fx-fetch
-```
-	</TabItem>
-</Tabs>
+FxFetch is designed to be used in like a browser `fetch` but with type-safety, immutability, and ergonomics in mind.
