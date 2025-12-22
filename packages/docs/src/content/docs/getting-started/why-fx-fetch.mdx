@@ -1,0 +1,290 @@
+---
+title: Why FxFetch?
+description: Why you should use FxFetch for your HTTP requests in EffectTS.
+---
+
+import { Tabs, TabItem, Icon, Steps } from '@astrojs/starlight/components';
+
+If you're using EffectTS to build your applications and make HTTP requests,
+you'll find FxFetch to be a perfect fit. It provides a type-safe, ergonomic API for handling fetch operations.
+
+## Why `globalThis.fetch` is not enough?
+
+There are two main reasons:
+1) Non-trivial error handling
+2) Lack of immutability
+
+### Non-trivial error handling
+
+#### Let's walk through the pitfalls
+
+<Steps>
+1. Let's start with an example
+</Steps>
+
+
+```ts twoslash showLineNumbers=false
+import { Data, Effect } from 'effect';
+
+/**
+ * Some logic to process the response. Just a placeholder.
+ */
+function processResponse(response: Response): unknown {
+  // Process the response
+  return null;
+}
+
+/**
+ * A custom error type for demonstration purposes.
+ */
+class MyError extends Data.TaggedError('MyError') {}
+
+// ---cut---
+const program = Effect.gen(function* () {
+  const response = yield* Effect.tryPromise({
+    try: () => fetch('./my-endpoint'),
+    catch: () => new MyError(),
+  });
+
+  processResponse(response); // Some logic here
+});
+```
+
+Do you see the problem here? There's more than meets the eye.
+
+- [ ] Missing promise cancellation
+- [ ] Is the response OK? What if it's a 4XX or 5XX?
+- [ ] Why does it fail?
+
+<Steps>
+2. Let's improve it a bit
+</Steps>
+
+```ts twoslash showLineNumbers=false {3, 6-11} "signal"
+import { Data, Effect } from 'effect';
+
+/**
+ * Some logic to process the response. Just a placeholder.
+ */
+function processResponse(response: Response): unknown {
+  // Process the response
+  return null;
+}
+
+/**
+ * A custom error type for demonstration purposes.
+ */
+class MyError extends Data.TaggedError('MyError') {}
+
+// ---cut---
+//       ┌─── Effect.Effect<void, MyError, never>
+//       ▼
+const program = Effect.gen(function* () {
+  const response = yield* Effect.tryPromise({
+    try: (signal) => fetch('./my-endpoint', { signal }),
+    catch: () => new MyError(),
+  }).pipe(
+    Effect.flatMap((response) => {
+      if (!response.ok) {
+        return Effect.fail(new MyError());
+      }
+      return Effect.succeed(response);
+    })
+  );
+
+  processResponse(response); // Some logic here
+});
+```
+
+- [x] <del>Missing promise cancellation</del>
+- [x] <del>Is the response OK? What if it's a 4XX or 5XX?</del>
+- [ ] Why does it fail?
+
+This is safer, but still not useful enough. What does `MyError` mean? Can I retry?
+
+<Steps>
+3. Let's improve the error handling
+</Steps>
+
+What are the possible reasons for failure?
+
+Here are the most common reasons why a fetch request might fail:
+
+1. **Non-OK HTTP response**: The server responded, but with a status code outside the 200–299 range.
+2. **Request aborted**: The request was cancelled via an `AbortController`.
+3. **Network error**: The network is unreachable, DNS fails, or the connection is lost.
+4. **CORS not allowed**: The request is blocked due to Cross-Origin Resource Sharing (CORS) policy.
+5. **Invalid request parameters**:
+  - Invalid header name or value
+  - Invalid URL or unsupported protocol/scheme
+  - URL includes unwanted credentials
+  - Invalid referrer URL
+  - Invalid request mode (e.g., `navigate`, `websocket`)
+  - Forbidden HTTP method (e.g., `CONNECT`, `TRACE`, `TRACK`)
+  - Body present with `GET` or `HEAD` method
+  - Cache mode or request mode mismatch (e.g., `only-if-cached` with non-`same-origin`)
+6. **Blocked by permissions policy**: The browser or environment blocks the request due to security or permissions settings.
+7. **Out of memory**: The environment cannot allocate enough memory to complete the request _(rare)_.
+
+That's pretty much it. Let's model these errors.
+
+```ts twoslash showLineNumbers=true {3-6, 15, 20, 24, 33-34, 38} 
+import { Data, Effect } from 'effect';
+
+/**
+ * Some logic to process the response. Just a placeholder.
+ */
+function processResponse(response: Response): unknown {
+  // Process the response
+  return null;
+}
+
+/**
+ * Wrapper for TypeError. It is almost impossible to categorize all possible errors, as it depends on the environment (browser, Node.js, Deno, etc.), location, network, and more.
+ *
+ * Possible reasons:
+ *
+ * - Blocked by a permissions policy.
+ * - Invalid header name.
+ * - Invalid header value. The header object must contain exactly two elements.
+ * - Invalid URL or scheme, or using a scheme that fetch does not support, or using a scheme that is not supported for a particular request mode.
+ * - URL includes credentials.
+ * - Invalid referrer URL.
+ * - Invalid modes (`navigate` and `websocket`).
+ * - If the request cache mode is "only-if-cached" and the request mode is other than "same-origin".
+ * - If the request method is an invalid name token or one of the forbidden headers (`'CONNECT'`, `'TRACE'` or `'TRACK'`).
+ * - If the request mode is "no-cors" and the request method is not a CORS-safe-listed method (`'GET'`, `'HEAD'`, or `'POST'`).
+ * - If the request method is `'GET'` or `'HEAD'` and the body is non-null or not undefined.
+ * - If fetch throws a network error.
+ */
+export class FetchError extends Data.TaggedError('FetchError') {}
+
+/**
+ * Thrown if use of the [Topics API](https://developer.mozilla.org/en-US/docs/Web/API/Topics_API)
+ * is specifically disallowed by a [`browsing-topics`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy/browsing-topics)
+ * [Permissions Policy](/en-US/docs/Web/HTTP/Permissions_Policy),
+ * and a `fetch()` request was made with `browsingTopics: true`.
+ */
+export class NotAllowedError extends Data.TaggedError('NotAllowedError') {}
+
+/**
+ * The request was aborted due to a call to the [`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
+ * [`abort()`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort "abort()") method.
+ */
+export class AbortError extends Data.TaggedError('AbortError') {}
+
+/**
+ * An unknown error occurred during the fetch request.
+ */
+export class UnknownError extends Data.TaggedError('UnknownError') {}
+
+/**
+ * Thrown if the response is not OK. So the status code is not in the range 200-299.
+ */
+export class NotOkError extends Data.TaggedError('NotOkError') {}
+
+// ---cut---
+//       ┌─── Effect.Effect<
+//       │      void,
+//       │      | FetchError
+//       │      | AbortError
+//       │      | NotAllowedError
+//       │      | NotOkError,
+//       │      never
+//       │    >
+//       ▼
+const program = Effect.gen(function* () {
+  const response = yield* Effect.tryPromise({
+    try: (signal) => fetch('./my-endpoint', { signal }),
+    catch(error) {
+      if (error instanceof TypeError) {
+        return new FetchError();
+      }
+
+      if (typeof error === 'object' && error !== null && 'name' in error) {
+        if (error.name === 'AbortError') {
+          return new AbortError();
+        }
+
+        if (error.name === 'NotAllowedError') {
+          return new NotAllowedError();
+        }
+      }
+
+      // Fallback for Out-of-Memory and other unknown errors
+      return new UnknownError();
+    },
+  }).pipe(
+    Effect.catchTag('UnknownError', () =>
+      // Out-of-Memory error is mostly defect. So we can die here.
+      Effect.dieMessage('Unknown error occurred during fetch request')
+    ),
+    Effect.flatMap((response) => {
+      if (!response.ok) {
+        return Effect.fail(new NotOkError());
+      }
+      return Effect.succeed(response);
+    })
+  );
+
+  processResponse(response); // Some logic here
+});
+```
+
+- [x] <del>Missing promise cancellation</del>
+- [x] <del>Is the response OK? What if it's a 4XX or 5XX?</del>
+- [x] <del>Why does it fail?</del>
+
+Nice! We did it. It is perfect, right? **Nope.**
+
+Moving from a non-effect world to an effect world can be tedious, verbose and error-prone.
+It's similar to using untyped JavaScript in TypeScript. It's better if the hard work is done by someone else.
+
+In the untyped npm ecosystem, we have the [`@types/*` initiative](https://github.com/DefinitelyTyped/DefinitelyTyped).
+**In this case, we have FxFetch!**
+
+<Steps>
+4. Use **FxFetch** to do the heavy lifting for you 🎉
+</Steps>
+
+```ts twoslash showLineNumbers=false {1, 13-16}
+// ---cut-start---
+import { Effect } from 'effect';
+// ---cut-end---
+import { Fetch, Request, Response } from 'fx-fetch';
+
+// ---cut-start---
+/**
+ * Some logic to process the response. Just a placeholder.
+ */
+function processResponse(response: Response.Response): unknown {
+  // Process the response
+  return null;
+}
+// ---cut-end---
+//       ┌─── Effect.Effect<
+//       │      void,
+//       │      | Fetch.FetchError
+//       │      | Fetch.AbortError
+//       │      | Fetch.NotAllowedError
+//       │      | Response.NotOkError,
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: './my-endpoint' });
+  const response = yield* Fetch.fetch(request);
+
+  processResponse(response); // Some logic here
+});
+```
+
+---
+
+
+### Lack of immutability
+
+
+:::caution
+Documentation is a work in progress. Please excuse any inconsistencies or missing information.
+:::
