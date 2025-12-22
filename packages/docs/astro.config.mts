@@ -10,6 +10,9 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'FxFetch',
+      logo: {
+        src: './public/logo_fx-fetch.svg',
+      },
       markdown: {
         processedDirs: ['./src/content/api-reference'],
       },
@@ -47,6 +50,10 @@ export default defineConfig({
             {
               label: 'Why Fx-Fetch?',
               slug: 'getting-started/why-fx-fetch',
+            },
+            {
+              label: 'Installation',
+              slug: 'getting-started/installation',
             },
           ],
         },
