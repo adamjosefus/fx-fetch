@@ -3,3 +3,4 @@ dist/
 .astro/
 .env
 .env.production
+src/content/api-reference/*

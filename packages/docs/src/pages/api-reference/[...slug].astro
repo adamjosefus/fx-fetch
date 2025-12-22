@@ -1,0 +1,42 @@
+---
+import { getCollection, render } from 'astro:content';
+// biome-ignore lint/correctness/noUnusedImports: Incorrect detection in .astro files
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { pipe } from 'effect';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('apiReference');
+
+  const paths = posts
+    .map((post) => {
+      const slug = post.id;
+
+      const markdownExtension = '.md';
+      const titlePrefix = 'fx-fetch/namespaces/';
+      const title = pipe(
+        slug,
+        (_) => (_.endsWith(markdownExtension) ? _.slice(0, -markdownExtension.length) : _),
+        (_) => (_.startsWith(titlePrefix) ? _.slice(titlePrefix.length) : _),
+        (_) => (_ === 'index' ? 'API Reference' : _)
+      );
+
+      return {
+        params: { slug },
+        props: { post, title },
+      };
+    })
+    .sort((a, b) => a.props.post.id.localeCompare(b.props.post.id));
+
+  return paths;
+}
+// 2. For your template, you can get the entry directly from the prop
+
+// biome-ignore lint/correctness/noUnusedVariables: Incorrect detection in .astro files
+const { post, title } = Astro.props;
+// biome-ignore lint/correctness/noUnusedVariables: Incorrect detection in .astro files
+const { Content } = await render(post);
+---
+
+<StarlightPage frontmatter={{ title: title, tableOfContents: false }}>
+  <Content />
+</StarlightPage>

@@ -1,37 +1,22 @@
 {
   "entryPoints": ["../fx-fetch/src/index.ts"],
+  "readme": "none",
   "packageOptions": {
     "includeVersion": true
   },
-  "name": "FxFetch",
-  "favicon": "./public/favicon.svg",
-  "projectDocuments": [
-    "./contents/00-introduction.md",
-    "./contents/01-request.md",
-    "./contents/02-fetch.md",
-    "./contents/03-response.md",
-    "./contents/04-url.md"
-  ],
+  "name": "fx-fetch",
   "headings": {
     "readme": false,
     "document": false
   },
-  "customCss": "./overwrite.css",
-  "groupOrder": ["Docs", "*"],
   "outputs": [
     {
-      "name": "html",
-      "options": {
-        "navigation": {
-          "excludeReferences": true,
-          "includeCategories": true,
-          "includeFolders": true,
-          "includeGroups": true
-        }
-      },
-      "path": "./dist"
+      "name": "markdown",
+      "path": "./src/content/api-reference"
     }
   ],
-  "plugin": ["typedoc-github-theme"],
+  "plugin": ["typedoc-plugin-markdown"],
+  "entryFileName": "index",
+  "cleanOutputDir": false,
   "tsconfig": "../fx-fetch/tsconfig.json"
 }
