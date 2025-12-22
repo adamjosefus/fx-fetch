@@ -9,7 +9,7 @@
     "fmt": "biome check . --error-on-warnings",
     "fmt:write": "biome check . --write --error-on-warnings",
     "preview": "astro preview",
-    "validate": "tsc"
+    "validate": "astro sync && tsc"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.37.1",
