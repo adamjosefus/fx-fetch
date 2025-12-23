@@ -4,6 +4,7 @@ description: Why you should use FxFetch for your HTTP requests in EffectTS.
 ---
 
 import { Tabs, TabItem, Icon, Steps } from '@astrojs/starlight/components';
+import RepoLink from '../../../components/RepoLink.astro';
 
 If you're using EffectTS to build your applications and make HTTP requests,
 you'll find FxFetch to be a perfect fit. It provides a type-safe, ergonomic API for handling fetch operations.
@@ -284,7 +285,42 @@ const program = Effect.gen(function* () {
 
 ### Lack of immutability
 
+EffectTS is built on functional programming principles. All building blocks (`Effect`, `Option`, `Either`, `DateTime`, …) are
+immutable and clonable by design.
+
+For a library to truly be in symbiosis
+with EffectTS, **it must adhere to the same principles**.
+
+EffectTS excels at parallel actions and concurrency.
+Without using immutable and clonable structures, unexpected issues may appear.
+
+Working with immutable objects can be challenging without proper tools — that's
+why we built `fx-fetch`.
+
+Real-world examples of why immutability and clonability matter:
+
+- Reusing the same `Request` for paginated API calls
+- Appending general headers to already-created `Request` objects
+- Retrying failed requests without worrying about side effects
+
+### Why aren't [`Request.clone()`](https://developer.mozilla.org/en-US/docs/Web/API/Request) enough?
 
 :::caution
-Documentation is a work in progress. Please excuse any inconsistencies or missing information.
+First, they don't work properly in some browsers (<RepoLink pathname={"packages/docs/firefox-request-clone-bug.js"}>looking at you, Firefox 🦊</RepoLink>).
 :::
+
+Even when they work correctly, they don't solve DX issues or provide key
+features like reading request/response properties multiple times without side
+effects.
+
+```ts twoslash {8-9}
+const req = new globalThis.Request("./endpoint", {
+  method: "POST",
+  body: "Hello World", // ← String
+});
+
+console.log(req.body); // → `ReadableStream { }`
+
+// ReadableStream can only be read once.
+// You must know what you're reading.
+```
