@@ -1,8 +1,9 @@
 packages:
   - packages/*
 
-onlyBuiltDependencies:
-  - nx
-
 ignoredBuiltDependencies:
   - '@swc/core'
+
+onlyBuiltDependencies:
+  - bun
+  - nx
