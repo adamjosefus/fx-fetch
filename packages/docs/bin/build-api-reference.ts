@@ -38,7 +38,7 @@ const outputDir = pipe(typedocConfig.outputs, (outputs) => {
 const glob = new Bun.Glob('**/*.md');
 const regex = /(?<before>\[.+?\]\()(?<link>.+?)(?<after>\))/gm;
 
-async function processFile(path: string, isRoot: boolean): Promise<void> {
+async function processFile(path: string): Promise<void> {
   const file = Bun.file(path);
   const text = await file.text();
 
@@ -56,9 +56,7 @@ async function processFile(path: string, isRoot: boolean): Promise<void> {
       return match;
     }
 
-    const nextLink = isRoot
-      ? `./api-reference/${normalizeApiReferenceLink(prevLink)}`
-      : `./${normalizeApiReferenceLink(prevLink)}`;
+    const nextLink = `./${normalizeApiReferenceLink(prevLink)}`;
 
     const result = [before, nextLink, after].join('');
     return result;
@@ -72,10 +70,9 @@ async function processFile(path: string, isRoot: boolean): Promise<void> {
 const queue: Promise<void>[] = [];
 
 for await (const pathname of glob.scan(outputDir)) {
-  const isRoot = pathname === 'index.md';
   const path = NodePath.join(outputDir, pathname);
 
-  queue.push(processFile(path, isRoot));
+  queue.push(processFile(path));
 }
 
 await Promise.all(queue);
