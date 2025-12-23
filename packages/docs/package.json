@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "astro build",
+    "build": "pnpm run build:typedoc && pnpm run build:astro",
+    "build:astro": "astro build",
     "build:typedoc": "typedoc --options ./typedoc.json",
     "dev": "astro dev",
     "fmt": "biome check . --error-on-warnings",
