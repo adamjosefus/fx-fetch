@@ -1,0 +1,17 @@
+---
+// biome-ignore lint/correctness/noUnusedVariables: Incorrect detection in .astro files
+interface Props {
+  pathname: string;
+}
+
+const { pathname } = Astro.props;
+
+const repoUrl = 'https://github.com/adamjosefus/fx-fetch';
+const branch = 'main';
+// biome-ignore lint/correctness/noUnusedVariables: Incorrect detection in .astro files
+const link = `${repoUrl}/blob/${branch}/${pathname}`;
+---
+
+<a target="_blank" rel="noopener noreferrer" href={link}>
+  <slot />
+</a>
