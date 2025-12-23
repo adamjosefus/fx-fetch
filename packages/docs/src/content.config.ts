@@ -3,6 +3,7 @@ import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { normalizeApiReferenceLink } from '../utils/normalizeApiReferenceLink';
 
 export const collections = {
   docs: defineCollection({
@@ -14,7 +15,9 @@ export const collections = {
       pattern: '**/*.md',
       base: './src/content/api-reference',
       generateId: (options) => {
-        return options.entry;
+        // Remove the file extension
+        const slug = `/${normalizeApiReferenceLink(options.entry)}`;
+        return slug;
       },
     }),
     schema: z.object({

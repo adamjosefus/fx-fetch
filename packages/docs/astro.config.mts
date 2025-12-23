@@ -6,7 +6,7 @@ import expressiveCodeTwoslash from 'expressive-code-twoslash';
 // https://astro.build/config
 export default defineConfig({
   base: import.meta.env.PROD ? '/fx-fetch' : undefined,
-  trailingSlash: 'always',
+  trailingSlash: 'ignore',
   integrations: [
     starlight({
       title: 'FxFetch',
@@ -60,26 +60,26 @@ export default defineConfig({
         {
           label: 'Request',
           // items: [],
-          link: '/request',
+          slug: 'request',
         },
         {
           label: 'Fetch',
           // items: [],
-          link: '/fetch',
+          slug: 'fetch',
         },
         {
           label: 'Response',
           // items: [],
-          link: '/response',
+          slug: 'response',
         },
         {
           label: 'Url',
           // items: [],
-          link: '/url',
+          slug: 'url',
         },
         {
           label: 'API Reference',
-          link: '/api-reference/index.md',
+          link: 'api-reference',
         },
       ],
     }),
