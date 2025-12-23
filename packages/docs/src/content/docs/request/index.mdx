@@ -3,12 +3,81 @@ title: Request
 description: Constructors and helpers for HTTP requests
 ---
 
-:::caution
-Documentation is a work in progress. Please excuse any inconsistencies or missing information.
-:::
+**Request** module contains constructors and helpers for managing immutable interpretations of HTTP requests.
 
-```ts
-// You can make a Request from any of Request.Request.Input
+## The Request Type
+
+A `Request` represents immutable and cloneable HTTP request data. It is base element of Request module.
+
+```ts twoslash showLineNumbers=false
+import { Request } from 'fx-fetch';
+
+type Type = Request.Request;
+```
+
+## The Input Type
+
+A `Request.Input` represents all the possible inputs that can be used to create a `Request`.
+
+Concrete types that make up the `Input` union:
+
+```ts twoslash showLineNumbers=false
+import { Request } from 'fx-fetch';
+
+type Type = Request.Request.Input;
+```
+
+- `globalThis.Request` — vanilla JS request
+- [`Request.Request.Parts`](#from-requestparts) — Object with request parts
+- [`Request.Request.Options`](#from-requestoptions) — Object with request options and URL. This variant was created for better DX.
+- `Request.Request` — Existing Request can be used too
+
+## Constructors
+
+### unsafeMake
+
+Creates a `Request` from any of [`Request.Input`](#the-input-type).
+Throws an `IllegalArgumentException` if the provided input is invalid.
+
+```ts twoslash showLineNumbers=false
+import { Request } from 'fx-fetch';
+
+//       ┌─── Request.Request
+//       ▼
+const request = Request.unsafeMake({
+  url: 'https://example.com',
+  method: 'POST'
+});
+```
+
+### make
+
+Similar to [unsafeMake](#unsafemake), but returns an [Option](https://effect.website/docs/data-types/option/) instead of throwing an error if the input is invalid.
+If the input is invalid, it returns `None`. If valid, it returns `Some` containing the `Request`.
+
+```ts twoslash showLineNumbers=false
+import { Option } from 'effect';
+import { Request } from 'fx-fetch';
+
+//       ┌─── Option.Option<Request.Request>
+//       ▼
+const request = Request.make({
+  url: 'https://example.com',
+  method: 'POST'
+});
+```
+
+---
+
+### from Request.Parts
+
+For creating a `Request` from an object `Request.Parts` use same functions [`make`](#make) or [`unsafeMake`](#unsafemake).
+
+The Parts type is super primitive. It's basically an object with all the properties of a JS request, but with better DX. 
+Everything except the `url` is optional.
+
+```ts twoslash showLineNumbers=false {7-9, 19}
+import { Request } from 'fx-fetch';
 
 const parts: Request.Request.Parts = {
   body: 'Hello, world!',
@@ -16,6 +85,7 @@ const parts: Request.Request.Parts = {
   credentials: 'same-origin',
   headers: {
     'Content-Type': 'text/plain',
+    'X-Custom-Header': ['CustomValue', 'AnotherValue'],
   },
   integrity: 'sha256-abcdef',
   keepalive: true,
@@ -29,5 +99,16 @@ const parts: Request.Request.Parts = {
   url: 'https://example.com/api',
 };
 
-Request.make(parts);
+const request = Request.unsafeMake(parts);
 ```
+
+Properties `url` and `headers` have flexible input types.
+
+- `url` is of type `Url.Input`. Read more about it in [Url module documentation](../url/#the-input-type).
+- `headers` can be almost anything what you can imagine as headers.
+  - Record of strings
+  - Entries (array of tuples)
+  - `Map` of strings
+  - Same as `HeadersInit` in Fetch API
+  - _… many more…_
+
