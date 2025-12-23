@@ -1,4 +1,4 @@
-import { Either, pipe } from 'effect';
+import { Cause, Either, pipe } from 'effect';
 import { isJsUrl } from '../utils/isJsUrl';
 import { toLowercase } from '../utils/toLowercase';
 import { formatUrlUntrusted } from './formatUrlUntrusted';
@@ -158,21 +158,25 @@ function areCredentialsValid(url: UrlIntermediate): boolean {
 
 function validateUrlIntermediate(
   url: UrlIntermediate
-): Either.Either<UrlIntermediate, globalThis.Error> {
+): Either.Either<UrlIntermediate, Cause.IllegalArgumentException> {
   if (!isPortValid(url.port)) {
     return Either.left(
-      new Error(
+      new Cause.IllegalArgumentException(
         `Url cannot be created. Port must be an integer between 0 and 65535. Given: ${url.port}`
       )
     );
   }
 
   if (!areCredentialsValid(url)) {
-    return Either.left(new Error('Url cannot be created. Password without username.'));
+    return Either.left(
+      new Cause.IllegalArgumentException('Url cannot be created. Password without username.')
+    );
   }
 
   if (!isUrlConstructable(url)) {
-    return Either.left(new Error('Url cannot be created. Invalid URL input.'));
+    return Either.left(
+      new Cause.IllegalArgumentException('Url cannot be created. Invalid URL input.')
+    );
   }
 
   return Either.right(url);
@@ -184,7 +188,7 @@ function validateUrlIntermediate(
  */
 function partsToUrlIntermediate(
   parts: Url.Url.Parts
-): Either.Either<UrlIntermediate, globalThis.Error> {
+): Either.Either<UrlIntermediate, Cause.IllegalArgumentException> {
   const intermediate: UrlIntermediate = {
     clonedSearchParams: inputToSearchParamsIntermediate(parts.searchParams),
     hash: normalizeHash(parts.hash),
@@ -241,8 +245,8 @@ export function urlToUrlIntermediate(url: Url.Url): UrlIntermediate {
  */
 function optionsToUrlIntermediate(
   options: Url.Url.Options
-): Either.Either<UrlIntermediate, globalThis.Error> {
-  const url: Either.Either<UrlIntermediate, globalThis.Error> = isJsUrl(options.url)
+): Either.Either<UrlIntermediate, Cause.IllegalArgumentException> {
+  const url: Either.Either<UrlIntermediate, Cause.IllegalArgumentException> = isJsUrl(options.url)
     ? Either.right(jsUrlToUrlIntermediate(options.url))
     : stringToUrlIntermediate(options.url);
 
@@ -279,12 +283,12 @@ function optionsToUrlIntermediate(
  */
 function stringToUrlIntermediate(
   urlString: string
-): Either.Either<UrlIntermediate, globalThis.Error> {
+): Either.Either<UrlIntermediate, Cause.IllegalArgumentException> {
   try {
     const jsUrl = new globalThis.URL(urlString); // Throws if the URL is invalid
     return Either.right(jsUrlToUrlIntermediate(jsUrl));
-  } catch (cause) {
-    const error = new Error('Url cannot be created. Invalid URL input.', { cause });
+  } catch (_cause) {
+    const error = new Cause.IllegalArgumentException('Url cannot be created. Invalid URL input.');
     return Either.left(error);
   }
 }
@@ -295,7 +299,7 @@ function stringToUrlIntermediate(
  */
 export function inputToUrlIntermediate(
   input: Url.Url.Input
-): Either.Either<UrlIntermediate, globalThis.Error> {
+): Either.Either<UrlIntermediate, Cause.IllegalArgumentException> {
   // Url.Url
   if (isUrl(input)) {
     return Either.right(urlToUrlIntermediate(input));

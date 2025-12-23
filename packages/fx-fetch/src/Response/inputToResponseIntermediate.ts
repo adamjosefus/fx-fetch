@@ -1,4 +1,4 @@
-import { Either, Option } from 'effect';
+import { Cause, Either, Option } from 'effect';
 import * as Url from '../Url';
 import { inputToUrlIntermediate, urlToUrlIntermediate } from '../Url/inputToUrlIntermediate';
 import { UrlIntermediate } from '../Url/UrlIntermediate';
@@ -128,12 +128,11 @@ function partsToResponseIntermediate(
     );
   }
 
-  const url: Either.Either<UrlIntermediate | undefined, Error> = Option.fromNullable(
-    normalizeResponseUrlInput(parts.url)
-  ).pipe(
-    Option.map((urlInput) => inputToUrlIntermediate(urlInput)),
-    Option.getOrElse(() => Either.right(undefined))
-  );
+  const url: Either.Either<UrlIntermediate | undefined, Cause.IllegalArgumentException> =
+    Option.fromNullable(normalizeResponseUrlInput(parts.url)).pipe(
+      Option.map((urlInput) => inputToUrlIntermediate(urlInput)),
+      Option.getOrElse(() => Either.right(undefined))
+    );
 
   if (Either.isLeft(url)) {
     return Either.left(
