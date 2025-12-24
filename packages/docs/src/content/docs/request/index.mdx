@@ -96,7 +96,7 @@ const parts: Request.Request.Parts = {
   referrer: 'https://example.com',
   referrerPolicy: 'no-referrer',
   signal: new AbortController().signal,
-  url: 'https://example.com/api',
+  url: 'https://example.com/api', // ◀︎── required property
 };
 
 const request = Request.unsafeMake(parts);
@@ -112,3 +112,26 @@ Properties `url` and `headers` have flexible input types.
   - Same as `HeadersInit` in Fetch API
   - _… many more…_
 
+---
+
+### from Request.Options
+
+For creating a `Request` from an object `Request.Options` use same functions [`make`](#make) or [`unsafeMake`](#unsafemake).
+
+The Options type is the same as Parts, but with `searchParams` property.
+It is basically flattened version of `Url.Url.Options` merged with `Request.Parts`.
+
+Reason for having this variant is your comfort.
+
+```ts twoslash showLineNumbers=false
+import { Request } from 'fx-fetch';
+const options: Request.Request.Options = {
+  url: 'https://example.com/api', // ◀︎── required property
+  searchParams: {
+    id: '123',
+    filter: ["one", "two"]
+  },
+};
+
+const request = Request.unsafeMake(options);
+``` 
