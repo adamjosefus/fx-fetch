@@ -78,10 +78,8 @@ export namespace Request {
    * @since 0.1.0
    */
   export type Options = {
-    readonly url: Url.Url.Input;
     readonly searchParams?: SearchParamsInput;
-    readonly init?: globalThis.RequestInit;
-  };
+  } & Parts;
 
   /**
    * @category Models
