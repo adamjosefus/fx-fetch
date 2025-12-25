@@ -8,10 +8,9 @@ function isJsRequest(input: unknown): input is globalThis.Request {
 function isRequestOptions(
   input: Request.Request.Options | Request.Request.Parts
 ): input is Request.Request.Options {
-  const hasInitKey = 'init' in input;
   const hasSearchParams = 'searchParams' in input;
 
-  if (hasInitKey || hasSearchParams) {
+  if (hasSearchParams) {
     return true;
   }
 

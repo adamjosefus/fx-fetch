@@ -1,4 +1,4 @@
-import { absurd, Either } from 'effect';
+import { absurd, Cause, Either } from 'effect';
 import { inputToUrlIntermediate, urlToUrlIntermediate } from '../Url/inputToUrlIntermediate';
 import { inputToSearchParamsIntermediate } from '../Url/SearchParamsIntermediate';
 import { cloneHeadersIntermediate } from '../utils/cloneHeadersIntermediate';
@@ -64,22 +64,26 @@ function isMethodValid(method: unknown): method is Method {
  */
 function jsRequestToRequestIntermediate(
   jsRequest: globalThis.Request
-): Either.Either<RequestIntermediate, Error> {
+): Either.Either<RequestIntermediate, Cause.IllegalArgumentException> {
   if (jsRequest.bodyUsed) {
-    return Either.left(new Error('Request cannot be created. Body has already been used.'));
+    return Either.left(
+      new Cause.IllegalArgumentException('Request cannot be created. Body has already been used.')
+    );
   }
 
   const url = inputToUrlIntermediate(jsRequest.url);
   if (Either.isLeft(url)) {
     return Either.left(
-      new Error('Request cannot be created. Invalid URL input.', { cause: url.left })
+      new Cause.IllegalArgumentException('Request cannot be created. Invalid URL input.')
     );
   }
 
   const normalizedMethod = normalizeMethod(jsRequest.method);
   if (!isMethodValid(normalizedMethod)) {
     return Either.left(
-      new Error(`Request cannot be created. Invalid HTTP method: "${normalizedMethod}".`)
+      new Cause.IllegalArgumentException(
+        `Request cannot be created. Invalid HTTP method: "${normalizedMethod}".`
+      )
     );
   }
 
@@ -107,56 +111,31 @@ function jsRequestToRequestIntermediate(
 
 function optionsToRequestIntermediate(
   options: Request.Request.Options
-): Either.Either<RequestIntermediate, Error> {
-  const additionalSearchParams = inputToSearchParamsIntermediate(options.searchParams);
-  const url = inputToUrlIntermediate(options.url).pipe(
-    Either.map((url) => {
-      for (const [key, values] of additionalSearchParams) {
-        for (const value of values) {
-          const list = url.clonedSearchParams.get(key) ?? [];
-          list.push(value);
+): Either.Either<RequestIntermediate, Cause.IllegalArgumentException> {
+  const { searchParams: searchParamsInput, ...parts } = options;
 
-          url.clonedSearchParams.set(key, list);
-        }
-      }
+  // Compile-time check that "parts" satisfies Request.Request.Parts
+  const _typeCheck: Request.Request.Parts = parts;
 
-      return url;
-    })
-  );
-
-  if (Either.isLeft(url)) {
-    return Either.left(
-      new Error('Request cannot be created. Invalid URL input.', { cause: url.left })
-    );
+  const requestIntermediate = partsToRequestIntermediate(parts);
+  if (Either.isLeft(requestIntermediate)) {
+    return requestIntermediate;
   }
 
-  const normalizedMethod = normalizeMethod(options.init?.method);
-  if (!isMethodValid(normalizedMethod)) {
-    return Either.left(
-      new Error(`Request cannot be created. Invalid HTTP method: "${normalizedMethod}".`)
-    );
+  const searchParams = requestIntermediate.right.clonedUrl.clonedSearchParams;
+  const additionalSearchParams = inputToSearchParamsIntermediate(searchParamsInput);
+
+  // Mutate the search params intermediate to add additional search params
+  for (const [key, values] of additionalSearchParams) {
+    for (const value of values) {
+      const list = searchParams.get(key) ?? [];
+      list.push(value);
+
+      searchParams.set(key, list);
+    }
   }
 
-  const headers = inputToHeadersIntermediate(options.init?.headers);
-
-  const request: RequestIntermediate = {
-    cache: options.init?.cache,
-    clonedBody: normalizeAndCloneBody(options.init?.body),
-    clonedHeaders: headers,
-    clonedSignals: normalizeAndCloneSignals(options.init?.signal ?? undefined),
-    clonedUrl: url.right,
-    credentials: options.init?.credentials,
-    integrity: options.init?.integrity,
-    keepalive: normalizeKeepalive(options.init?.keepalive),
-    method: normalizedMethod,
-    mode: options.init?.mode,
-    priority: options.init?.priority,
-    redirect: options.init?.redirect,
-    referrer: options.init?.referrer,
-    referrerPolicy: normalizeReferrerPolicy(options.init?.referrerPolicy),
-  };
-
-  return Either.right(request);
+  return requestIntermediate;
 }
 
 /**
@@ -165,19 +144,21 @@ function optionsToRequestIntermediate(
  */
 function partsToRequestIntermediate(
   parts: Request.Request.Parts
-): Either.Either<RequestIntermediate, Error> {
+): Either.Either<RequestIntermediate, Cause.IllegalArgumentException> {
   const url = inputToUrlIntermediate(parts.url);
 
   if (Either.isLeft(url)) {
     return Either.left(
-      new Error('Request cannot be created. Invalid URL input.', { cause: url.left })
+      new Cause.IllegalArgumentException('Request cannot be created. Invalid URL input.')
     );
   }
 
   const normalizedMethod = normalizeMethod(parts.method);
   if (!isMethodValid(normalizedMethod)) {
     return Either.left(
-      new Error(`Request cannot be created. Invalid HTTP method: "${normalizedMethod}".`)
+      new Cause.IllegalArgumentException(
+        `Request cannot be created. Invalid HTTP method: "${normalizedMethod}".`
+      )
     );
   }
 
@@ -232,7 +213,7 @@ export function requestToRequestIntermediate(request: Request.Request): RequestI
  */
 export function inputToRequestIntermediate(
   input: Request.Request.Input
-): Either.Either<RequestIntermediate, Error> {
+): Either.Either<RequestIntermediate, Cause.IllegalArgumentException> {
   const classified = classifyRequestInput(input);
 
   switch (classified.type) {
