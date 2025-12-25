@@ -1,5 +1,4 @@
 [<img src="https://img.shields.io/npm/v/fx-fetch">](https://npmjs.com/package/fx-fetch)
-[<img src="https://img.shields.io/github/license/adamjosefus/fx-fetch">](./LICENSE)
 
 <img style="margin-bottom: 2em;" width="128" src="https://raw.githubusercontent.com/adamjosefus/fx-fetch/main/packages/docs/public/logo_fx-fetch.svg" alt="fx-fetch logo">
 
