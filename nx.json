@@ -24,7 +24,20 @@
     },
     "conventionalCommits": {
       "types": {
-        "docs": false
+        "__INVALID__": false,
+        "docs": false,
+        "refactor": {
+          "changelog": {
+            "title": "📐 Refactor"
+          },
+          "semverBump": "patch"
+        },
+        "test": {
+          "changelog": {
+            "title": "🧪 Tests"
+          },
+          "semverBump": "patch"
+        }
       }
     },
     "git": {
