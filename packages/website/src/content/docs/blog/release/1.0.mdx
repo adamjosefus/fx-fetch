@@ -1,0 +1,53 @@
+---
+pagefind: false
+title: Release 1.0
+excerpt: We simplyfied the Request.Options type by removing the nested init property. Migration guide for breaking changes included. It is really simple.
+date: 2025-12-25
+authors:
+  - adamjosefus
+tags:
+  - FxFetch
+  - Releases
+---
+
+#### 📐 Refactor
+
+- Update error handling to use `Cause.IllegalArgumentException` in Request, Response and Url processing functions ([b210ab4](https://github.com/adamjosefus/fx-fetch/commit/b210ab4))
+- ⚠️  Update `Request.Options` type to be align with `Request.Parts` type. ([e1af448](https://github.com/adamjosefus/fx-fetch/commit/e1af448))
+
+#### ⚠️  Breaking Changes
+
+- Update `Request.Options` type to be align with `Request.Parts` type.  ([e1af448](https://github.com/adamjosefus/fx-fetch/commit/e1af448))
+
+
+### How to migrate the breaking changes?
+
+We simplified the `Request.Options` type by removing the nested `init` property. Here is how you can migrate your existing code:
+
+```diff lang=ts
+const options: Request.Request.Options = {
+  url: 'https://api.example.com/data',
+  searchParams: {
+    query: 'test',
+    page: '1',
+  },
+-  init: {
+    body: JSON.stringify({ key: 'value' }),
+    cache: 'no-cache',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Custom-Header': 'CustomValue',
+    },
+    integrity: 'sha256-abcdef1234567890',
+    keepalive: true,
+    method: 'POST',
+    mode: 'no-cors',
+    priority: 'high',
+    redirect: 'manual',
+    referrer: 'https://example.eu',
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    signal: new AbortController().signal,
+-  }
+};
+```
