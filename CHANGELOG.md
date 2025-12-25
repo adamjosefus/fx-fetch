@@ -1,3 +1,18 @@
+# 1.0.0 (2025-12-25)
+
+### 📐 Refactor
+
+- Update error handling to use `Cause.IllegalArgumentException` in Request, Response and Url processing functions ([b210ab4](https://github.com/adamjosefus/fx-fetch/commit/b210ab4))
+- ⚠️  Update `Request.Options` type to be align with `Request.Parts` type. ([e1af448](https://github.com/adamjosefus/fx-fetch/commit/e1af448))
+
+### ⚠️  Breaking Changes
+
+- Update `Request.Options` type to be align with `Request.Parts` type.  ([e1af448](https://github.com/adamjosefus/fx-fetch/commit/e1af448))
+
+### ❤️ Thank You
+
+- Adam Josefus @adamjosefus
+
 ## 0.1.3 (2025-12-18)
 
 ### 🩹 Fixes
