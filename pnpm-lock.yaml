@@ -33,7 +33,50 @@ importers:
         specifier: ^22.2.3
         version: 22.2.3(@swc-node/register@1.11.1(@swc/core@1.15.4(@swc/helpers@0.5.17))(@swc/types@0.1.25)(typescript@5.9.3))(@swc/core@1.15.4(@swc/helpers@0.5.17))
 
-  packages/docs:
+  packages/fx-fetch:
+    dependencies:
+      '@types/node':
+        specifier: '>=20'
+        version: 24.10.4
+      effect:
+        specifier: ^3
+        version: 3.19.13
+    devDependencies:
+      '@/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@biomejs/biome':
+        specifier: ^2.3.8
+        version: 2.3.8
+      '@effect/language-service':
+        specifier: 0.62.3
+        version: 0.62.3
+      dpdm:
+        specifier: ^3.14.0
+        version: 3.14.0
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: ^4.0.15
+        version: 4.0.15(@types/node@24.10.4)(jiti@2.6.1)(yaml@2.8.2)
+      zshy:
+        specifier: ^0.6.0
+        version: 0.6.0(typescript@5.9.3)
+
+  packages/shared:
+    devDependencies:
+      '@biomejs/biome':
+        specifier: ^2.3.8
+        version: 2.3.8
+      typedoc:
+        specifier: ^0.28.15
+        version: 0.28.15(typescript@5.9.3)
+      typedoc-github-theme:
+        specifier: ^0.3.1
+        version: 0.3.1(typedoc@0.28.15(typescript@5.9.3))
+
+  packages/website:
     dependencies:
       '@astrojs/starlight':
         specifier: ^0.37.1
@@ -81,49 +124,6 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
-
-  packages/fx-fetch:
-    dependencies:
-      '@types/node':
-        specifier: '>=20'
-        version: 24.10.4
-      effect:
-        specifier: ^3
-        version: 3.19.13
-    devDependencies:
-      '@/shared':
-        specifier: workspace:*
-        version: link:../shared
-      '@biomejs/biome':
-        specifier: ^2.3.8
-        version: 2.3.8
-      '@effect/language-service':
-        specifier: 0.62.3
-        version: 0.62.3
-      dpdm:
-        specifier: ^3.14.0
-        version: 3.14.0
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-      vitest:
-        specifier: ^4.0.15
-        version: 4.0.15(@types/node@24.10.4)(jiti@2.6.1)(yaml@2.8.2)
-      zshy:
-        specifier: ^0.6.0
-        version: 0.6.0(typescript@5.9.3)
-
-  packages/shared:
-    devDependencies:
-      '@biomejs/biome':
-        specifier: ^2.3.8
-        version: 2.3.8
-      typedoc:
-        specifier: ^0.28.15
-        version: 0.28.15(typescript@5.9.3)
-      typedoc-github-theme:
-        specifier: ^0.3.1
-        version: 0.3.1(typedoc@0.28.15(typescript@5.9.3))
 
 packages:
 

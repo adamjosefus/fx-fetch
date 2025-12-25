@@ -1,6 +1,6 @@
 [<img src="https://img.shields.io/npm/v/fx-fetch">](https://npmjs.com/package/fx-fetch)
 
-<img style="margin-bottom: 2em;" width="128" src="https://raw.githubusercontent.com/adamjosefus/fx-fetch/main/packages/docs/public/logo_fx-fetch.svg" alt="fx-fetch logo">
+<img style="margin-bottom: 2em;" width="128" src="https://raw.githubusercontent.com/adamjosefus/fx-fetch/main/packages/website/public/logo_fx-fetch.svg" alt="fx-fetch logo">
 
 # `fx-fetch` — Fetch with [EffectTS](https://effect.website/)
 
@@ -12,7 +12,7 @@ A production-ready solution for safe & simple HTTP fetching built with
 [EffectTS](https://effect.website/). **Designed with great developer
 experience in mind.**
 
-Works everywhere! _Even in [Firefox 🦊](./packages/docs/firefox-request-clone-bug.js)._
+Works everywhere! _Even in [Firefox 🦊](./packages/website/firefox-request-clone-bug.js)._
 
 ## Table of Contents
 
@@ -100,7 +100,7 @@ detailed guides and API reference.
 
 ---
 
-1. `globalThis.Request` and `globalThis.Response` are not truly clonable. [Why?](./packages/docs/firefox-request-clone-bug.js)
+1. `globalThis.Request` and `globalThis.Response` are not truly clonable. [Why?](./packages/website/firefox-request-clone-bug.js)
 2. Marked as unstable in the official documentation. Some method implementations
    are still missing.
 
@@ -133,7 +133,7 @@ immutable and clonable structures, you may encounter unexpected issues.
 ### Why aren't [`Request.clone()`](https://developer.mozilla.org/en-US/docs/Web/API/Request) and [`Response.clone()`](https://developer.mozilla.org/en-US/docs/Web/API/Response) enough?
 
 > [!CAUTION]
-> First, they don't work properly in some browsers (looking at you, [Firefox 🦊](./packages/docs/firefox-request-clone-bug.js)).
+> First, they don't work properly in some browsers (looking at you, [Firefox 🦊](./packages/website/firefox-request-clone-bug.js)).
 
 Even when they work correctly, they don't solve DX issues or provide key
 features like reading request/response properties multiple times without side
@@ -173,7 +173,7 @@ The `fx-fetch` library was originally designed for TypeScript colleagues at Emat
   </tr>
   <tr>
     <td>
-      <img width="128" src="https://raw.githubusercontent.com/adamjosefus/fx-fetch/main/packages/docs/public/logo_ematiq.svg">
+      <img width="128" src="https://raw.githubusercontent.com/adamjosefus/fx-fetch/main/packages/website/public/logo_ematiq.svg">
     </td>
   </tr>
 </table>
