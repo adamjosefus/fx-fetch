@@ -1,6 +1,6 @@
 # Simple workflow for deploying static content to GitHub Pages
 name: 📖 Deploy Docs
-run-name: 📖 Deploy Docs | ${{ github.event.head_commit.message }}
+run-name: ${{ github.event_name == 'push' && format('📖 Deploy Docs | {0}', github.event.head_commit.message) || '📖 Deploy Docs' }}
 
 on:
   push:

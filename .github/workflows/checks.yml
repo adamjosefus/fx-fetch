@@ -1,5 +1,5 @@
 name: 💯 Checks
-run-name: 💯 Checks | ${{ github.event.head_commit.message }}
+run-name: ${{ github.event_name == 'pull_request' && format('💯 Checks | {0}', github.event.pull_request.title) || '💯 Checks' }}
 
 on:
   workflow_dispatch:
