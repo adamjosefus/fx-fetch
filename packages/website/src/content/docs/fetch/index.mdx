@@ -79,6 +79,12 @@ const program = Effect.gen(function* () {
 });
 ```
 
+## fetchText
+The `fetchText` function is a helper that combines [`fetch`](#fetch) with [`Response.readText`](../response/#readtext).
+It is similar to [`fetchJson`](#fetchjson), but reads text.
+
+
+
 ## fetchJsonWithSchema
 The `fetchJsonWithSchema` function is another helper that combines [`fetch`](#fetch) with [`Response.readJsonWithSchema`](../response/#readjsonwithschema). It allows you to validate the payload against a [Effect Schema](https://effect.website/docs/schema/introduction/).
 
