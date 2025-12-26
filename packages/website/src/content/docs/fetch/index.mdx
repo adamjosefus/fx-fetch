@@ -3,6 +3,54 @@ title: Fetch
 description: Services and functions for performing HTTP requests.
 ---
 
-:::caution
-Documentation is a work in progress. Please excuse any inconsistencies or missing information.
-:::
+**Fetch** module contains services and helpers for making HTTP requests.
+
+## fetch
+
+The `fetch` function is the most basic way to perform requests.
+
+It takes a [`Request`](../request/) as input and returns an `Effect` with [`Response`](../response/).
+Automatically handles errors such as network issues, request abortion, and non-OK HTTP responses.
+
+```ts twoslash showLineNumbers=true {10, 18}
+import { Effect } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+//       ┌─── Effect.Effect<
+//       │      void,
+//       │      | Fetch.FetchError
+//       │      | Fetch.AbortError
+//       │      | Fetch.NotAllowedError
+//       │      | Response.NotOkError,
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: './my-endpoint' });
+
+  //       ┌─── Response.Response
+  //       ▼
+  const response = yield* Fetch.fetch(request); 
+});
+```
+
+As you can see, using fetch will add a new requirement: `Fetch.Fetch`.
+So to run programs that use `fetch`, you will need to provide an implementation of the `Fetch` service.
+
+
+```ts twoslash showLineNumbers=true startLineNumber=20
+import { Effect } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: './my-endpoint' });
+  const response = yield* Fetch.fetch(request); 
+});
+// ---cut---
+program.pipe(
+  Effect.provideService(Fetch.Fetch, Fetch.FetchLive),
+  Effect.runFork // or Effect.runPromise etc.
+);
+```
+
+Have an fetch as a service allows you to easily swap implementations for testing, mocking, or other purposes.
