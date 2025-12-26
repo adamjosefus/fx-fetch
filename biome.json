@@ -1,6 +1,6 @@
 {
   "extends": ["@/shared/biome.json"],
   "files": {
-    "includes": ["!./lib/**/*", "!./docs/**/*", "!./common/**/*"]
+    "includes": ["!./lib/**/*", "!./website/**/*", "!./common/**/*"]
   }
 }

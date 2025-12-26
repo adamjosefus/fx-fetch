@@ -2,14 +2,14 @@
   "private": true,
   "scripts": {
     "build": "nx build fx-fetch",
-    "docgen": "nx build docs",
-    "fmt": "biome check . --error-on-warnings",
-    "fmt:write": "nx run-many --target=fmt:write",
+    "fmt": "biome check . --error-on-warnings && pnpm local:fmt",
+    "fmt:write": "nx run-many --target=fmt:write && pnpm local:fmt:write",
     "local:fmt": "biome check . --error-on-warnings",
     "local:fmt:write": "biome check . --write --error-on-warnings",
     "prepare": "husky",
     "test": "nx run-many --target=test",
-    "validate": "nx run-many --target=validate"
+    "validate": "nx run-many --target=validate",
+    "website": "nx build website"
   },
   "dependencies": {},
   "devDependencies": {

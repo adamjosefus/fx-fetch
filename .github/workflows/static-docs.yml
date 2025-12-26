@@ -52,8 +52,8 @@ jobs:
       - name: 💯 Checks
         run: pnpm validate && pnpm fmt && pnpm test
 
-      - name: 🛠️ Build docs
-        run: pnpm docgen
+      - name: 🛠️ Build website
+        run: pnpm website
 
       - name: 📦 Upload artifact
         uses: actions/upload-pages-artifact@v3
