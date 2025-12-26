@@ -2,6 +2,7 @@ import starlight from '@astrojs/starlight';
 import { pluginLineNumbers as expressiveCodeLineNumbers } from '@expressive-code/plugin-line-numbers';
 import { defineConfig } from 'astro/config';
 import expressiveCodeTwoslash from 'expressive-code-twoslash';
+import blog from 'starlight-blog';
 
 // https://astro.build/config
 export default defineConfig({
@@ -81,6 +82,19 @@ export default defineConfig({
           label: 'API Reference',
           link: 'api-reference',
         },
+      ],
+      plugins: [
+        blog({
+          recentPostCount: 5,
+          authors: {
+            adamjosefus: {
+              name: 'Adam Josefus',
+              title: 'Author & Developer',
+              picture: '/authors/adamjosefus.jpg',
+              url: 'https://github.com/adamjosefus',
+            },
+          },
+        }),
       ],
     }),
   ],
