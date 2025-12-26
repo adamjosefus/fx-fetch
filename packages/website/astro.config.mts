@@ -59,24 +59,29 @@ export default defineConfig({
           ],
         },
         {
-          label: 'Request',
-          // items: [],
-          slug: 'request',
-        },
-        {
-          label: 'Fetch',
-          // items: [],
-          slug: 'fetch',
-        },
-        {
-          label: 'Response',
-          // items: [],
-          slug: 'response',
-        },
-        {
-          label: 'Url',
-          // items: [],
-          slug: 'url',
+          label: 'Modules',
+          items: [
+            {
+              label: 'Request',
+              // items: [],
+              slug: 'request',
+            },
+            {
+              label: 'Fetch',
+              // items: [],
+              slug: 'fetch',
+            },
+            {
+              label: 'Response',
+              // items: [],
+              slug: 'response',
+            },
+            {
+              label: 'Url',
+              // items: [],
+              slug: 'url',
+            },
+          ],
         },
         {
           label: 'API Reference',
