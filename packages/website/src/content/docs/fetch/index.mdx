@@ -191,5 +191,50 @@ const program = Fetch.paginatedFetch(
 
 If you want a lazier approach that emits each page as it is fetched, you can use `paginatedFetchStream`.
 
+## paginatedFetchStream
+
+The `paginatedFetchStream` function is similar to `paginatedFetch`, but instead of returning all pages at once,
+it returns a [`Stream`](https://effect.website/docs/schema/introduction/) that emits each page as it is fetched.
+
+```ts twoslash showLineNumbers=true {17, 35, 36}
+import { Effect, Option, Schema, Stream } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+class Person extends Schema.Class<Person>('Person')({
+  id: Schema.Number,
+  name: Schema.NonEmptyString,
+}) { }
+
+const PayloadSchema = Schema.Struct({
+  nextToken: Schema.String.pipe(Schema.optional),
+  items: Person.pipe(Schema.Array),
+});
+
+const request = Request.unsafeMake({ url: './persons' });
+
+//       ┌─── Stream.Stream<
+//       │      Person[], // ◀︎── page
+//       │      | Fetch.FetchError | Fetch.AbortError | Fetch.NotAllowedError | Response.NotOkError
+//       │      | MalformedJsonError
+//       │      | ParseError,
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Fetch.paginatedFetchStream(
+  request,
+  Effect.fn(function* (lastResponse) {
+    const payload = yield* Response.readJsonWithSchema(lastResponse, PayloadSchema);
+
+    const nextToken = Option.fromNullable(payload.nextToken);
+    const nextRequest = nextToken.pipe(
+      Option.map((token) => Request.setUrlSearchParam(request, 'token', token))
+    );
+
+    return {
+      pageEmission: payload.items, // ◀︎── Person[]
+      nextRequest, // ◀︎── Option.Option<Request.Request>
+    };
+  })
+);
 
 ```
