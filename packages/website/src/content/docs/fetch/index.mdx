@@ -95,6 +95,13 @@ It is similar to [`fetchJson`](#fetchjson), but reads FormData.
 The `fetchBytes` function is a helper that combines [`fetch`](#fetch) with [`Response.readBytes`](../response/#readbytes).
 It is similar to [`fetchJson`](#fetchjson), but reads bytes.
 
+## fetchReadableStream
+The `fetchReadableStream` function is a helper that combines [`fetch`](#fetch) with [`Response.readReadableStream`](../response/#readreadablestream).
+It is similar to [`fetchJson`](#fetchjson), but reads a ReadableStream.
+
+:::tip
+Don't confuse it with [`fetchStream`](#fetchstream), which also reads ReadableStream but as an Effect [Stream](https://effect.website/docs/stream/introduction/).
+:::
 
 
 ## fetchJsonWithSchema
