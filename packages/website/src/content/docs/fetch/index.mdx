@@ -3,6 +3,238 @@ title: Fetch
 description: Services and functions for performing HTTP requests.
 ---
 
-:::caution
-Documentation is a work in progress. Please excuse any inconsistencies or missing information.
+**Fetch** module contains services and helpers for making HTTP requests.
+
+## fetch
+
+The `fetch` function is the most basic way to perform requests.
+
+It takes a [`Request`](../request/) as input and returns an `Effect` with [`Response`](../response/).
+Automatically handles errors such as network issues, request abortion, and non-OK HTTP responses.
+
+```ts twoslash showLineNumbers=true {10, 18}
+import { Effect } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+//       ┌─── Effect.Effect<
+//       │      void,
+//       │      | Fetch.FetchError
+//       │      | Fetch.AbortError
+//       │      | Fetch.NotAllowedError
+//       │      | Response.NotOkError,
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: './my-endpoint' });
+
+  //       ┌─── Response.Response
+  //       ▼
+  const response = yield* Fetch.fetch(request); 
+});
+```
+
+As you can see, using fetch will add a new requirement: `Fetch.Fetch`.
+So to run programs that use `fetch`, you will need to provide an implementation of the `Fetch` service.
+
+
+```ts twoslash showLineNumbers=true startLineNumber=20
+import { Effect } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: './my-endpoint' });
+  const response = yield* Fetch.fetch(request); 
+});
+// ---cut---
+program.pipe(
+  Effect.provideService(Fetch.Fetch, Fetch.FetchLive),
+  Effect.runFork // or Effect.runPromise etc.
+);
+```
+
+Having fetch as a service allows you to easily swap implementations for testing, mocking, or other purposes.
+
+## fetchJson
+
+The `fetchJson` function is a helper that combines `fetch` with [`Response.readJson`](../response/#readjson). It is syntactic sugar for better ergonomics.
+
+```ts twoslash showLineNumbers=false {7, 16}
+import { Effect } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+//       ┌─── Effect.Effect<
+//       │      void,
+//       │      | Fetch.FetchError | Fetch.AbortError | Fetch.NotAllowedError | Response.NotOkError
+//       │      | MalformedJsonError,
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: './my-endpoint' });
+
+  //       ┌─── unknown
+  //       ▼
+  const payload = yield* Fetch.fetchJson(request);
+});
+```
+
+## fetchText
+The `fetchText` function is a helper that combines [`fetch`](#fetch) with [`Response.readText`](../response/#readtext).
+It is similar to [`fetchJson`](#fetchjson), but reads the body as plain text.
+
+## fetchBlob
+The `fetchBlob` function is a helper that combines [`fetch`](#fetch) with [`Response.readBlob`](../response/#readblob).
+It is similar to [`fetchJson`](#fetchjson), but reads the body as Blob.
+
+## fetchFormData
+The `fetchFormData` function is a helper that combines [`fetch`](#fetch) with [`Response.readFormData`](../response/#readformdata).
+It is similar to [`fetchJson`](#fetchjson), but reads the body as FormData.
+
+## fetchBytes
+The `fetchBytes` function is a helper that combines [`fetch`](#fetch) with [`Response.readBytes`](../response/#readbytes).
+It is similar to [`fetchJson`](#fetchjson), but reads the body as bytes.
+
+## fetchArrayBuffer
+The `fetchArrayBuffer` function is a helper that combines [`fetch`](#fetch) with [`Response.readArrayBuffer`](../response/#readarraybuffer).
+It is similar to [`fetchJson`](#fetchjson), but reads the body as ArrayBuffer.
+
+## fetchReadableStream
+The `fetchReadableStream` function is a helper that combines [`fetch`](#fetch) with [`Response.readReadableStream`](../response/#readreadablestream).
+It is similar to [`fetchJson`](#fetchjson), but reads the body as ReadableStream.
+
+:::tip
+Don't confuse it with [`fetchStream`](#fetchstream), which also reads ReadableStream but as an Effect [Stream](https://effect.website/docs/stream/introduction/).
 :::
+
+
+## fetchJsonWithSchema
+The `fetchJsonWithSchema` function is another helper that combines [`fetch`](#fetch) with [`Response.readJsonWithSchema`](../response/#readjsonwithschema). It allows you to validate the payload against a [Effect Schema](https://effect.website/docs/schema/introduction/).
+
+```ts twoslash showLineNumbers=false {12, 13, 22}
+import { Effect, Schema } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+const UserSchema = Schema.Struct({
+  id: Schema.Int,
+  name: Schema.String,
+});
+
+//       ┌─── Effect.Effect<
+//       │      void,
+//       │      | Fetch.FetchError | Fetch.AbortError | Fetch.NotAllowedError | Response.NotOkError
+//       │      | MalformedJsonError
+//       │      | ParseError,
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: './my-endpoint' });
+
+  //       ┌─── typeof UserSchema.Type
+  //       ▼
+  const payload = yield* Fetch.fetchJsonWithSchema(request, UserSchema);
+});
+```
+
+## fetchStream
+The `fetchStream` function is a helper that combines [`fetch`](#fetch) with [`Response.readStream`](../response/#readstream).
+
+## paginatedFetch
+The `paginatedFetch` function is used to handle paginated HTTP endpoints. It repeatedly performs fetch requests based on the provided logic until there are no more pages to fetch.
+
+The function takes an initial [`Request`](../request/) and an `onResponse` callback. The callback receives the last [`Response`](../response/) and should return an object containing:
+- `pageEmission`: The data to emit for the current page.
+- `nextRequest`: An `Option` containing the next [`Request`](../request/) to fetch, or `None` if there are no more pages.
+
+```ts twoslash showLineNumbers=true {17, 24, 35, 36}
+import { Effect, Option, Schema } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+class Person extends Schema.Class<Person>('Person')({
+  id: Schema.Number,
+  name: Schema.NonEmptyString,
+}) {}
+
+const PayloadSchema = Schema.Struct({
+  nextToken: Schema.String.pipe(Schema.optional),
+  items: Person.pipe(Schema.Array),
+});
+
+const request = Request.unsafeMake({ url: './persons' });
+
+//       ┌─── Effect.Effect<
+//       │      Person[][], // ◀︎── array of pages
+//       │      | Fetch.FetchError | Fetch.AbortError | Fetch.NotAllowedError | Response.NotOkError
+//       │      | MalformedJsonError
+//       │      | ParseError,
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Fetch.paginatedFetch(
+  request,
+  Effect.fn(function* (lastResponse) {
+    const payload = yield* Response.readJsonWithSchema(lastResponse, PayloadSchema);
+
+    const nextToken = Option.fromNullable(payload.nextToken);
+    const nextRequest = nextToken.pipe(
+      Option.map((token) => Request.setUrlSearchParam(request, 'token', token))
+    );
+
+    return {
+      pageEmission: payload.items,  // ◀︎── Person[]
+      nextRequest, // ◀︎── Option.Option<Request.Request>
+    };
+  })
+);
+```
+
+If you want a lazier approach that emits each page as it is fetched, you can use `paginatedFetchStream`.
+
+## paginatedFetchStream
+
+The `paginatedFetchStream` function is similar to `paginatedFetch`, but instead of returning all pages at once,
+it returns a [`Stream`](https://effect.website/docs/stream/introduction/) that emits each page as it is fetched.
+
+```ts twoslash showLineNumbers=true {17, 35, 36}
+import { Effect, Option, Schema, Stream } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+class Person extends Schema.Class<Person>('Person')({
+  id: Schema.Number,
+  name: Schema.NonEmptyString,
+}) { }
+
+const PayloadSchema = Schema.Struct({
+  nextToken: Schema.String.pipe(Schema.optional),
+  items: Person.pipe(Schema.Array),
+});
+
+const request = Request.unsafeMake({ url: './persons' });
+
+//       ┌─── Stream.Stream<
+//       │      Person[], // ◀︎── page
+//       │      | Fetch.FetchError | Fetch.AbortError | Fetch.NotAllowedError | Response.NotOkError
+//       │      | MalformedJsonError
+//       │      | ParseError,
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Fetch.paginatedFetchStream(
+  request,
+  Effect.fn(function* (lastResponse) {
+    const payload = yield* Response.readJsonWithSchema(lastResponse, PayloadSchema);
+
+    const nextToken = Option.fromNullable(payload.nextToken);
+    const nextRequest = nextToken.pipe(
+      Option.map((token) => Request.setUrlSearchParam(request, 'token', token))
+    );
+
+    return {
+      pageEmission: payload.items, // ◀︎── Person[]
+      nextRequest, // ◀︎── Option.Option<Request.Request>
+    };
+  })
+);
+
+```
