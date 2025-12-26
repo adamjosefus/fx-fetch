@@ -97,7 +97,7 @@ It is similar to [`fetchJson`](#fetchjson), but reads the body as bytes.
 
 ## fetchArrayBuffer
 The `fetchArrayBuffer` function is a helper that combines [`fetch`](#fetch) with [`Response.readArrayBuffer`](../response/#readarraybuffer).
-It is similar to [`fetchJson`](#fetchjson), but reads the body as ArrayBuffer
+It is similar to [`fetchJson`](#fetchjson), but reads the body as ArrayBuffer.
 
 ## fetchReadableStream
 The `fetchReadableStream` function is a helper that combines [`fetch`](#fetch) with [`Response.readReadableStream`](../response/#readreadablestream).
@@ -194,7 +194,7 @@ If you want a lazier approach that emits each page as it is fetched, you can use
 ## paginatedFetchStream
 
 The `paginatedFetchStream` function is similar to `paginatedFetch`, but instead of returning all pages at once,
-it returns a [`Stream`](https://effect.website/docs/schema/introduction/) that emits each page as it is fetched.
+it returns a [`Stream`](https://effect.website/docs/stream/introduction/) that emits each page as it is fetched.
 
 ```ts twoslash showLineNumbers=true {17, 35, 36}
 import { Effect, Option, Schema, Stream } from 'effect';
