@@ -78,3 +78,32 @@ const program = Effect.gen(function* () {
   const payload = yield* Fetch.fetchJson(request);
 });
 ```
+
+## fetchJsonWithSchema
+The `fetchJsonWithSchema` function is another helper that combines [`fetch`](#fetch) with [`Response.readJsonWithSchema`](../response/#readjsonwithschema). It allows you to validate the payload against a [Effect Schema](https://effect.website/docs/schema/introduction/).
+
+```ts twoslash showLineNumbers=false {12, 13, 22}
+import { Effect, Schema } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+const UserSchema = Schema.Struct({
+  id: Schema.Int,
+  name: Schema.String,
+});
+
+//       ┌─── Effect.Effect<
+//       │      void,
+//       │      | Fetch.FetchError | Fetch.AbortError | Fetch.NotAllowedError | Response.NotOkError
+//       │      | MalformedJsonError
+//       │      | ParseError,
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: './my-endpoint' });
+
+  //       ┌─── typeof UserSchema.Type
+  //       ▼
+  const payload = yield* Fetch.fetchJsonWithSchema(request, UserSchema);
+});
+```
