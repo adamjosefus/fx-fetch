@@ -53,7 +53,7 @@ program.pipe(
 );
 ```
 
-Have an fetch as a service allows you to easily swap implementations for testing, mocking, or other purposes.
+Having fetch as a service allows you to easily swap implementations for testing, mocking, or other purposes.
 
 ## fetchJson
 
@@ -81,23 +81,23 @@ const program = Effect.gen(function* () {
 
 ## fetchText
 The `fetchText` function is a helper that combines [`fetch`](#fetch) with [`Response.readText`](../response/#readtext).
-It is similar to [`fetchJson`](#fetchjson), but reads text.
+It is similar to [`fetchJson`](#fetchjson), but reads the body as plain text.
 
 ## fetchBlob
 The `fetchBlob` function is a helper that combines [`fetch`](#fetch) with [`Response.readBlob`](../response/#readblob).
-It is similar to [`fetchJson`](#fetchjson), but reads Blob.
+It is similar to [`fetchJson`](#fetchjson), but reads the body as Blob.
 
 ## fetchFormData
 The `fetchFormData` function is a helper that combines [`fetch`](#fetch) with [`Response.readFormData`](../response/#readformdata).
-It is similar to [`fetchJson`](#fetchjson), but reads FormData.
+It is similar to [`fetchJson`](#fetchjson), but reads the body as FormData.
 
 ## fetchBytes
 The `fetchBytes` function is a helper that combines [`fetch`](#fetch) with [`Response.readBytes`](../response/#readbytes).
-It is similar to [`fetchJson`](#fetchjson), but reads bytes.
+It is similar to [`fetchJson`](#fetchjson), but reads the body as bytes.
 
 ## fetchReadableStream
 The `fetchReadableStream` function is a helper that combines [`fetch`](#fetch) with [`Response.readReadableStream`](../response/#readreadablestream).
-It is similar to [`fetchJson`](#fetchjson), but reads a ReadableStream.
+It is similar to [`fetchJson`](#fetchjson), but reads the body as ReadableStream.
 
 :::tip
 Don't confuse it with [`fetchStream`](#fetchstream), which also reads ReadableStream but as an Effect [Stream](https://effect.website/docs/stream/introduction/).
