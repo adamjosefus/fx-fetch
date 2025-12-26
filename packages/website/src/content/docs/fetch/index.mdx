@@ -140,5 +140,56 @@ const program = Effect.gen(function* () {
 ## fetchStream
 The `fetchStream` function is a helper that combines [`fetch`](#fetch) with [`Response.readStream`](../response/#readstream).
 
+## paginatedFetch
+The `paginatedFetch` function is used to handle paginated HTTP endpoints. It repeatedly performs fetch requests based on the provided logic until there are no more pages to fetch.
+
+The function takes an initial [`Request`](../request/) and an `onResponse` callback. The callback receives the last [`Response`](../response/) and should return an object containing:
+- `pageEmission`: The data to emit for the current page.
+- `nextRequest`: An `Option` containing the next [`Request`](../request/) to fetch, or `None` if there are no more pages.
+
+```ts twoslash showLineNumbers=true {17, 24, 35, 36}
+import { Effect, Option, Schema } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+class Person extends Schema.Class<Person>('Person')({
+  id: Schema.Number,
+  name: Schema.NonEmptyString,
+}) {}
+
+const PayloadSchema = Schema.Struct({
+  nextToken: Schema.String.pipe(Schema.optional),
+  items: Person.pipe(Schema.Array),
+});
+
+const request = Request.unsafeMake({ url: './persons' });
+
+//       ┌─── Effect.Effect<
+//       │      Person[][], // ◀︎── array of pages
+//       │      | Fetch.FetchError | Fetch.AbortError | Fetch.NotAllowedError | Response.NotOkError
+//       │      | MalformedJsonError
+//       │      | ParseError,
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Fetch.paginatedFetch(
+  request,
+  Effect.fn(function* (lastResponse) {
+    const payload = yield* Response.readJsonWithSchema(lastResponse, PayloadSchema);
+
+    const nextToken = Option.fromNullable(payload.nextToken);
+    const nextRequest = nextToken.pipe(
+      Option.map((token) => Request.setUrlSearchParam(request, 'token', token))
+    );
+
+    return {
+      pageEmission: payload.items,  // ◀︎── Person[]
+      nextRequest, // ◀︎── Option.Option<Request.Request>
+    };
+  })
+);
+```
+
+If you want a lazier approach that emits each page as it is fetched, you can use `paginatedFetchStream`.
+
 
 ```
