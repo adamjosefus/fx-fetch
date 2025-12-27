@@ -8,7 +8,12 @@ import { unsafeMake } from './unsafeMake';
  * ```ts
  * import { Request } from 'fx-fetch';
  *
- * const request = Request.make({ url: 'https://api.example.com' });
+ * //       ┌─── Option.Option<Request.Request>
+ * //       ▼
+ * const request = Request.make({
+ *   url: 'https://example.com',
+ *   method: 'POST'
+ * });
  * ```
  *
  * @category Constructors
