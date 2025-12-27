@@ -67,3 +67,41 @@ const response = Response.make({
   status: 200,
 });
 ```
+
+### from Response.Parts
+
+For creating a `Response` from an object `Response.Parts` use same functions [`make`](#make) or [`unsafeMake`](#unsafemake).
+
+The Parts type is super primitive. It's basically an object with all the properties of a JS response, but with better DX. 
+Everything except the `url` is optional.
+
+```ts twoslash showLineNumbers=false {7-9, 19}
+import { Response } from 'fx-fetch';
+
+const parts: Response.Response.Parts = {
+  body: 'Hello, world!',
+  headers: {
+    'Content-Type': 'text/plain',
+    'X-Custom-Header': ['CustomValue', 'AnotherValue'],
+  },
+  redirected: false,
+  status: 200,
+  statusText: 'OK',
+  type: 'cors',
+  url: 'https://example.com/api',
+};
+
+const response = Response.unsafeMake(parts);
+```
+
+Properties `url` and `headers` have flexible input types.
+
+- `url` is of type `Url.Input`. Read more about it in [Url module documentation](../url/#the-input-type).
+- `headers` can be almost anything what you can imagine as headers.
+  - Record of strings
+  - Entries (array of tuples)
+  - `Map` of strings
+  - Same as `HeadersInit` in Fetch API
+  - _… many more…_
+
+---
