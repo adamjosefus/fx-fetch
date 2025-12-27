@@ -18,8 +18,98 @@ function paginatedFetchFn<A, E, R>(request: Request.Request, onResponse: OnRespo
 /**
  * @category Functions
  * @since 0.1.0
+ * @see {@link paginatedFetchStream}
+ * @example
+ * ```ts
+ * import { Effect, Option, Schema } from 'effect';
+ * import { Fetch, Request, Response } from 'fx-fetch';
+ *
+ * class Person extends Schema.Class<Person>('Person')({
+ *   id: Schema.Number,
+ *   name: Schema.NonEmptyString,
+ * }) {}
+ *
+ * const PayloadSchema = Schema.Struct({
+ *   nextToken: Schema.String.pipe(Schema.optional),
+ *   items: Person.pipe(Schema.Array),
+ * });
+ *
+ * const request = Request.unsafeMake({ url: './persons' });
+ *
+ * //       ┌─── Effect.Effect<
+ * //       │      Person[][], // ◀︎── array of pages
+ * //       │      | Fetch.FetchError | Fetch.AbortError | Fetch.NotAllowedError | Response.NotOkError
+ * //       │      | MalformedJsonError
+ * //       │      | ParseError,
+ * //       │      Fetch.Fetch
+ * //       │    >
+ * //       ▼
+ * const program = Fetch.paginatedFetch(
+ *   request,
+ *   Effect.fn(function* (lastResponse) {
+ *     const payload = yield* Response.readJsonWithSchema(lastResponse, PayloadSchema);
+ *
+ *     const nextToken = Option.fromNullable(payload.nextToken);
+ *     const nextRequest = nextToken.pipe(
+ *       Option.map((token) => Request.setUrlSearchParam(request, 'token', token))
+ *     );
+ *
+ *     return {
+ *       pageEmission: payload.items,  // ◀︎── Person[]
+ *       nextRequest, // ◀︎── Option.Option<Request.Request>
+ *     };
+ *   })
+ * );
+ * ```
  */
 export const paginatedFetch: {
+  /**
+   * @category Functions
+   * @since 0.1.0
+   * @see {@link paginatedFetchStream}
+   * @example
+   * ```ts
+   * import { Effect, Option, Schema } from 'effect';
+   * import { Fetch, Request, Response } from 'fx-fetch';
+   *
+   * class Person extends Schema.Class<Person>('Person')({
+   *   id: Schema.Number,
+   *   name: Schema.NonEmptyString,
+   * }) {}
+   *
+   * const PayloadSchema = Schema.Struct({
+   *   nextToken: Schema.String.pipe(Schema.optional),
+   *   items: Person.pipe(Schema.Array),
+   * });
+   *
+   * const request = Request.unsafeMake({ url: './persons' });
+   *
+   * //       ┌─── Effect.Effect<
+   * //       │      Person[][], // ◀︎── array of pages
+   * //       │      | Fetch.FetchError | Fetch.AbortError | Fetch.NotAllowedError | Response.NotOkError
+   * //       │      | MalformedJsonError
+   * //       │      | ParseError,
+   * //       │      Fetch.Fetch
+   * //       │    >
+   * //       ▼
+   * const program = Fetch.paginatedFetch(
+   *   request,
+   *   Effect.fn(function* (lastResponse) {
+   *     const payload = yield* Response.readJsonWithSchema(lastResponse, PayloadSchema);
+   *
+   *     const nextToken = Option.fromNullable(payload.nextToken);
+   *     const nextRequest = nextToken.pipe(
+   *       Option.map((token) => Request.setUrlSearchParam(request, 'token', token))
+   *     );
+   *
+   *     return {
+   *       pageEmission: payload.items,  // ◀︎── Person[]
+   *       nextRequest, // ◀︎── Option.Option<Request.Request>
+   *     };
+   *   })
+   * );
+   * ```
+   */
   <A, E, R>(
     request: Request.Request,
     onResponse: OnResponse<A, E, R>
@@ -28,6 +118,53 @@ export const paginatedFetch: {
     E | AbortError | FetchError | NotAllowedError | Response.NotOkError,
     R | Fetch
   >;
+  /**
+   * @category Functions
+   * @since 0.1.0
+   * @see {@link paginatedFetchStream}
+   * @example
+   * ```ts
+   * import { Effect, Option, Schema } from 'effect';
+   * import { Fetch, Request, Response } from 'fx-fetch';
+   *
+   * class Person extends Schema.Class<Person>('Person')({
+   *   id: Schema.Number,
+   *   name: Schema.NonEmptyString,
+   * }) {}
+   *
+   * const PayloadSchema = Schema.Struct({
+   *   nextToken: Schema.String.pipe(Schema.optional),
+   *   items: Person.pipe(Schema.Array),
+   * });
+   *
+   * const request = Request.unsafeMake({ url: './persons' });
+   *
+   * //       ┌─── Effect.Effect<
+   * //       │      Person[][], // ◀︎── array of pages
+   * //       │      | Fetch.FetchError | Fetch.AbortError | Fetch.NotAllowedError | Response.NotOkError
+   * //       │      | MalformedJsonError
+   * //       │      | ParseError,
+   * //       │      Fetch.Fetch
+   * //       │    >
+   * //       ▼
+   * const program = Fetch.paginatedFetch(
+   *   request,
+   *   Effect.fn(function* (lastResponse) {
+   *     const payload = yield* Response.readJsonWithSchema(lastResponse, PayloadSchema);
+   *
+   *     const nextToken = Option.fromNullable(payload.nextToken);
+   *     const nextRequest = nextToken.pipe(
+   *       Option.map((token) => Request.setUrlSearchParam(request, 'token', token))
+   *     );
+   *
+   *     return {
+   *       pageEmission: payload.items,  // ◀︎── Person[]
+   *       nextRequest, // ◀︎── Option.Option<Request.Request>
+   *     };
+   *   })
+   * );
+   * ```
+   */
   <A, E, R>(
     onResponse: OnResponse<A, E, R>
   ): (
