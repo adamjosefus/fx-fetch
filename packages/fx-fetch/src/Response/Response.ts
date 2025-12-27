@@ -59,6 +59,7 @@ export namespace Response {
   /**
    * @category Models
    * @since 0.1.0
+   * @deprecated Use `Parts` instead. In next major release `Options` will be removed.
    */
   export type Options = {
     readonly body?: BodyInput;

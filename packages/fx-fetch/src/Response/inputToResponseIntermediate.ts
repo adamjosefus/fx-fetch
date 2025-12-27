@@ -1,4 +1,5 @@
 import { Cause, Either, Option } from 'effect';
+import { IllegalArgumentException } from 'effect/Cause';
 import * as Url from '../Url';
 import { inputToUrlIntermediate, urlToUrlIntermediate } from '../Url/inputToUrlIntermediate';
 import { UrlIntermediate } from '../Url/UrlIntermediate';
@@ -75,9 +76,11 @@ function normalizeResponseUrlInput(input: Url.Url.Input | undefined): Url.Url.In
  */
 function jsResponseToResponseIntermediate(
   jsResponse: globalThis.Response
-): Either.Either<ResponseIntermediate, globalThis.Error> {
+): Either.Either<ResponseIntermediate, IllegalArgumentException> {
   if (jsResponse.bodyUsed) {
-    return Either.left(new Error('Response cannot be created. Body has already been used.'));
+    return Either.left(
+      new IllegalArgumentException('Response cannot be created. Body has already been used.')
+    );
   }
 
   const parts: Response.Response.Parts = {
@@ -99,7 +102,7 @@ function jsResponseToResponseIntermediate(
  */
 function optionsToResponseIntermediate(
   options: Response.Response.Options
-): Either.Either<ResponseIntermediate, globalThis.Error> {
+): Either.Either<ResponseIntermediate, IllegalArgumentException> {
   const parts: Response.Response.Parts = {
     body: options.body,
     headers: options.init?.headers,
@@ -119,12 +122,14 @@ function optionsToResponseIntermediate(
  */
 function partsToResponseIntermediate(
   parts: Response.Response.Parts
-): Either.Either<ResponseIntermediate, globalThis.Error> {
+): Either.Either<ResponseIntermediate, IllegalArgumentException> {
   const normalizedStatus = normalizeStatus(parts.status);
 
   if (!isStatusValid(normalizedStatus)) {
     return Either.left(
-      new Error(`Response cannot be created. Status code "${parts.status}" is not valid.`)
+      new IllegalArgumentException(
+        `Response cannot be created. Status code "${parts.status}" is not valid.`
+      )
     );
   }
 
@@ -136,7 +141,7 @@ function partsToResponseIntermediate(
 
   if (Either.isLeft(url)) {
     return Either.left(
-      new Error('Response cannot be created. Invalid URL input.', { cause: url.left })
+      new IllegalArgumentException('Response cannot be created. Invalid URL input.')
     );
   }
 
@@ -175,7 +180,7 @@ export function responseToResponseIntermediate(response: Response.Response): Res
  */
 export function inputToResponseIntermediate(
   input: Response.Response.Input
-): Either.Either<ResponseIntermediate, globalThis.Error> {
+): Either.Either<ResponseIntermediate, IllegalArgumentException> {
   if (isResponse(input)) {
     return Either.right(responseToResponseIntermediate(input));
   }
