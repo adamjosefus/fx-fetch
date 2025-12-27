@@ -5,6 +5,9 @@ run-name: ${{ github.event_name == 'push' && format('📖 Deploy Docs | {0}', gi
 on:
   push:
     branches: ["main"]
+    paths:
+      - "packages/website/**"
+      - "packages/fx-fetch/**"
 
   workflow_dispatch:
 
