@@ -30,3 +30,40 @@ type Type = Response.Response.Input;
 - `globalThis.Response` — vanilla JS response
 - [`Response.Response.Parts`](#from-responseparts) — Object with response parts
 - `Response.Response` — Existing Response can be used too
+
+## Constructors
+
+:::note
+Making a `Response` manually makes sense when you need to mock responses in tests or create responses from scratch.
+:::
+
+### unsafeMake
+
+Creates a `Response` from any of [`Response.Input`](#the-input-type).
+Throws an `IllegalArgumentException` if the provided input is invalid.
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+//       ┌─── Response.Response
+//       ▼
+const response = Response.unsafeMake({
+  body: 'Hello, world!',
+  status: 200,
+});
+```
+
+### make
+
+Similar to [unsafeMake](#unsafemake), but returns an [Option](https://effect.website/docs/data-types/option/) instead of throwing an error if the input is invalid.
+If the input is invalid, it returns `None`. If valid, it returns `Some` containing the `Response`.
+
+```ts twoslash showLineNumbers=false
+import { Option } from 'effect';
+import { Response } from 'fx-fetch';
+//       ┌─── Option.Option<Response.Response>
+//       ▼
+const response = Response.make({
+  body: 'Hello, world!',
+  status: 200,
+});
+```
