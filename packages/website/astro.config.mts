@@ -40,6 +40,11 @@ export default defineConfig({
           label: 'GitHub',
           href: 'https://github.com/adamjosefus/fx-fetch',
         },
+        {
+          icon: 'npm',
+          label: 'NPM',
+          href: 'https://www.npmjs.com/package/fx-fetch',
+        },
       ],
       sidebar: [
         {
