@@ -104,9 +104,8 @@ The `fetchReadableStream` function is a helper that combines [`fetch`](#fetch) w
 It is similar to [`fetchJson`](#fetchjson), but reads the body as ReadableStream.
 
 :::tip
-Don't confuse it with [`fetchStream`](#fetchstream), which also reads ReadableStream but as an Effect [Stream](https://effect.website/docs/stream/introduction/).
+If you want read the body as an Effect [Stream](https://effect.website/docs/stream/introduction/), consider using [`fetchStream`](#fetchstream) instead.
 :::
-
 
 ## fetchJsonWithSchema
 The `fetchJsonWithSchema` function is another helper that combines [`fetch`](#fetch) with [`Response.readJsonWithSchema`](../response/#readjsonwithschema). It allows you to validate the payload against a [Effect Schema](https://effect.website/docs/schema/introduction/).
