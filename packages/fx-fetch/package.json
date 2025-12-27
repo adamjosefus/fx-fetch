@@ -56,12 +56,12 @@
   },
   "devDependencies": {
     "@/shared": "workspace:*",
-    "@biomejs/biome": "^2.3.8",
-    "@effect/language-service": "0.62.3",
+    "@biomejs/biome": "^2.3.10",
+    "@effect/language-service": "0.62.5",
     "@types/node": "^24",
     "dpdm": "^3.14.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.15",
+    "vitest": "^4.0.16",
     "zshy": "^0.6.0"
   },
   "zshy": {
