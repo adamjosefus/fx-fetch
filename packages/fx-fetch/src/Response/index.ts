@@ -1,6 +1,7 @@
 export { appendHeaders } from './appendHeaders';
 export { clearHeaders } from './clearHeaders';
 export { deleteHeader } from './deleteHeader';
+export { either } from './either';
 export { ensureOk } from './ensureOk';
 export * from './errors';
 export { getHeader } from './getHeader';
