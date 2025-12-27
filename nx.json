@@ -17,10 +17,10 @@
     }
   ],
   "release": {
-    "projectsRelationship": "independent",
     "changelog": {
       "workspaceChangelog": {
-        "createRelease": "github"
+        "createRelease": "github",
+        "file": "./packages/fx-fetch/CHANGELOG.md"
       }
     },
     "conventionalCommits": {
