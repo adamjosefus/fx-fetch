@@ -1,3 +1,14 @@
+## 1.0.2 (2025-12-27)
+
+### 📐 Refactor
+
+- add deprecation notice for `Response.Response.Options` type ([a2a1ded](https://github.com/adamjosefus/fx-fetch/commit/a2a1ded))
+- replace  generic Error with IllegalArgumentException in response handling functions ([804d6f2](https://github.com/adamjosefus/fx-fetch/commit/804d6f2))
+
+### ❤️ Thank You
+
+- Adam Josefus @adamjosefus
+
 ## 1.0.1 (2025-12-27)
 
 ### 🩹 Fixes
