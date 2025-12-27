@@ -316,10 +316,10 @@ effects.
 ```ts twoslash {8-9}
 const req = new globalThis.Request("./endpoint", {
   method: "POST",
-  body: "Hello World", // ← String
+  body: "Hello World", // ◀︎── string
 });
 
-console.log(req.body); // → `ReadableStream { }`
+console.log(req.body); // `ReadableStream { }`
 
 // ReadableStream can only be read once.
 // You must know what you're reading.
