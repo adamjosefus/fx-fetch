@@ -139,6 +139,38 @@ const program = Effect.gen(function* () {
 ## fetchStream
 The `fetchStream` function is a helper that combines [`fetch`](#fetch) with [`Response.readStream`](../response/#readstream).
 
+```ts twoslash showLineNumbers=false {12, 25-28}
+import { Data, Effect } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+class MyError extends Data.TaggedClass('MyError') {}
+
+//       ┌─── Effect.Effect<
+//       │      void,
+//       │      | Fetch.FetchError
+//       │      | Fetch.AbortError
+//       │      | Fetch.NotAllowedError
+//       │      | Response.NotOkError
+//       │      | MalformedReadableStreamError,
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: './my-endpoint' });
+
+  //       ┌─── Stream<
+  //       │      Uint8Array<ArrayBufferLike>,
+  //       │      MyError,
+  //       │      never
+  //       │    >,
+  //       ▼
+  const stream = yield* Fetch.fetchStream(request, {
+    onError: (err) => new MyError(),
+    releaseLockOnEnd: true, // optional
+  });
+});
+```
+
 ## paginatedFetch
 The `paginatedFetch` function is used to handle paginated HTTP endpoints. It repeatedly performs fetch requests based on the provided logic until there are no more pages to fetch.
 
