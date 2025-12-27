@@ -15,6 +15,36 @@ const fetchJsonWithSchemaFn = <A, I, R>(request: Request.Request, schema: Schema
  *
  * @category Conversions
  * @since 0.1.0
+ * @see {@link Response.readJsonWithSchema}
+ * @example
+ * ```ts
+ * import { Effect, Schema } from 'effect';
+ * import { Fetch, Request, Response } from 'fx-fetch';
+ *
+ * const UserSchema = Schema.Struct({
+ *   id: Schema.Int,
+ *   name: Schema.String,
+ * });
+ *
+ * //       ┌─── Effect.Effect<
+ * //       │      void,
+ * //       │      | Fetch.FetchError
+ * //       │      | Fetch.AbortError
+ * //       │      | Fetch.NotAllowedError
+ * //       │      | Response.NotOkError
+ * //       │      | MalformedJsonError
+ * //       │      | ParseError,
+ * //       │      Fetch.Fetch
+ * //       │    >
+ * //       ▼
+ * const program = Effect.gen(function* () {
+ *   const request = Request.unsafeMake({ url: './my-endpoint' });
+ *
+ *   //       ┌─── typeof UserSchema.Type
+ *   //       ▼
+ *   const payload = yield* Fetch.fetchJsonWithSchema(request, UserSchema);
+ * });
+ * ```
  */
 export const fetchJsonWithSchema: {
   /**
@@ -22,6 +52,36 @@ export const fetchJsonWithSchema: {
    *
    * @category Conversions
    * @since 0.1.0
+   * @see {@link Response.readJsonWithSchema}
+   * @example
+   * ```ts
+   * import { Effect, Schema } from 'effect';
+   * import { Fetch, Request, Response } from 'fx-fetch';
+   *
+   * const UserSchema = Schema.Struct({
+   *   id: Schema.Int,
+   *   name: Schema.String,
+   * });
+   *
+   * //       ┌─── Effect.Effect<
+   * //       │      void,
+   * //       │      | Fetch.FetchError
+   * //       │      | Fetch.AbortError
+   * //       │      | Fetch.NotAllowedError
+   * //       │      | Response.NotOkError
+   * //       │      | MalformedJsonError
+   * //       │      | ParseError,
+   * //       │      Fetch.Fetch
+   * //       │    >
+   * //       ▼
+   * const program = Effect.gen(function* () {
+   *   const request = Request.unsafeMake({ url: './my-endpoint' });
+   *
+   *   //       ┌─── typeof UserSchema.Type
+   *   //       ▼
+   *   const payload = yield* Fetch.fetchJsonWithSchema(request, UserSchema);
+   * });
+   * ```
    */
   <A, I, R>(
     request: Request.Request,
@@ -42,6 +102,36 @@ export const fetchJsonWithSchema: {
    *
    * @category Conversions
    * @since 0.1.0
+   * @see {@link Response.readJsonWithSchema}
+   * @example
+   * ```ts
+   * import { Effect, Schema } from 'effect';
+   * import { Fetch, Request, Response } from 'fx-fetch';
+   *
+   * const UserSchema = Schema.Struct({
+   *   id: Schema.Int,
+   *   name: Schema.String,
+   * });
+   *
+   * //       ┌─── Effect.Effect<
+   * //       │      void,
+   * //       │      | Fetch.FetchError
+   * //       │      | Fetch.AbortError
+   * //       │      | Fetch.NotAllowedError
+   * //       │      | Response.NotOkError
+   * //       │      | MalformedJsonError
+   * //       │      | ParseError,
+   * //       │      Fetch.Fetch
+   * //       │    >
+   * //       ▼
+   * const program = Effect.gen(function* () {
+   *   const request = Request.unsafeMake({ url: './my-endpoint' });
+   *
+   *   //       ┌─── typeof UserSchema.Type
+   *   //       ▼
+   *   const payload = yield* Fetch.fetchJsonWithSchema(request, UserSchema);
+   * });
+   * ```
    */
   <A, I, R>(
     schema: Schema.Schema<A, I, R>

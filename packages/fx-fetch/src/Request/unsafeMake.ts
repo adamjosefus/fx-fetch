@@ -12,7 +12,12 @@ import * as Request from './Request';
  * ```ts
  * import { Request } from 'fx-fetch';
  *
- * const request = Request.unsafeMake({ url: 'https://api.example.com' });
+ * //       ┌─── Request.Request
+ * //       ▼
+ * const request = Request.unsafeMake({
+ *   url: 'https://example.com',
+ *   method: 'POST'
+ * });
  * ```
  *
  * @category Constructors
