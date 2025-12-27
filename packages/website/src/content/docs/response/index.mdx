@@ -3,6 +3,14 @@ title: Response
 description: Constructors and utilities for handling HTTP responses
 ---
 
-:::caution
-Documentation is a work in progress. Please excuse any inconsistencies or missing information.
-:::
+**Response** module provides constructors and utilities for managing immutable interpretations of HTTP responses.
+
+## The Response Type
+
+A `Response` represents immutable and clonable HTTP Response data. It is base element of Response module.
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+
+type Type = Response.Response;
+```
