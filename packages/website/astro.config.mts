@@ -14,6 +14,7 @@ export default defineConfig({
       logo: {
         src: './public/logo_fx-fetch.svg',
       },
+      customCss: ['@fontsource-variable/jetbrains-mono', './src/styles/custom.css'],
       markdown: {
         processedDirs: ['./src/content/api-reference'],
       },
