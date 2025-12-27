@@ -212,7 +212,7 @@ const PayloadSchema = Schema.Struct({
 const request = Request.unsafeMake({ url: './persons' });
 
 //       ┌─── Stream.Stream<
-//       │      Person[], // ◀︎── page
+//       │      Person[], // ◀︎── page emission
 //       │      | Fetch.FetchError | Fetch.AbortError | Fetch.NotAllowedError | Response.NotOkError
 //       │      | MalformedJsonError
 //       │      | ParseError,
@@ -235,5 +235,4 @@ const program = Fetch.paginatedFetchStream(
     };
   })
 );
-
 ```
