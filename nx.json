@@ -17,6 +17,7 @@
     }
   ],
   "release": {
+    "projectsRelationship": "independent",
     "changelog": {
       "workspaceChangelog": {
         "createRelease": "github"
