@@ -14,3 +14,19 @@ import { Response } from 'fx-fetch';
 
 type Type = Response.Response;
 ```
+
+## The Input Type
+
+A `Response.Input` represents all the possible inputs that can be used to create a `Response`.
+
+Concrete types that make up the `Input` union:
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+
+type Type = Response.Response.Input;
+```
+
+- `globalThis.Response` — vanilla JS response
+- [`Response.Response.Parts`](#from-responseparts) — Object with response parts
+- `Response.Response` — Existing Response can be used too
