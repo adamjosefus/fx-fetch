@@ -10,7 +10,7 @@ export default defineConfig({
   trailingSlash: 'ignore',
   integrations: [
     starlight({
-      title: 'FxFetch',
+      title: 'Fx-Fetch',
       logo: {
         src: './public/logo_fx-fetch.svg',
       },
