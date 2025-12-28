@@ -44,6 +44,7 @@ Throws an `IllegalArgumentException` if the provided input is invalid.
 
 ```ts twoslash showLineNumbers=false
 import { Response } from 'fx-fetch';
+
 //       ┌─── Response.Response
 //       ▼
 const response = Response.unsafeMake({
@@ -60,6 +61,7 @@ If the input is invalid, it returns `None`. If valid, it returns `Some` containi
 ```ts twoslash showLineNumbers=false
 import { Option } from 'effect';
 import { Response } from 'fx-fetch';
+
 //       ┌─── Option.Option<Response.Response>
 //       ▼
 const response = Response.make({
@@ -75,7 +77,7 @@ For creating a `Response` from an object `Response.Parts` use same functions [`m
 The Parts type is super primitive. It's basically an object with all the properties of a JS response, but with better DX. 
 Everything except the `url` is optional.
 
-```ts twoslash showLineNumbers=false {7-9, 19}
+```ts twoslash showLineNumbers=false {5-8, 13}
 import { Response } from 'fx-fetch';
 
 const parts: Response.Response.Parts = {
@@ -102,6 +104,6 @@ Properties `url` and `headers` have flexible input types.
   - Entries (array of tuples)
   - `Map` of strings
   - Same as `HeadersInit` in Fetch API
-  - _… many more…_
+  - _many more…_
 
 ---
