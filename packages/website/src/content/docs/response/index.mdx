@@ -107,3 +107,26 @@ Properties `url` and `headers` have flexible input types.
   - _many more…_
 
 ---
+
+## Errors
+
+### NotOkError
+
+A `NotOkError` represents an error that occurs when a `Response` has a [non-OK status code](https://developer.mozilla.org/en-US/docs/Web/API/Response/ok).
+
+The error contains the following properties:
+- `response` - The `Response` that caused the error.
+- `reason` - A string indicating the category of the error based on the status code.
+  - `'informational'` for status codes 100-199
+  - `'redirection'` for status codes 300-399
+  - `'client-error'` for status codes 400-499
+  - `'server-error'` for status codes 500-599
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+
+function fn(error: Response.NotOkError) {
+  error.response; // ◀︎── Response.Response
+  error.reason; // ◀︎── 'client-error' | 'informational' | 'redirection' | 'server-error'
+}
+```
