@@ -204,6 +204,28 @@ const payload = Response.readArrayBuffer(response);
 
 If you want a shortcut that combines fetching and reading bytes, use [`Fetch.fetchArrayBuffer`](../fetch/#fetcharraybuffer).
 
+### readReadableStream
+The `readReadableStream` function reads the body of a `Response` and parses it as an ReadableStream.
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+// ---cut-start---
+declare const response: Response.Response;
+// ---cut-end---
+//       ┌─── Effect<
+//       │      ReadableStream<Uint8Array<ArrayBuffer>>,
+//       │      MalformedBytesError
+//       │    >
+//       ▼
+const payload = Response.readReadableStream(response);
+```
+
+:::tip
+If you want read the body as an Effect [Stream](https://effect.website/docs/stream/introduction/), consider using [`readStream`](#readstream) instead.
+:::
+
+If you want a shortcut that combines fetching and reading bytes, use [`Fetch.fetchReadableStream`](../fetch/#fetchreadablestream).
+
 
 ## Errors
 
