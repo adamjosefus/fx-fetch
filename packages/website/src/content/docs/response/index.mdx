@@ -249,6 +249,27 @@ const UserSchema = Schema.Struct({
 const payload = Response.readJsonWithSchema(response, UserSchema);
 ```
 
+### readStream
+The `readStream` function reads the body of a `Response` and parses it as an Effect [Stream](https://effect.website/docs/stream/introduction/).
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+// ---cut-start---
+import { Data } from 'effect';
+declare const response: Response.Response;
+class MyError extends Data.TaggedClass('MyError') {}
+// ---cut-end---
+//       ┌─── Effect<
+//       │      Stream<Uint8Array<ArrayBufferLike>, MyError>,
+//       │      MalformedReadableStreamError
+//       │    >
+//       ▼
+const payload = Response.readStream(response, {
+  onError: (err) => new MyError(),
+  releaseLockOnEnd: true, // optional
+});
+```
+
 
 ## Errors
 
