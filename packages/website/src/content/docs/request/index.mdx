@@ -76,7 +76,7 @@ For creating a `Request` from an object `Request.Parts` use same functions [`mak
 The Parts type is super primitive. It's basically an object with all the properties of a JS request, but with better DX. 
 Everything except the `url` is optional.
 
-```ts twoslash showLineNumbers=false {7-9, 19}
+```ts twoslash showLineNumbers=false {7-10, 20}
 import { Request } from 'fx-fetch';
 
 const parts: Request.Request.Parts = {
@@ -110,7 +110,7 @@ Properties `url` and `headers` have flexible input types.
   - Entries (array of tuples)
   - `Map` of strings
   - Same as `HeadersInit` in Fetch API
-  - _… many more…_
+  - _many more…_
 
 ---
 

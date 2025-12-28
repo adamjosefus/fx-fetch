@@ -44,6 +44,7 @@ Throws an `IllegalArgumentException` if the provided input is invalid.
 
 ```ts twoslash showLineNumbers=false
 import { Response } from 'fx-fetch';
+
 //       ┌─── Response.Response
 //       ▼
 const response = Response.unsafeMake({
@@ -60,6 +61,7 @@ If the input is invalid, it returns `None`. If valid, it returns `Some` containi
 ```ts twoslash showLineNumbers=false
 import { Option } from 'effect';
 import { Response } from 'fx-fetch';
+
 //       ┌─── Option.Option<Response.Response>
 //       ▼
 const response = Response.make({
@@ -75,7 +77,7 @@ For creating a `Response` from an object `Response.Parts` use same functions [`m
 The Parts type is super primitive. It's basically an object with all the properties of a JS response, but with better DX. 
 Everything except the `url` is optional.
 
-```ts twoslash showLineNumbers=false {7-9, 19}
+```ts twoslash showLineNumbers=false {5-8, 13}
 import { Response } from 'fx-fetch';
 
 const parts: Response.Response.Parts = {
@@ -102,6 +104,192 @@ Properties `url` and `headers` have flexible input types.
   - Entries (array of tuples)
   - `Map` of strings
   - Same as `HeadersInit` in Fetch API
-  - _… many more…_
+  - _many more…_
 
 ---
+
+## Reading body
+
+### readJson
+The `readJson` function reads the body of a `Response` and parses it as JSON.
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+// ---cut-start---
+declare const response: Response.Response;
+// ---cut-end---
+//       ┌─── Effect<unknown, MalformedJsonError>
+//       ▼
+const payload = Response.readJson(response);
+```
+
+If you want a shortcut that combines fetching and reading JSON, use [`Fetch.fetchJson`](../fetch/#fetchjson).
+
+:::tip
+If you want to read JSON with a specific schema, consider using [`readJsonWithSchema`](#readjsonwithschema) instead.
+:::
+
+### readText
+The `readText` function reads the body of a `Response` and parses it as text.
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+// ---cut-start---
+declare const response: Response.Response;
+// ---cut-end---
+//       ┌─── Effect<string, MalformedTextError>
+//       ▼
+const payload = Response.readText(response);
+```
+
+If you want a shortcut that combines fetching and reading text, use [`Fetch.fetchText`](../fetch/#fetchtext).
+
+### readBlob
+The `readBlob` function reads the body of a `Response` and parses it as a Blob.
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+// ---cut-start---
+declare const response: Response.Response;
+// ---cut-end---
+//       ┌─── Effect<Blob, MalformedBlobError>
+//       ▼
+const payload = Response.readBlob(response);
+```
+
+If you want a shortcut that combines fetching and reading blob, use [`Fetch.fetchBlob`](../fetch/#fetchblob).
+
+### readFormData
+The `readFormData` function reads the body of a `Response` and parses it as form data.
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+// ---cut-start---
+declare const response: Response.Response;
+// ---cut-end---
+//       ┌─── Effect<FormData, MalformedFormDataError>
+//       ▼
+const payload = Response.readFormData(response);
+```
+
+If you want a shortcut that combines fetching and reading form data, use [`Fetch.fetchFormData`](../fetch/#fetchformdata).
+
+### readBytes
+The `readBytes` function reads the body of a `Response` and parses it as bytes.
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+// ---cut-start---
+declare const response: Response.Response;
+// ---cut-end---
+//       ┌─── Effect<Uint8Array<ArrayBuffer>, MalformedBytesError>
+//       ▼
+const payload = Response.readBytes(response);
+```
+
+If you want a shortcut that combines fetching and reading bytes, use [`Fetch.fetchBytes`](../fetch/#fetchbytes).
+
+### readArrayBuffer
+The `readArrayBuffer` function reads the body of a `Response` and parses it as an ArrayBuffer.
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+// ---cut-start---
+declare const response: Response.Response;
+// ---cut-end---
+//       ┌─── Effect<ArrayBuffer, MalformedArrayBufferError>
+//       ▼
+const payload = Response.readArrayBuffer(response);
+```
+
+If you want a shortcut that combines fetching and reading bytes, use [`Fetch.fetchArrayBuffer`](../fetch/#fetcharraybuffer).
+
+### readReadableStream
+The `readReadableStream` function reads the body of a `Response` and parses it as a ReadableStream.
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+// ---cut-start---
+declare const response: Response.Response;
+// ---cut-end---
+//       ┌─── Effect<
+//       │      ReadableStream<Uint8Array<ArrayBuffer>>,
+//       │      MalformedBytesError
+//       │    >
+//       ▼
+const payload = Response.readReadableStream(response);
+```
+
+:::tip
+If you want read the body as an Effect [Stream](https://effect.website/docs/stream/introduction/), consider using [`readStream`](#readstream) instead.
+:::
+
+If you want a shortcut that combines fetching and reading bytes, use [`Fetch.fetchReadableStream`](../fetch/#fetchreadablestream).
+
+### readJsonWithSchema
+The `readJsonWithSchema` function reads the body of a `Response`, parses it as JSON, and validates it against a provided schema.
+
+```ts twoslash showLineNumbers=false
+import { Schema } from 'effect';
+import { Response } from 'fx-fetch';
+// ---cut-start---
+declare const response: Response.Response;
+// ---cut-end---
+
+const UserSchema = Schema.Struct({
+  id: Schema.Int,
+  name: Schema.String,
+});
+
+//       ┌─── Effect<
+//       │      typeof UserSchema.Type,
+//       │      MalformedJsonError | ParseError
+//       │    >
+//       ▼
+const payload = Response.readJsonWithSchema(response, UserSchema);
+```
+
+### readStream
+The `readStream` function reads the body of a `Response` and parses it as an Effect [Stream](https://effect.website/docs/stream/introduction/).
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+// ---cut-start---
+import { Data } from 'effect';
+declare const response: Response.Response;
+class MyError extends Data.TaggedClass('MyError') {}
+// ---cut-end---
+//       ┌─── Effect<
+//       │      Stream<Uint8Array<ArrayBufferLike>, MyError>,
+//       │      MalformedReadableStreamError
+//       │    >
+//       ▼
+const payload = Response.readStream(response, {
+  onError: (err) => new MyError(),
+  releaseLockOnEnd: true, // optional
+});
+```
+
+
+## Errors
+
+### NotOkError
+
+A `NotOkError` represents an error that occurs when a `Response` has a [non-OK status code](https://developer.mozilla.org/en-US/docs/Web/API/Response/ok).
+
+The error contains the following properties:
+- `response` - The `Response` that caused the error.
+- `reason` - A string indicating the category of the error based on the status code.
+  - `'informational'` for status codes 100-199
+  - `'redirection'` for status codes 300-399
+  - `'client-error'` for status codes 400-499
+  - `'server-error'` for status codes 500-599
+
+```ts twoslash showLineNumbers=false
+import { Response } from 'fx-fetch';
+
+function fn(error: Response.NotOkError) {
+  error.response; // ◀︎── Response.Response
+  error.reason; // ◀︎── 'client-error' | 'informational' | 'redirection' | 'server-error'
+}
+```

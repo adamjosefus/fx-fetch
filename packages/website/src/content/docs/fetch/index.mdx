@@ -5,7 +5,9 @@ description: Services and functions for performing HTTP requests.
 
 **Fetch** module contains services and helpers for making HTTP requests.
 
-## fetch
+## Basic Fetching
+
+### fetch
 
 The `fetch` function is the most basic way to perform requests.
 
@@ -55,7 +57,7 @@ program.pipe(
 
 Having fetch as a service allows you to easily swap implementations for testing, mocking, or other purposes.
 
-## fetchJson
+### fetchJson
 
 The `fetchJson` function is a helper that combines `fetch` with [`Response.readJson`](../response/#readjson). It is syntactic sugar for better ergonomics.
 
@@ -79,27 +81,27 @@ const program = Effect.gen(function* () {
 });
 ```
 
-## fetchText
+### fetchText
 The `fetchText` function is a helper that combines [`fetch`](#fetch) with [`Response.readText`](../response/#readtext).
 It is similar to [`fetchJson`](#fetchjson), but reads the body as plain text.
 
-## fetchBlob
+### fetchBlob
 The `fetchBlob` function is a helper that combines [`fetch`](#fetch) with [`Response.readBlob`](../response/#readblob).
 It is similar to [`fetchJson`](#fetchjson), but reads the body as Blob.
 
-## fetchFormData
+### fetchFormData
 The `fetchFormData` function is a helper that combines [`fetch`](#fetch) with [`Response.readFormData`](../response/#readformdata).
 It is similar to [`fetchJson`](#fetchjson), but reads the body as FormData.
 
-## fetchBytes
+### fetchBytes
 The `fetchBytes` function is a helper that combines [`fetch`](#fetch) with [`Response.readBytes`](../response/#readbytes).
 It is similar to [`fetchJson`](#fetchjson), but reads the body as bytes.
 
-## fetchArrayBuffer
+### fetchArrayBuffer
 The `fetchArrayBuffer` function is a helper that combines [`fetch`](#fetch) with [`Response.readArrayBuffer`](../response/#readarraybuffer).
 It is similar to [`fetchJson`](#fetchjson), but reads the body as ArrayBuffer.
 
-## fetchReadableStream
+### fetchReadableStream
 The `fetchReadableStream` function is a helper that combines [`fetch`](#fetch) with [`Response.readReadableStream`](../response/#readreadablestream).
 It is similar to [`fetchJson`](#fetchjson), but reads the body as ReadableStream.
 
@@ -107,7 +109,7 @@ It is similar to [`fetchJson`](#fetchjson), but reads the body as ReadableStream
 If you want read the body as an Effect [Stream](https://effect.website/docs/stream/introduction/), consider using [`fetchStream`](#fetchstream) instead.
 :::
 
-## fetchJsonWithSchema
+### fetchJsonWithSchema
 The `fetchJsonWithSchema` function is another helper that combines [`fetch`](#fetch) with [`Response.readJsonWithSchema`](../response/#readjsonwithschema). It allows you to validate the payload against a [Effect Schema](https://effect.website/docs/schema/introduction/).
 
 ```ts twoslash showLineNumbers=false {12, 13, 22}
@@ -136,7 +138,7 @@ const program = Effect.gen(function* () {
 });
 ```
 
-## fetchStream
+### fetchStream
 The `fetchStream` function is a helper that combines [`fetch`](#fetch) with [`Response.readStream`](../response/#readstream).
 
 ```ts twoslash showLineNumbers=false {12, 25-28}
@@ -171,7 +173,12 @@ const program = Effect.gen(function* () {
 });
 ```
 
-## paginatedFetch
+## Paginated Fetching
+
+When dealing with APIs that return paginated data,
+`fx-fetch` provides convenient functions to handle pagination: [`paginatedFetch`](#paginatedfetch) and [`paginatedFetchStream`](#paginatedfetchstream).
+
+### paginatedFetch
 The `paginatedFetch` function is used to handle paginated HTTP endpoints. It repeatedly performs fetch requests based on the provided logic until there are no more pages to fetch.
 
 The function takes an initial [`Request`](../request/) and an `onResponse` callback. The callback receives the last [`Response`](../response/) and should return an object containing:
@@ -222,7 +229,7 @@ const program = Fetch.paginatedFetch(
 
 If you want a lazier approach that emits each page as it is fetched, you can use `paginatedFetchStream`.
 
-## paginatedFetchStream
+### paginatedFetchStream
 
 The `paginatedFetchStream` function is similar to `paginatedFetch`, but instead of returning all pages at once,
 it returns a [`Stream`](https://effect.website/docs/stream/introduction/) that emits each page as it is fetched.
@@ -267,4 +274,42 @@ const program = Fetch.paginatedFetchStream(
     };
   })
 );
+```
+
+## Errors
+
+When using the fetch functions, several error types may be encountered:
+
+### FetchError
+Represents general errors that occur during the fetch operation.
+
+Depending on the nature of the error, it may make sense to retry the operation.
+
+```ts twoslash showLineNumbers=false
+import { Fetch } from 'fx-fetch';
+
+type MyType = Fetch.FetchError;
+```
+
+
+### AbortError
+Indicates that the fetch operation was aborted.
+
+**Does not make sense to retry this error.**
+
+```ts twoslash showLineNumbers=false
+import { Fetch } from 'fx-fetch';
+
+type MyType = Fetch.AbortError;
+```
+
+### NotAllowedError
+Indicates that the fetch operation is not allowed, possibly due to CORS restrictions.
+
+**Does not make sense to retry this error.**
+
+```ts twoslash showLineNumbers=false
+import { Fetch } from 'fx-fetch';
+
+type MyType = Fetch.NotAllowedError;
 ```
