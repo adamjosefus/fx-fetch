@@ -16,16 +16,18 @@ export function inputToHeadersIntermediate(input: HeadersInput): HeadersIntermed
   }
 
   // Handle Headers instance
-  if (input instanceof Headers) {
+  if (input instanceof globalThis.Headers) {
     const headers = new Map<Lowercase, string[]>();
-    for (const [key, value] of input) {
+
+    input.forEach((value, key) => {
       const normalizedKey = toLowercase(key);
       const list = headers.get(normalizedKey) ?? [];
 
       list.push(value);
 
       headers.set(normalizedKey, list);
-    }
+    });
+
     return headers;
   }
 
