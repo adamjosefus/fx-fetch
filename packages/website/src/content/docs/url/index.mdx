@@ -34,3 +34,33 @@ type Type = Url.Url.Input;
 - `Url.Url.Options` — an object containing a URL string and optional search parameters
 - `Url.Url` — existing Url can be used too
 
+
+## Constructors
+
+### unsafeMake
+
+Creates a `Url` from any of [`Url.Input`](#the-input-type).
+Throws an `IllegalArgumentException` if the provided input is invalid.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+//     ┌─── Url.Url
+//     ▼
+const url = Url.unsafeMake('https://example.com/');
+```
+
+### make
+
+Similar to [unsafeMake](#unsafemake), but returns an [Option](https://effect.website/docs/data-types/option/) instead of throwing an error if the input is invalid.
+If the input is invalid, it returns `None`. If valid, it returns `Some` containing the `Url`.
+
+```ts twoslash showLineNumbers=false
+import { Option } from 'effect';
+import { Url } from 'fx-fetch';
+
+//     ┌─── Option.Option<Url.Url>
+//     ▼
+const url = Url.make('https://example.com/');
+```
+
