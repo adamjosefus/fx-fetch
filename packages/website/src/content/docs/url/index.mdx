@@ -108,3 +108,27 @@ All properties are designed for better DX. Here is a brief description of each:
   - array of tuples
 
 ---
+
+### from Url.Options
+
+For creating a `Url` from an object `Url.Options` use same functions [`make`](#make) or [`unsafeMake`](#unsafemake).
+
+Reason for having this variant is your comfort.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+const options: Url.Url.Options = {
+  url: 'https://example.com', // ◀︎── required property
+  searchParams: {
+    q: 'lorem ipsum',
+    page: 1,
+    filter: ['active', 'new'],
+  },
+};
+
+const url = Url.unsafeMake(options);
+```
+
+---
+
