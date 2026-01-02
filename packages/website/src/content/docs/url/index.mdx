@@ -15,3 +15,22 @@ import { Url } from 'fx-fetch';
 
 type Type = Url.Url;
 ```
+
+## The Input Type
+
+A `Url.Input` represents all the possible inputs that can be used to create a `Url`.
+
+Concrete types that make up the `Input` union:
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+type Type = Url.Url.Input;
+```
+
+- `string` — a simple string URL
+- [`globalThis.URL`](https://developer.mozilla.org/en-US/docs/Web/API/URL) — the built-in JavaScript URL class
+- `Url.Url.Parts` — an object containing individual parts of a URL
+- `Url.Url.Options` — an object containing a URL string and optional search parameters
+- `Url.Url` — existing Url can be used too
+
