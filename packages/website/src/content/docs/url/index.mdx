@@ -64,3 +64,47 @@ import { Url } from 'fx-fetch';
 const url = Url.make('https://example.com/');
 ```
 
+### from Url.Parts
+
+For creating a `Url` from an object `Url.Parts` use same functions [`make`](#make) or [`unsafeMake`](#unsafemake).
+
+The Parts type is super primitive. It's basically an object with all the properties of a JS response, but with better DX. 
+Everything except the `hostname` is optional.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+const parts: Url.Url.Parts = {
+  protocol: 'https:',
+  username: 'admin',
+  password: '123456',
+  hostname: 'example.com', // ◀︎── required property
+  pathname: '/api/v1/resource',
+  port: 8080,
+  searchParams: {
+    key: 'value',
+    filter: ['a', 'b'],
+    id: 123,
+  },
+  hash: '#section',
+};
+
+const url = Url.unsafeMake(parts);
+```
+
+All properties are designed for better DX. Here is a brief description of each:
+
+- `protocol` — The protocol scheme of the URL _(e.g., `"http:"`, `"https://"`, `"fpt"`)_
+- `username` — The username of credentials, automatically percent-encoded
+- `password` — The password of credentials, automatically percent-encoded
+- `hostname` — The domain name or IP address of the URL _(e.g., `"example.com"`, `"example.net/"`)_
+- `pathname` — The path component of the URL (e.g., `"/path/to/"`, `"foo/bar"`)
+- `port` — The port number of the URL _(e.g., `80`, `"443"`)_
+- `hash` — The fragment identifier of the URL _(e.g., `"#section1"`, `"top"`)_
+- `searchParams` — Query parameters with various supported types:
+  - instance of `globalThis.URLSearchParams`
+  - object with `string`, `number`, `undefined` or array of `string | number | undefined` values
+  - instance of `Map`
+  - array of tuples
+
+---
