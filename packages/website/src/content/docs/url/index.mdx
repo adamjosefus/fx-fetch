@@ -2,3 +2,16 @@
 title: Url
 description: Constructors and helpers for Url manipulation.
 ---
+
+The `Url` module is one of the core building blocks of `fx-fetch`.
+The module contains functions and types to create and manipulate URLs.
+
+## The Url Type
+
+A `Url` represents immutable and clonable HTTP URL data. It is a base element of the Url module.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+type Type = Url.Url;
+```
