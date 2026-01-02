@@ -13,8 +13,6 @@ function createJsSearchParams(searchParams: SearchParamsIntermediate): globalThi
   return jsSearchParams;
 }
 
-// TODO: add tests
-
 /**
  * @internal Formats a UrlIntermediate into a URL string. Outputs a best-effort string representation of the URL. Does not guarantee a valid URL string.
  */
@@ -24,8 +22,8 @@ export function formatUrlUntrusted(url: UrlIntermediate): string {
   const urlString = [
     url.protocol,
     '//',
-    url.username !== undefined ? url.username : '',
-    url.password !== undefined ? `:${url.password}` : '',
+    url.username !== undefined ? globalThis.encodeURIComponent(url.username) : '',
+    url.password !== undefined ? `:${globalThis.encodeURIComponent(url.password)}` : '',
     url.username !== undefined ? '@' : '',
     url.hostname,
     url.port !== undefined ? `:${url.port}` : '',
