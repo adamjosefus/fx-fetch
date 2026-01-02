@@ -132,3 +132,26 @@ const url = Url.unsafeMake(options);
 
 ---
 
+## Conversions
+
+### format
+
+Formats the `Url` into a string representation.
+
+```ts twoslash showLineNumbers=false {13}
+import { Url } from 'fx-fetch';
+
+const url = Url.unsafeMake({
+  url: 'https://example.com',
+  searchParams: {
+    q: 'lorem ipsum',
+    page: 1,
+    filter: ['active', 'new'],
+    category: undefined,
+  },
+});
+
+Url.format(url); // 'https://example.com?q=lorem+ipsum&page=1&filter=active&filter=new'
+```
+
+---
