@@ -222,3 +222,36 @@ url.pipe(
   Url.format // 'https://example.com'
 );
 ```
+
+### setSearchParams
+
+The `setSearchParams` function sets or updates multiple search parameters in the existing URL's query string.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+const url = Url.unsafeMake({
+  url: 'https://example.com',
+  searchParams: {
+    tag: ['new', 'sale'],
+  },
+});
+
+Url.format(url); // 'https://example.com?tag=new&tag=sale'
+
+// Set 'tag' parameter to 'active', replacing existing values
+url.pipe(
+  Url.setSearchParams({
+    "tag": "active"
+  }),
+  Url.format // 'https://example.com?tag=active'
+);
+
+// Add new 'q' parameter without removing existing ones
+url.pipe(
+  Url.setSearchParams({
+    "q": "Lorem ipsum",
+  }),
+  Url.format // 'https://example.com?tag=new&tag=sale&q=Lorem+ipsum'
+);
+```
