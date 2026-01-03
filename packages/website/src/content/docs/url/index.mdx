@@ -68,7 +68,7 @@ const url = Url.make('https://example.com/');
 
 For creating a `Url` from an object `Url.Parts` use same functions [`make`](#make) or [`unsafeMake`](#unsafemake).
 
-The Parts type is super primitive. It's basically an object with all the properties of a JS response, but with better DX. 
+The Parts type is super primitive. It's basically an object with properties similar to the built-in JavaScript `URL` object, but with better DX. 
 Everything except the `hostname` is optional.
 
 ```ts twoslash showLineNumbers=false
@@ -94,7 +94,7 @@ const url = Url.unsafeMake(parts);
 
 All properties are designed for better DX. Here is a brief description of each:
 
-- `protocol` — The protocol scheme of the URL _(e.g., `"http:"`, `"https://"`, `"fpt"`)_
+- `protocol` — The protocol scheme of the URL _(e.g., `"http:"`, `"https://"`, `"ftp"`)_
 - `username` — The username of credentials, automatically percent-encoded
 - `password` — The password of credentials, automatically percent-encoded
 - `hostname` — The domain name or IP address of the URL _(e.g., `"example.com"`, `"example.net/"`)_
