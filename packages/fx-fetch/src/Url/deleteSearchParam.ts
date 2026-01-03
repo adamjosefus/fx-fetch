@@ -5,17 +5,15 @@ import { SearchParamValueInput } from './SearchParamValueInput';
 import { inputToSearchParamValueIntermediate } from './SearchParamValueIntermediate';
 import * as Url from './Url';
 
-function deleteSearchParamFn(url: Url.Url, key: string, value?: SearchParamValueInput): Url.Url {
+function deleteSearchParamFn(url: Url.Url, key: string, value: SearchParamValueInput): Url.Url {
   const urlIntermediate = urlToUrlIntermediate(url);
   const normalizedValues = inputToSearchParamValueIntermediate(value);
 
   if (normalizedValues === undefined) {
-    return url; // Nothing to delete
-  }
-
-  if (value === undefined) {
     // Delete all values by key
+
     urlIntermediate.clonedSearchParams.delete(key);
+
     return makeFromUrlIntermediate(urlIntermediate);
   }
 
@@ -25,7 +23,7 @@ function deleteSearchParamFn(url: Url.Url, key: string, value?: SearchParamValue
     return url; // Key does not exist, nothing to delete
   }
 
-  const nextList = prevList.filter((v) => normalizedValues.includes(v));
+  const nextList = prevList.filter((v) => !normalizedValues.includes(v));
   if (nextList.length > 0) {
     // Some values remain, update the list
     urlIntermediate.clonedSearchParams.set(key, nextList);
@@ -36,8 +34,6 @@ function deleteSearchParamFn(url: Url.Url, key: string, value?: SearchParamValue
 
   return makeFromUrlIntermediate(urlIntermediate);
 }
-
-// TODO: Add tests
 
 /**
  * Deletes search parameters from a Url.
@@ -70,7 +66,7 @@ export const deleteSearchParam: {
    * @category Combinators
    * @since 0.1.0
    */
-  (url: Url.Url, key: string, value?: SearchParamValueInput): Url.Url;
+  (url: Url.Url, key: string, value: SearchParamValueInput): Url.Url;
   /**
    * Deletes search parameters from a Url.
    * If a value is provided, only that value is removed; otherwise, all values for the key are removed.
@@ -90,5 +86,5 @@ export const deleteSearchParam: {
    * @category Combinators
    * @since 0.1.0
    */
-  (key: string, value?: SearchParamValueInput): (url: Url.Url) => Url.Url;
-} = dual(2, deleteSearchParamFn);
+  (key: string, value: SearchParamValueInput): (url: Url.Url) => Url.Url;
+} = dual(3, deleteSearchParamFn);
