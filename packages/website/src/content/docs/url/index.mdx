@@ -192,3 +192,33 @@ const url = Url.unsafeMake({
 const updatedUrl = Url.setSearchParam(url, 'tag', 'active'); // 'https://example.com?tag=active'
 ```
 
+### deleteSearchParam
+
+The `deleteSearchParam` function removes a search parameter from the existing URL's query string.
+
+Can be used to remove a specific value for a parameter or all values associated with that parameter.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+const url = Url.unsafeMake({
+  url: 'https://example.com',
+  searchParams: {
+    tag: ['new', 'sale'],
+  },
+});
+
+Url.format(url); // 'https://example.com?tag=new&tag=sale'
+
+// Remove specific 'tag' parameter
+url.pipe(
+  Url.deleteSearchParam('tag', 'sale'),
+  Url.format // 'https://example.com?tag=new'
+);
+
+// Remove all 'tag' parameters
+url.pipe(
+  Url.deleteSearchParam('tag', undefined),
+  Url.format // 'https://example.com'
+);
+```
