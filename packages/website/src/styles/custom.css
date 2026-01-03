@@ -1,3 +1,18 @@
 :root {
   --sl-font-mono: "JetBrains Mono Variable", monospace;
+  --ec-brdRad: 0.25rem;
+}
+
+.starlight-aside {
+  border-radius: var(--ec-brdRad);
+}
+
+:not(pre) > code {
+  border-radius: calc(var(--ec-brdRad) / 2);
+  box-decoration-break: clone;
+}
+
+:is(h1, h2, h3, h4, h5, h6) code {
+  border-radius: var(--ec-brdRad);
+  box-decoration-break: clone;
 }
