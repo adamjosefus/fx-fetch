@@ -1,3 +1,14 @@
+## 1.0.3 (2026-01-03)
+
+### 🩹 Fixes
+
+- Fix formatting of the URL credentials. ([83b8925](https://github.com/adamjosefus/fx-fetch/commit/83b8925))
+- Fix the implementation of Url.deleteSearchParam and the dual API ([d8cfa34](https://github.com/adamjosefus/fx-fetch/commit/d8cfa34))
+
+### ❤️ Thank You
+
+- Adam Josefus @adamjosefus
+
 ## 1.0.2 (2025-12-27)
 
 ### 📐 Refactor
