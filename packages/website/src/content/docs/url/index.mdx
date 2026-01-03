@@ -179,6 +179,8 @@ const updatedUrl = Url.appendSearchParam(url, 'tag', 'active'); // 'https://exam
 
 The `setSearchParam` function sets or updates a search parameter in the existing URL's query string.
 
+If the value is `undefined`, the parameter is removed.
+
 ```ts twoslash showLineNumbers=false
 import { Url } from 'fx-fetch';
 
