@@ -3,82 +3,257 @@ title: Url
 description: Constructors and helpers for Url manipulation.
 ---
 
-:::caution
-Documentation is a work in progress. Please excuse any inconsistencies or missing information.
-:::
-
 The `Url` module is one of the core building blocks of `fx-fetch`.
 The module contains functions and types to create and manipulate URLs.
 
-```ts
+## The Url Type
+
+A `Url` represents immutable and clonable HTTP URL data. It is a base element of the Url module.
+
+```ts twoslash showLineNumbers=false
 import { Url } from 'fx-fetch';
+
+type Type = Url.Url;
 ```
 
-## Constructors
+## The Input Type
 
-You can make a Url from any of `Url.Url.Input`. This this is a just an union of all possible inputs that can be used.
+A `Url.Input` represents all the possible inputs that can be used to create a `Url`.
+
+Concrete types that make up the `Input` union:
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+type Type = Url.Url.Input;
+```
 
 - `string` — a simple string URL
 - [`globalThis.URL`](https://developer.mozilla.org/en-US/docs/Web/API/URL) — the built-in JavaScript URL class
 - `Url.Url.Parts` — an object containing individual parts of a URL
 - `Url.Url.Options` — an object containing a URL string and optional search parameters
-- `Url.Url` — another `Url` instance (deep cloned)
+- `Url.Url` — existing Url can be used too
 
-```ts
-const urlString: string = 'https://example.com/path?query=param#hash'; // Simple string URL. Don't worry, validation is done internally.
 
-const jsUrl = new URL('https://example.com/path?query=param#hash'); // Vanilla JS URL object.
-
-const urlOptions: Url.Url.Options = {
-  url: 'https://example.com/path?query=param#hash',
-  searchParams: {
-    id: '123',
-    page: 1,
-    category: ['books', 'electronics'], // Arrays are supported too!
-    'is-active': undefined, // Keys with `undefined` values are omitted from the final URL
-  }, // `searchParams` is a `SearchParamsInput` type. Rich ways to specify search params! DX is important.
-};
-
-const urlParts: Url.Url.Parts = {
-  protocol: 'https:', // Smartly handles trailing ':' character
-  username: 'john',
-  password: '123',
-  hostname: 'example.com',
-  pathname: '/path', // Smartly handles leading '/' character
-  hash: '#hash', // Smartly handles leading '#' character
-  searchParams: undefined, // `searchParams` is optional. Has the same type as `Url.Url.Options['searchParams']` ↑.
-  port: 443, // Port can be a string or number
-};
-
-declare const url: Url.Url; // Of course, you can create Urls from other Urls too. Deep cloning is done internally.
-```
-
-### make vs unsafeMake
-
-Because a URL input can be anything, even something nonsensical,
-there are two ways to create a URL object: Safe and unsafe.
-
-The safe way is recommended especially in non-manual use cases (like when a URL comes from user input, external API, etc.)
-  But if you place the URL manually and are sure it's valid, you can use the unsafe way.
-
-### make
-
-```ts
-// Safe way returns `Option.Option<Url.Url>`
-//
-//        ┌── Option.Option<Url.Url>
-//        ▼
-const maybeUrl = Url.make(urlString); // Validates the input URL. If invalid, returns `Option.none()`.
-
-const nonsenseJsUrl = new globalThis.URL('Hello nonsense'); // Throws an error. Uncaught ReferenceError: Url is not defined
-const maybeNonsenseUrl = Url.make('Hello nonsense'); // Returns `Option.none()` instead of throwing.
-```
+## Constructors
 
 ### unsafeMake
 
-```ts
-// Unsafe way returns `Url.Url` or throws
-//
-//        ┌── Url.Url
-//        ▼
-const certainUrl = Url.unsafeMake(urlString); // If URL is invalid, `Effect.die` is called internally.
+Creates a `Url` from any of [`Url.Input`](#the-input-type).
+Throws an `IllegalArgumentException` if the provided input is invalid.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+//     ┌─── Url.Url
+//     ▼
+const url = Url.unsafeMake('https://example.com/');
+```
+
+### make
+
+Similar to [unsafeMake](#unsafemake), but returns an [Option](https://effect.website/docs/data-types/option/) instead of throwing an error if the input is invalid.
+If the input is invalid, it returns `None`. If valid, it returns `Some` containing the `Url`.
+
+```ts twoslash showLineNumbers=false
+import { Option } from 'effect';
+import { Url } from 'fx-fetch';
+
+//     ┌─── Option.Option<Url.Url>
+//     ▼
+const url = Url.make('https://example.com/');
+```
+
+### from Url.Parts
+
+For creating a `Url` from an object `Url.Parts` use same functions [`make`](#make) or [`unsafeMake`](#unsafemake).
+
+The Parts type is super primitive. It's basically an object with properties similar to the built-in JavaScript `URL` object, but with better DX. 
+Everything except the `hostname` is optional.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+const parts: Url.Url.Parts = {
+  protocol: 'https:',
+  username: 'admin',
+  password: '123456',
+  hostname: 'example.com', // ◀︎── required property
+  pathname: '/api/v1/resource',
+  port: 8080,
+  searchParams: {
+    key: 'value',
+    filter: ['a', 'b'],
+    id: 123,
+  },
+  hash: '#section',
+};
+
+const url = Url.unsafeMake(parts);
+```
+
+All properties are designed for better DX. Here is a brief description of each:
+
+- `protocol` — The protocol scheme of the URL _(e.g., `"http:"`, `"https://"`, `"ftp"`)_
+- `username` — The username of credentials, automatically percent-encoded
+- `password` — The password of credentials, automatically percent-encoded
+- `hostname` — The domain name or IP address of the URL _(e.g., `"example.com"`, `"example.net/"`)_
+- `pathname` — The path component of the URL (e.g., `"/path/to/"`, `"foo/bar"`)
+- `port` — The port number of the URL _(e.g., `80`, `"443"`)_
+- `hash` — The fragment identifier of the URL _(e.g., `"#section1"`, `"top"`)_
+- `searchParams` — Query parameters with various supported types:
+  - instance of `globalThis.URLSearchParams`
+  - object with `string`, `number`, `undefined` or array of `string | number | undefined` values
+  - instance of `Map`
+  - array of tuples
+
+---
+
+### from Url.Options
+
+For creating a `Url` from an object `Url.Options` use same functions [`make`](#make) or [`unsafeMake`](#unsafemake).
+
+Reason for having this variant is your comfort.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+const options: Url.Url.Options = {
+  url: 'https://example.com', // ◀︎── required property
+  searchParams: {
+    q: 'lorem ipsum',
+    page: 1,
+    filter: ['active', 'new'],
+  },
+};
+
+const url = Url.unsafeMake(options);
+```
+
+---
+
+## Conversions
+
+### format
+
+Formats the `Url` into a string representation.
+
+```ts twoslash showLineNumbers=false {13}
+import { Url } from 'fx-fetch';
+
+const url = Url.unsafeMake({
+  url: 'https://example.com',
+  searchParams: {
+    q: 'lorem ipsum',
+    page: 1,
+    filter: ['active', 'new'],
+    category: undefined,
+  },
+});
+
+Url.format(url); // 'https://example.com?q=lorem+ipsum&page=1&filter=active&filter=new'
+```
+
+---
+
+## Combinators
+
+### appendSearchParam
+
+The `appendSearchParam` function appends a new search parameter to the existing URL's query string.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+const url = Url.unsafeMake({
+  url: 'https://example.com',
+  searchParams: {
+    tag: "new"
+  },
+}); // 'https://example.com?tag=new'
+
+const updatedUrl = Url.appendSearchParam(url, 'tag', 'active'); // 'https://example.com?tag=new&tag=active'
+```
+
+### setSearchParam
+
+The `setSearchParam` function sets or updates a search parameter in the existing URL's query string.
+
+If the value is `undefined`, the parameter is removed.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+const url = Url.unsafeMake({
+  url: 'https://example.com',
+  searchParams: {
+    tag: "new"
+  },
+}); // 'https://example.com?tag=new'
+
+const updatedUrl = Url.setSearchParam(url, 'tag', 'active'); // 'https://example.com?tag=active'
+```
+
+### setSearchParams
+
+The `setSearchParams` function sets or updates multiple search parameters in the existing URL's query string.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+const url = Url.unsafeMake({
+  url: 'https://example.com',
+  searchParams: {
+    tag: ['new', 'sale'],
+  },
+});
+
+Url.format(url); // 'https://example.com?tag=new&tag=sale'
+
+// Set 'tag' parameter to 'active', replacing existing values
+url.pipe(
+  Url.setSearchParams({
+    "tag": "active"
+  }),
+  Url.format // 'https://example.com?tag=active'
+);
+
+// Add new 'q' parameter without removing existing ones
+url.pipe(
+  Url.setSearchParams({
+    "q": "Lorem ipsum",
+  }),
+  Url.format // 'https://example.com?tag=new&tag=sale&q=Lorem+ipsum'
+);
+```
+
+### deleteSearchParam
+
+The `deleteSearchParam` function removes a search parameter from the existing URL's query string.
+
+Can be used to remove a specific value for a parameter or all values associated with that parameter.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+const url = Url.unsafeMake({
+  url: 'https://example.com',
+  searchParams: {
+    tag: ['new', 'sale'],
+  },
+});
+
+Url.format(url); // 'https://example.com?tag=new&tag=sale'
+
+// Remove specific 'tag' parameter
+url.pipe(
+  Url.deleteSearchParam('tag', 'sale'),
+  Url.format // 'https://example.com?tag=new'
+);
+
+// Remove all 'tag' parameters
+url.pipe(
+  Url.deleteSearchParam('tag', undefined),
+  Url.format // 'https://example.com'
+);
+```

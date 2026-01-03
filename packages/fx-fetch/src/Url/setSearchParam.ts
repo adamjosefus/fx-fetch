@@ -22,18 +22,21 @@ function setSearchParamFn(url: Url.Url, key: string, value: SearchParamValueInpu
   return makeFromUrlIntermediate(intermediate);
 }
 
-// TODO: Add tests
-// TODO: Add tests for dual APIs
-
 /**
- * Sets a search parameter on a Url.
+ * Sets a search parameter on a Url. If the value is `undefined`, the parameter is removed.
  *
  * @example
  * ```ts
  * import { Url } from 'fx-fetch';
  *
- * const url = Url.make('https://api.example.com');
- * const urlWithParam = Url.setSearchParam(url, 'page', '1');
+ * const url = Url.unsafeMake({
+ *   url: 'https://example.com',
+ *   searchParams: {
+ *     tag: "new"
+ *   },
+ * }); // 'https://example.com?tag=new'
+ *
+ * const updatedUrl = Url.setSearchParam(url, 'tag', 'active'); // 'https://example.com?tag=active'
  * ```
  *
  * @category Combinators
@@ -41,14 +44,20 @@ function setSearchParamFn(url: Url.Url, key: string, value: SearchParamValueInpu
  */
 export const setSearchParam: {
   /**
-   * Sets a search parameter on a Url.
+   * Sets a search parameter on a Url. If the value is `undefined`, the parameter is removed.
    *
    * @example
    * ```ts
    * import { Url } from 'fx-fetch';
    *
-   * const url = Url.make('https://api.example.com');
-   * const urlWithParam = Url.setSearchParam(url, 'page', '1');
+   * const url = Url.unsafeMake({
+   *   url: 'https://example.com',
+   *   searchParams: {
+   *     tag: "new"
+   *   },
+   * }); // 'https://example.com?tag=new'
+   *
+   * const updatedUrl = Url.setSearchParam(url, 'tag', 'active'); // 'https://example.com?tag=active'
    * ```
    *
    * @category Combinators
@@ -56,18 +65,20 @@ export const setSearchParam: {
    */
   (url: Url.Url, key: string, value: SearchParamValueInput): Url.Url;
   /**
-   * Sets a search parameter on a Url.
+   * Sets a search parameter on a Url. If the value is `undefined`, the parameter is removed.
    *
    * @example
    * ```ts
    * import { Url } from 'fx-fetch';
-   * import { pipe } from 'effect';
    *
-   * const url = Url.make('https://api.example.com');
-   * const urlWithParam = pipe(
-   *   url,
-   *   Url.setSearchParam('page', '1')
-   * );
+   * const url = Url.unsafeMake({
+   *   url: 'https://example.com',
+   *   searchParams: {
+   *     tag: "new"
+   *   },
+   * }); // 'https://example.com?tag=new'
+   *
+   * const updatedUrl = Url.setSearchParam(url, 'tag', 'active'); // 'https://example.com?tag=active'
    * ```
    *
    * @category Combinators

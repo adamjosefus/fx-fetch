@@ -27,14 +27,36 @@ function setSearchParamsFn(url: Url.Url, params: SearchParamsInput): Url.Url {
 // TODO: Add tests
 
 /**
- * Sets multiple search parameters on a Url.
+ * Sets or updates multiple search parameters in the existing URL's query string.
  *
  * @example
  * ```ts
  * import { Url } from 'fx-fetch';
  *
- * const url = Url.make('https://api.example.com');
- * const urlWithParams = Url.setSearchParams(url, { page: '1', limit: '10' });
+ * const url = Url.unsafeMake({
+ *   url: 'https://example.com',
+ *   searchParams: {
+ *     tag: ['new', 'sale'],
+ *   },
+ * });
+ *
+ * Url.format(url); // 'https://example.com?tag=new&tag=sale'
+ *
+ * // Set 'tag' parameter to 'active', replacing existing values
+ * url.pipe(
+ *   Url.setSearchParams({
+ *     "tag": "active"
+ *   }),
+ *   Url.format // 'https://example.com?tag=active'
+ * );
+ *
+ * // Add new 'q' parameter without removing existing ones
+ * url.pipe(
+ *   Url.setSearchParams({
+ *     "q": "Lorem ipsum",
+ *   }),
+ *   Url.format // 'https://example.com?tag=new&tag=sale&q=Lorem+ipsum'
+ * );
  * ```
  *
  * @category Combinators
@@ -42,14 +64,36 @@ function setSearchParamsFn(url: Url.Url, params: SearchParamsInput): Url.Url {
  */
 export const setSearchParams: {
   /**
-   * Sets multiple search parameters on a Url.
+   * Sets or updates multiple search parameters in the existing URL's query string.
    *
    * @example
    * ```ts
    * import { Url } from 'fx-fetch';
    *
-   * const url = Url.make('https://api.example.com');
-   * const urlWithParams = Url.setSearchParams(url, { page: '1', limit: '10' });
+   * const url = Url.unsafeMake({
+   *   url: 'https://example.com',
+   *   searchParams: {
+   *     tag: ['new', 'sale'],
+   *   },
+   * });
+   *
+   * Url.format(url); // 'https://example.com?tag=new&tag=sale'
+   *
+   * // Set 'tag' parameter to 'active', replacing existing values
+   * url.pipe(
+   *   Url.setSearchParams({
+   *     "tag": "active"
+   *   }),
+   *   Url.format // 'https://example.com?tag=active'
+   * );
+   *
+   * // Add new 'q' parameter without removing existing ones
+   * url.pipe(
+   *   Url.setSearchParams({
+   *     "q": "Lorem ipsum",
+   *   }),
+   *   Url.format // 'https://example.com?tag=new&tag=sale&q=Lorem+ipsum'
+   * );
    * ```
    *
    * @category Combinators
@@ -58,17 +102,35 @@ export const setSearchParams: {
   (url: Url.Url, params: SearchParamsInput): Url.Url;
 
   /**
-   * Sets multiple search parameters on a Url.
+   * Sets or updates multiple search parameters in the existing URL's query string.
    *
    * @example
    * ```ts
    * import { Url } from 'fx-fetch';
-   * import { pipe } from 'effect';
    *
-   * const url = Url.make('https://api.example.com');
-   * const urlWithParams = pipe(
-   *   url,
-   *   Url.setSearchParams({ page: '1', limit: '10' })
+   * const url = Url.unsafeMake({
+   *   url: 'https://example.com',
+   *   searchParams: {
+   *     tag: ['new', 'sale'],
+   *   },
+   * });
+   *
+   * Url.format(url); // 'https://example.com?tag=new&tag=sale'
+   *
+   * // Set 'tag' parameter to 'active', replacing existing values
+   * url.pipe(
+   *   Url.setSearchParams({
+   *     "tag": "active"
+   *   }),
+   *   Url.format // 'https://example.com?tag=active'
+   * );
+   *
+   * // Add new 'q' parameter without removing existing ones
+   * url.pipe(
+   *   Url.setSearchParams({
+   *     "q": "Lorem ipsum",
+   *   }),
+   *   Url.format // 'https://example.com?tag=new&tag=sale&q=Lorem+ipsum'
    * );
    * ```
    *

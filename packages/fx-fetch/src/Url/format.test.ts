@@ -170,6 +170,20 @@ describe('Url.format', () => {
     expect(Url.format(url)).toEqual(expectedUrlString);
   });
 
+  test('special characters in credentials', () => {
+    const parts: Url.Url.Parts = {
+      protocol: 'ftp:',
+      hostname: 'files.example.com',
+      username: 'Johnny Appleseed',
+      password: 'p@ss/w:ord',
+      pathname: '/data',
+    };
+
+    const url = Url.unsafeMake(parts);
+    const expectedUrlString = 'ftp://Johnny%20Appleseed:p%40ss%2Fw%3Aord@files.example.com/data';
+    expect(Url.format(url)).toEqual(expectedUrlString);
+  });
+
   test('multiple query parameters', () => {
     const parts: Url.Url.Parts = {
       protocol: 'https:',
