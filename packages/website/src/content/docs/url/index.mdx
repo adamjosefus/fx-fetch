@@ -94,13 +94,13 @@ const url = Url.unsafeMake(parts);
 
 All properties are designed for better DX. Here is a brief description of each:
 
-- `protocol` — The protocol scheme of the URL _(e.g., `"http:"`, `"https://"`, `"ftp"`)_
+- `protocol` — The protocol scheme of the URL (e.g., `"http:"`, `"https://"`, `"ftp"`)
 - `username` — The username of credentials, automatically percent-encoded
 - `password` — The password of credentials, automatically percent-encoded
-- `hostname` — The domain name or IP address of the URL _(e.g., `"example.com"`, `"example.net/"`)_
+- `hostname` — The domain name or IP address of the URL (e.g., `"example.com"`, `"example.net/"`)
 - `pathname` — The path component of the URL (e.g., `"/path/to/"`, `"foo/bar"`)
-- `port` — The port number of the URL _(e.g., `80`, `"443"`)_
-- `hash` — The fragment identifier of the URL _(e.g., `"#section1"`, `"top"`)_
+- `port` — The port number of the URL (e.g., `80`, `"443"`)
+- `hash` — The fragment identifier of the URL (e.g., `"#section1"`, `"top"`)
 - `searchParams` — Query parameters with various supported types:
   - instance of `globalThis.URLSearchParams`
   - object with `string`, `number`, `undefined` or array of `string | number | undefined` values
