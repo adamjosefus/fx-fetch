@@ -175,3 +175,20 @@ const url = Url.unsafeMake({
 const updatedUrl = Url.appendSearchParam(url, 'tag', 'active'); // 'https://example.com?tag=new&tag=active'
 ```
 
+### setSearchParam
+
+The `setSearchParam` function sets or updates a search parameter in the existing URL's query string.
+
+```ts twoslash showLineNumbers=false
+import { Url } from 'fx-fetch';
+
+const url = Url.unsafeMake({
+  url: 'https://example.com',
+  searchParams: {
+    tag: "new"
+  },
+}); // 'https://example.com?tag=new'
+
+const updatedUrl = Url.setSearchParam(url, 'tag', 'active'); // 'https://example.com?tag=active'
+```
+
