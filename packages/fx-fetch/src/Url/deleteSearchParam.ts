@@ -43,8 +43,26 @@ function deleteSearchParamFn(url: Url.Url, key: string, value: SearchParamValueI
  * ```ts
  * import { Url } from 'fx-fetch';
  *
- * const url = Url.make('https://api.example.com?page=1&limit=10');
- * const urlWithoutParam = Url.deleteSearchParam(url, 'page');
+ * const url = Url.unsafeMake({
+ *   url: 'https://example.com',
+ *   searchParams: {
+ *     tag: ['new', 'sale'],
+ *   },
+ * });
+ *
+ * Url.format(url); // 'https://example.com?tag=new&tag=sale'
+ *
+ * // Remove specific 'tag' parameter
+ * url.pipe(
+ *   Url.deleteSearchParam('tag', 'sale'),
+ *   Url.format // 'https://example.com?tag=new'
+ * );
+ *
+ * // Remove all 'tag' parameters
+ * url.pipe(
+ *   Url.deleteSearchParam('tag', undefined),
+ *   Url.format // 'https://example.com'
+ * );
  * ```
  *
  * @category Combinators
@@ -59,8 +77,26 @@ export const deleteSearchParam: {
    * ```ts
    * import { Url } from 'fx-fetch';
    *
-   * const url = Url.make('https://api.example.com?page=1&limit=10');
-   * const urlWithoutParam = Url.deleteSearchParam(url, 'page');
+   * const url = Url.unsafeMake({
+   *   url: 'https://example.com',
+   *   searchParams: {
+   *     tag: ['new', 'sale'],
+   *   },
+   * });
+   *
+   * Url.format(url); // 'https://example.com?tag=new&tag=sale'
+   *
+   * // Remove specific 'tag' parameter
+   * url.pipe(
+   *   Url.deleteSearchParam('tag', 'sale'),
+   *   Url.format // 'https://example.com?tag=new'
+   * );
+   *
+   * // Remove all 'tag' parameters
+   * url.pipe(
+   *   Url.deleteSearchParam('tag', undefined),
+   *   Url.format // 'https://example.com'
+   * );
    * ```
    *
    * @category Combinators
@@ -74,12 +110,26 @@ export const deleteSearchParam: {
    * @example
    * ```ts
    * import { Url } from 'fx-fetch';
-   * import { pipe } from 'effect';
    *
-   * const url = Url.make('https://api.example.com?page=1&limit=10');
-   * const urlWithoutParam = pipe(
-   *   url,
-   *   Url.deleteSearchParam('page')
+   * const url = Url.unsafeMake({
+   *   url: 'https://example.com',
+   *   searchParams: {
+   *     tag: ['new', 'sale'],
+   *   },
+   * });
+   *
+   * Url.format(url); // 'https://example.com?tag=new&tag=sale'
+   *
+   * // Remove specific 'tag' parameter
+   * url.pipe(
+   *   Url.deleteSearchParam('tag', 'sale'),
+   *   Url.format // 'https://example.com?tag=new'
+   * );
+   *
+   * // Remove all 'tag' parameters
+   * url.pipe(
+   *   Url.deleteSearchParam('tag', undefined),
+   *   Url.format // 'https://example.com'
    * );
    * ```
    *
