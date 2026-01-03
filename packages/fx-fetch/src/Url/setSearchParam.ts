@@ -22,9 +22,6 @@ function setSearchParamFn(url: Url.Url, key: string, value: SearchParamValueInpu
   return makeFromUrlIntermediate(intermediate);
 }
 
-// TODO: Add tests
-// TODO: Add tests for dual APIs
-
 /**
  * Sets a search parameter on a Url.
  *
