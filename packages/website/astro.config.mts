@@ -13,6 +13,7 @@ export default defineConfig({
       title: 'Fx-Fetch',
       logo: {
         src: './public/logo_fx-fetch.svg',
+        replacesTitle: false,
       },
       customCss: ['@fontsource-variable/jetbrains-mono', './src/styles/custom.css'],
       markdown: {
@@ -86,6 +87,16 @@ export default defineConfig({
               label: 'Url',
               // items: [],
               slug: 'url',
+            },
+          ],
+        },
+        {
+          label: 'Examples',
+          collapsed: true,
+          items: [
+            {
+              label: 'Structured errors',
+              slug: 'examples/structured-errors',
             },
           ],
         },
