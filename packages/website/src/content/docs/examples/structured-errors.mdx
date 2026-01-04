@@ -5,9 +5,9 @@ description: Example of using Fx-Fetch to handle structured error payloads.
 
 import { Tabs, TabItem, Icon, Steps } from '@astrojs/starlight/components';
 
-There is an example how to handle structured error payloads using Fx-Fetch.
+Here is an example how to handle structured error payloads using Fx-Fetch.
 
-Is it good practice to have structured error payloads from your backend API.
+It is good practice to have structured error payloads from your backend API.
 This allows you to make decisions based on error codes and additional details provided in the error response.
 
 For example, consider the following error payload returned from the backend:
@@ -71,7 +71,7 @@ Let's go!
    }
    ```
 
-   But type signatures are not correct yet. If we want to have proper types, we need to use generics 😍. 
+   But type signatures are not correct yet. If we want to have proper types, we need to use generics 😍.
 
    ```ts twoslash showLineNumbers=true "<A, E, R, TError>" "A, E | Response.NotOkError, R" "A, E | Response.NotOkError | TError, R" "TError"
    // withStructuredError.ts
@@ -162,7 +162,7 @@ Let's go!
 
            return yield* Option.some(onError());
          }).pipe(
-           Effect.catchAll((_) => Effect.fail(selfErr)), // Re-assign original error if parsing fails
+           Effect.catchAll((_) => Effect.fail(selfErr)), // Reassign original error if parsing fails
            Effect.flatMap(Effect.fail) // Fail with the custom error
          )
        )
