@@ -90,6 +90,16 @@ export default defineConfig({
           ],
         },
         {
+          label: 'Examples',
+          collapsed: true,
+          items: [
+            {
+              label: 'Structured errors',
+              slug: 'examples/structured-errors',
+            },
+          ],
+        },
+        {
           label: 'API Reference',
           link: 'api-reference',
         },
