@@ -236,3 +236,16 @@ export const withStructuredError: {
   ) => Effect.Effect<A, E | Response.NotOkError | TError, R>;
 } = Function.dual(3, withStructuredErrorFn);
 ```
+
+## Conclusion
+
+:::note[How the Fx-Fetch helps?]{icon="heart"}
+As you can see, most of the code is related to EffectTS itself.
+Fx-Fetch gives you a freedom to focus on handling the error payloads
+without thinking about how to not shoot yourself in the foot 🦶🔫.
+:::
+
+- `Response` can be safely read multiple times.
+- `Response` cannot be mutated.
+- `Response.readJsonWithSchema` gives you a simple way to parse and validate JSON payloads.
+  - You cannot forget to handle all possible errors.
