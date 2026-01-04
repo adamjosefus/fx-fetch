@@ -1,0 +1,251 @@
+---
+title: Structured errors
+description: Example of using Fx-Fetch to handle structured error payloads.
+---
+
+import { Tabs, TabItem, Icon, Steps } from '@astrojs/starlight/components';
+
+Here is an example how to handle structured error payloads using Fx-Fetch.
+
+It is good practice to have structured error payloads from your backend API.
+This allows you to make decisions based on error codes and additional details provided in the error response.
+
+For example, consider the following error payload returned from the backend:
+
+```jsonc
+{
+  "error": {
+    "code": "BOOK_NOT_FOUND", // or "AUTHOR_NOT_FOUND"
+    "message": "The book with the given ID does not exist.",
+  }
+}
+```
+
+We would like to handle these structured errors through the Effect error channel.
+
+But we want to avoid boilerplate code for parsing the error response manually for each request.
+
+## Expected usage
+
+Final solution should be used like this:
+
+```ts showLineNumbers=true {7-8, 15-16}
+//       ┌─── Effect.Effect<
+//       │      void,
+//       │      | Fetch.FetchError
+//       │      | Fetch.AbortError
+//       │      | Fetch.NotAllowedError
+//       │      | Response.NotOkError
+//       │      | MyAuthorNotFoundError
+//       │      | MyBookNotFoundError,
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: 'https://example.com?authorId=123&bookId=456' });
+  const response = yield* Fetch.fetch(request).pipe(
+    withStructuredError('BOOK_NOT_FOUND', () => new MyBookNotFoundError()),
+    withStructuredError('AUTHOR_NOT_FOUND', () => new MyAuthorNotFoundError()),
+  );
+});
+```
+
+## Coding the solution
+
+Let's go!
+
+<Steps>
+1. Define `withStructuredError` function.
+
+   ```ts twoslash showLineNumbers=true
+   // withStructuredError.ts
+   // @noErrors
+   import { Effect } from 'effect';
+
+   function withStructuredErrorFn(
+     self: Effect.Effect<unknown>,
+     errorCode: string,
+     onError: () => unknown
+   ): Effect.Effect<unknown> {
+     // TODO: Implement
+   }
+   ```
+
+   But type signatures are not correct yet. If we want to have proper types, we need to use generics 😍.
+
+   ```ts twoslash showLineNumbers=true "<A, E, R, TError>" "A, E | Response.NotOkError, R" "A, E | Response.NotOkError | TError, R" "TError"
+   // withStructuredError.ts
+   // @noErrors
+   import { Effect } from 'effect';
+   import { Response } from 'fx-fetch';
+
+   function withStructuredErrorFn<A, E, R, TError>(
+     self: Effect.Effect<A, E | Response.NotOkError, R>, // ◀︎── Input must accept Response.NotOkError
+     errorCode: string,
+     onError: () => TError
+   ): Effect.Effect<A, E | Response.NotOkError | TError, R> { // ◀︎── Same as input plus TError in the union
+     // TODO: Implement
+   }
+   ```
+
+   - `A` for Effect success type
+   - `E` for Effect error type
+   - `R` for Effect required dependencies
+   - `TError` for error which represents the structured error
+
+
+
+2. Declare schema of the structured error response.
+
+   ```ts twoslash showLineNumbers=true {4-7}
+   // withStructuredError.ts
+   // @noErrors
+   import { Effect, Schema } from 'effect';
+
+   const ErrorSchema = Schema.Struct({
+     errorCode: Schema.String,
+     message: Schema.String,
+   });
+
+   function withStructuredErrorFn<A, E, R, TError>(
+     self: Effect.Effect<A, E | Response.NotOkError, R>,
+     errorCode: string,
+     onError: () => TError
+   ): Effect.Effect<A, E | Response.NotOkError | TError, R> {
+     // TODO: Implement
+   }
+   ```
+
+   The schema reflects the structure of the error payload we expect from the backend.
+
+3. Implement the function logic.
+
+   And what the function should do?
+
+   1. Process an error channel of Effect.
+   2. Check if the error is of type `Response.NotOkError`.
+   3. If so, parse the response body using the defined schema.
+   4. If the parsed error code matches the provided `errorCode`, invoke the `onError` callback.
+   5. Clean up after ourselves.
+   6. Add the resulting error to the Effect error channel.
+
+   ```ts twoslash showLineNumbers=true collapse={6-10}
+   // withStructuredError.ts
+   import { Effect, Option, Schema } from 'effect';
+   import { Response } from 'fx-fetch';
+
+   const ErrorSchema = Schema.Struct({
+     errorCode: Schema.String,
+     message: Schema.String,
+   });
+
+   function withStructuredErrorFn<A, E, R, TError>(
+     self: Effect.Effect<A, E | Response.NotOkError, R>,
+     errorCode: string,
+     onError: () => TError
+   ): Effect.Effect<A, E | Response.NotOkError | TError, R> {
+     return self.pipe(
+       Effect.catchAll((selfErr) =>
+         Effect.gen(function* () {
+           if (!(selfErr instanceof Response.NotOkError)) {
+             // If it's not a NotOkError, we can't handle it here
+             return yield* Option.none();
+           }
+   
+           const response = selfErr.response;
+           const payload = yield* Response.readJsonWithSchema(response, ErrorSchema);
+   
+           if (payload.errorCode !== errorCode) {
+             // Error code does not match, do not handle
+             return yield* Option.none();
+           }
+
+           return yield* Option.some(onError());
+         }).pipe(
+           Effect.catchAll((_) => Effect.fail(selfErr)), // Reassign original error if parsing fails
+           Effect.flatMap(Effect.fail) // Fail with the custom error
+         )
+       )
+     );
+   }
+   ```
+</Steps>
+
+That's it! You now have a reusable `withStructuredError` function that can be applied to any Fx-Fetch request to handle structured error payloads.
+
+Of course, you can enhance this further by adding a custom sub-schema for detailed error information
+or HTTP status code checks.
+
+## Add dual API support
+
+Adding dual API support is super simple because EffectTS `Function` module. Unfortunately only for runtime (JavaScript). The typescript types must be provided manually.
+
+```ts twoslash showLineNumbers=true
+import { Effect, Function, Option, Schema } from 'effect';
+import { Response } from 'fx-fetch';
+
+const ErrorSchema = Schema.Struct({
+  errorCode: Schema.String,
+  message: Schema.String,
+});
+
+function withStructuredErrorFn<A, E, R, TError>(
+  self: Effect.Effect<A, E | Response.NotOkError, R>,
+  errorCode: string,
+  onError: () => TError
+): Effect.Effect<A, E | Response.NotOkError | TError, R> {
+  return self.pipe(
+    Effect.catchAll((selfErr) =>
+      Effect.gen(function* () {
+        if (!(selfErr instanceof Response.NotOkError)) {
+          // If it's not a NotOkError, we can't handle it here
+          return yield* Option.none();
+        }
+
+        const response = selfErr.response;
+        const payload = yield* Response.readJsonWithSchema(response, ErrorSchema);
+
+        if (payload.errorCode !== errorCode) {
+          // Error code does not match, do not handle
+          return yield* Option.none();
+        }
+
+        return yield* Option.some(onError());
+      }).pipe(
+        Effect.catchAll((_) => Effect.fail(selfErr)), // Re-assign original error if parsing fails
+        Effect.flatMap(Effect.fail) // Fail with the custom error
+      )
+    )
+  );
+}
+
+export const withStructuredError: {
+  // Uncurried version
+  <A, E, R, TError>(
+    self: Effect.Effect<A, E | Response.NotOkError, R>,
+    errorCode: string,
+    onError: () => TError
+  ): Effect.Effect<A, E | Response.NotOkError | TError, R>;
+
+  // Curried version
+  <A, E, R, TError>(
+    errorCode: string,
+    onError: () => TError
+  ): (
+    self: Effect.Effect<A, E | Response.NotOkError, R>
+  ) => Effect.Effect<A, E | Response.NotOkError | TError, R>;
+} = Function.dual(3, withStructuredErrorFn);
+```
+
+## Conclusion
+
+:::note[How the Fx-Fetch helps?]{icon="heart"}
+As you can see, most of the code is related to EffectTS itself.
+Fx-Fetch gives you a freedom to focus on handling the error payloads
+without thinking about how to not shoot yourself in the foot 🦶🔫.
+:::
+
+- `Response` can be safely read multiple times.
+- `Response` cannot be mutated.
+- `Response.readJsonWithSchema` gives you a simple way to parse and validate JSON payloads.
+  - You cannot forget to handle all possible errors.
