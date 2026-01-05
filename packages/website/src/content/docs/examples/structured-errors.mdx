@@ -25,6 +25,7 @@ We would like to handle these structured errors through the Effect error channel
 
 But we want to avoid boilerplate code for parsing the error response manually for each request.
 
+
 ## Expected usage
 
 Final solution should be used like this:
@@ -52,6 +53,8 @@ const program = Effect.gen(function* () {
 
 ## Coding the solution
 
+### Step by step
+
 Let's go!
 
 <Steps>
@@ -73,7 +76,7 @@ Let's go!
 
    But type signatures are not correct yet. If we want to have proper types, we need to use generics 😍.
 
-   ```ts twoslash showLineNumbers=true "<A, E, R, TError>" "A, E | Response.NotOkError, R" "A, E | Response.NotOkError | TError, R" "TError"
+   ```ts twoslash showLineNumbers=true "<A, E, R, TError>" "A, E | Response.NotOkError, R" "A, E | Response.NotOkError | TError, R" "() => TError"
    // withStructuredError.ts
    // @noErrors
    import { Effect } from 'effect';
@@ -129,7 +132,7 @@ Let's go!
    5. Clean up after ourselves.
    6. Add the resulting error to the Effect error channel.
 
-   ```ts twoslash showLineNumbers=true collapse={6-10}
+   ```ts twoslash showLineNumbers=true
    // withStructuredError.ts
    import { Effect, Option, Schema } from 'effect';
    import { Response } from 'fx-fetch';
@@ -169,18 +172,19 @@ Let's go!
      );
    }
    ```
+
+4. Add dual API support
+
+   Adding dual API support is super simple because EffectTS `Function` module.
+   Unfortunately only for runtime (JavaScript).
+   The typescript types must be provided manually.
 </Steps>
+
+### Final code
 
 That's it! You now have a reusable `withStructuredError` function that can be applied to any Fx-Fetch request to handle structured error payloads.
 
-Of course, you can enhance this further by adding a custom sub-schema for detailed error information
-or HTTP status code checks.
-
-## Add dual API support
-
-Adding dual API support is super simple because EffectTS `Function` module. Unfortunately only for runtime (JavaScript). The typescript types must be provided manually.
-
-```ts twoslash showLineNumbers=true
+```ts twoslash collapse={5-6} collapse={10-36} showLineNumbers=true
 import { Effect, Function, Option, Schema } from 'effect';
 import { Response } from 'fx-fetch';
 
@@ -237,15 +241,19 @@ export const withStructuredError: {
 } = Function.dual(3, withStructuredErrorFn);
 ```
 
+Of course, you can enhance this further by adding a custom sub-schema for detailed error information
+or HTTP status code checks.
+
+
 ## Conclusion
 
-:::note[How the Fx-Fetch helps?]{icon="heart"}
 As you can see, most of the code is related to EffectTS itself.
 Fx-Fetch gives you a freedom to focus on handling the error payloads
 without thinking about how to not shoot yourself in the foot 🦶🔫.
-:::
 
+:::note[How the Fx-Fetch helps?]{icon="heart"}
 - `Response` can be safely read multiple times.
 - `Response` cannot be mutated.
 - `Response.readJsonWithSchema` gives you a simple way to parse and validate JSON payloads.
   - You cannot forget to handle all possible errors.
+:::

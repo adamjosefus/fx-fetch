@@ -1,4 +1,5 @@
 import starlight from '@astrojs/starlight';
+import { pluginCollapsibleSections as expressiveCodeCollapsibleSections } from '@expressive-code/plugin-collapsible-sections';
 import { pluginLineNumbers as expressiveCodeLineNumbers } from '@expressive-code/plugin-line-numbers';
 import { defineConfig } from 'astro/config';
 import expressiveCodeTwoslash from 'expressive-code-twoslash';
@@ -22,6 +23,7 @@ export default defineConfig({
       expressiveCode: {
         plugins: [
           expressiveCodeLineNumbers(),
+          expressiveCodeCollapsibleSections(),
           expressiveCodeTwoslash({
             explicitTrigger: true,
             includeJsDoc: true,
