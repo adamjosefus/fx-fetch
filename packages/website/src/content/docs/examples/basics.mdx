@@ -1,0 +1,63 @@
+---
+title: Structured errors
+description: Example of using Fx-Fetch to handle structured error payloads.
+---
+
+There is a basic example of fetching JSON with schema validation.
+
+We have all fetch errors handled through the Effect error channel. Potencial problems with JSONs are also handled.
+
+:::note
+For mode details about [`Fetch`](../../fetch) and [`Request`](../../request) modules, see docs.
+:::
+
+```ts twoslash
+import { Effect, Schema } from "effect";
+import { Fetch, Request } from "fx-fetch";
+
+class User extends Schema.Class<User>("User")({
+  id: Schema.Int,
+  firstName: Schema.String,
+  lastName: Schema.String,
+}) { }
+
+//     ┌─ (id: number) => Effect.Effect<
+//     │    User,
+//     │    | Fetch.AbortError
+//     │    | Fetch.FetchError
+//     │    | Fetch.NotAllowedError
+//     │    | Response.NotOkError
+//     │    | MalformedJsonError
+//     │    | ParseError,
+//     │    Fetch.Fetch
+//     │  >
+//     ▼
+const getUser = Effect.fn(function* (id: number) {
+  const req = Request.unsafeMake({ url: `https://dummyjson.com/users/${id}` });
+  const payload = yield* Fetch.fetchJsonWithSchema(req, User);
+
+  // User ╶─┐
+  //        ▼
+  return payload;
+});
+
+await getUser(1).pipe(
+  // Handle errors here
+  Effect.provideService(Fetch.Fetch, Fetch.FetchLive),
+  Effect.runPromise,
+);
+```
+
+
+---
+
+## Conclusion
+
+If you are familiar with EffectTS then this example should look very straightforward. The Fx-Fetch library uses same principles and patterns.
+
+Happy effectful coding!
+
+:::note[How the Fx-Fetch helps?]{icon="heart"}
+- `Fetch.fetchJsonWithSchema` combines fetching, JSON reading, and schema validation in one step.
+- `Effect.provideService` allows you to easily swap the Fetch implementation for testing/mocking.
+:::

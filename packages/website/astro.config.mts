@@ -97,6 +97,10 @@ export default defineConfig({
           collapsed: true,
           items: [
             {
+              label: 'Basics',
+              slug: 'examples/basics',
+            },
+            {
               label: 'Structured errors',
               slug: 'examples/structured-errors',
             },
