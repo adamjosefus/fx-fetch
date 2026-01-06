@@ -39,3 +39,29 @@ import { Fetch, Request, Response, Url } from "https://esm.sh/fx-fetch"
 ```
 	</TabItem>
 </Tabs>
+
+---
+
+### Tsconfig Setup
+
+:::caution[Recommendation]{icon="seti:tsconfig"}
+Some types used by Fx-Fetch rely on DOM library types. Make sure to include them in your `tsconfig.json`.
+:::
+
+```jsonc showLineNumbers=true {6-8}
+{
+  "compilerOptions": {
+		// ...
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable",
+      "DOM.AsyncIterable"
+    ],
+		// ...
+  }
+}
+```
+
+We know it's a bit annoying. We working on reducing the dependency on DOM types in future releases.
+There is an open issue tracking this: [#18](https://github.com/adamjosefus/fx-fetch/issues/18).
