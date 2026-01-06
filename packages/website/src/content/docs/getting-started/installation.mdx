@@ -10,26 +10,32 @@ It is easy. You can install FxFetch using your favorite package manager.
 
 <Tabs syncKey="dependency-manager">
 	<TabItem label="npm" icon="seti:npm">
-```bash
+```bash title="Terminal"
 npm install fx-fetch
 ```
 	</TabItem>
   
 	<TabItem label="pnpm" icon="pnpm">
-```bash
+```bash title="Terminal"
 pnpm add fx-fetch
 ```
 	</TabItem>
 
 	<TabItem label="Bun" icon="bun">
-```bash
+```bash title="Terminal"
 bun add fx-fetch
 ```
 	</TabItem>
 
 	<TabItem label="Deno" icon="deno">
-```bash
+```bash title="Terminal"
 deno install npm:fx-fetch
+```
+	</TabItem>
+
+	<TabItem label="esm.sh" icon="seti:tsconfig">
+```ts showLineNumbers=false title="main.ts"
+import { Fetch, Request, Response, Url } from "https://esm.sh/fx-fetch"
 ```
 	</TabItem>
 </Tabs>
