@@ -1,7 +1,124 @@
 {
   "root": false,
-  "extends": ["@/shared/biome.json"],
-  "files": {
-    "includes": ["**", "!./dist/**/*"]
+  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ":BUN:",
+              ":NODE:",
+              [":PACKAGE_WITH_PROTOCOL:", ":PACKAGE:"],
+              ":URL:",
+              ":ALIAS:",
+              ":PATH:"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "bracketSameLine": false,
+      "bracketSpacing": true,
+      "jsxQuoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "es5"
+    }
+  },
+  "linter": {
+    "rules": {
+      "a11y": {
+        "noLabelWithoutControl": "off",
+        "noStaticElementInteractions": "off",
+        "noSvgWithoutTitle": "off",
+        "useKeyWithClickEvents": "off"
+      },
+      "complexity": {
+        "noBannedTypes": "warn",
+        "noExtraBooleanCast": "warn",
+        "noForEach": "off",
+        "noStaticOnlyClass": "off",
+        "noThisInStatic": "warn",
+        "noUselessConstructor": "warn",
+        "noUselessLabel": "warn",
+        "noUselessTernary": "warn",
+        "noUselessThisAlias": "off",
+        "useDateNow": "warn",
+        "useFlatMap": "warn",
+        "useLiteralKeys": "warn",
+        "useOptionalChain": "warn",
+        "useSimpleNumberKeys": "warn",
+        "useSimplifiedLogicExpression": "warn"
+      },
+      "correctness": {
+        "noConstantMathMinMaxClamp": "warn",
+        "noConstAssign": "error",
+        "noSwitchDeclarations": "off",
+        "noUnusedImports": "warn",
+        "noUnusedVariables": "warn",
+        "useValidForDirection": "error",
+        "useYield": "off"
+      },
+      "nursery": {
+        "useSortedClasses": "off"
+      },
+      "performance": {
+        "noAccumulatingSpread": "off",
+        "noDelete": "error"
+      },
+      "style": {
+        "noCommonJs": "warn",
+        "noInferrableTypes": "warn",
+        "noNegationElse": "off",
+        "noNonNullAssertion": "error",
+        "noParameterAssign": "warn",
+        "noUnusedTemplateLiteral": "warn",
+        "noUselessElse": "warn",
+        "noYodaExpression": "warn",
+        "useAsConstAssertion": "warn",
+        "useBlockStatements": "warn",
+        "useConsistentArrayType": {
+          "level": "warn",
+          "options": {
+            "syntax": "shorthand"
+          }
+        },
+        "useDefaultParameterLast": "warn",
+        "useEnumInitializers": "warn",
+        "useExportType": "warn",
+        "useForOf": "warn",
+        "useFragmentSyntax": "warn",
+        "useImportType": "off",
+        "useNodejsImportProtocol": "warn",
+        "useNumberNamespace": "warn",
+        "useSelfClosingElements": "warn",
+        "useSingleVarDeclarator": "warn"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off",
+        "noAssignInExpressions": "error",
+        "noConfusingVoidType": "warn",
+        "noExplicitAny": "error",
+        "noPrototypeBuiltins": "off",
+        "useAdjacentOverloadSignatures": "info",
+        "useAwait": "warn",
+        "useIsArray": "warn"
+      }
+    }
+  },
+  "vcs": {
+    "clientKind": "git",
+    "enabled": true,
+    "useIgnoreFile": true
   }
 }
