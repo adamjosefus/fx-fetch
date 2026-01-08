@@ -1,4 +1,4 @@
-import { Context } from 'effect';
+import type { Tag } from 'effect/Context';
 import { Fetch } from './Fetch';
 
 /**
@@ -7,4 +7,4 @@ import { Fetch } from './Fetch';
  * @since 0.1.0
  * @category Models
  */
-export type Type = Context.Tag.Service<Fetch>;
+export type Type = Tag.Service<Fetch>;

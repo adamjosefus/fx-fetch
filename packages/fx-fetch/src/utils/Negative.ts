@@ -1,7 +1,7 @@
-import { Brand } from 'effect';
+import { type Brand, error, refined } from 'effect/Brand';
 
-export type Negative = number & Brand.Brand<'Negative'>;
-export const Negative = Brand.refined<Negative>(
+export type Negative = number & Brand<'Negative'>;
+export const Negative = refined<Negative>(
   (n) => n < 0,
-  (n) => Brand.error(`Expected ${n} to be negative`)
+  (n) => error(`Expected ${n} to be negative`)
 );

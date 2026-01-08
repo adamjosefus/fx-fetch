@@ -1,6 +1,6 @@
-import { Effect } from 'effect';
-import type * as Request from '../Request';
-import * as Response from '../Response';
+import { flatMap } from 'effect/Effect';
+import type { Request } from '../Request';
+import { readArrayBuffer } from '../Response';
 import { fetch } from './fetchFn';
 
 /**
@@ -9,5 +9,4 @@ import { fetch } from './fetchFn';
  * @category Functions
  * @since 0.1.0
  */
-export const fetchArrayBuffer = (request: Request.Request) =>
-  fetch(request).pipe(Effect.flatMap(Response.readArrayBuffer));
+export const fetchArrayBuffer = (request: Request) => fetch(request).pipe(flatMap(readArrayBuffer));

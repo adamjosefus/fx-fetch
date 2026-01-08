@@ -1,7 +1,7 @@
 import { headersIntermediateClear } from '../utils/headersIntermediateClear';
 import { responseToResponseIntermediate } from './inputToResponseIntermediate';
 import { makeFromResponseIntermediate } from './makeFromResponseIntermediate';
-import * as Response from './Response';
+import type { Response } from './Response';
 
 // TODO: Add tests
 
@@ -19,7 +19,7 @@ import * as Response from './Response';
  * @category Combinators
  * @since 0.1.0
  */
-export function clearHeaders(self: Response.Response): Response.Response {
+export function clearHeaders(self: Response): Response {
   const intermediate = responseToResponseIntermediate(self);
   headersIntermediateClear(intermediate.clonedHeaders);
 

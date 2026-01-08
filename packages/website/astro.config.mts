@@ -7,6 +7,7 @@ import blog from 'starlight-blog';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://adamjosefus.github.io/fx-fetch/',
   base: import.meta.env.PROD ? '/fx-fetch' : undefined,
   trailingSlash: 'ignore',
   integrations: [

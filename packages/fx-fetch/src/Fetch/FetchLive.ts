@@ -1,9 +1,11 @@
-import { Effect, Option } from 'effect';
-import * as Request from '../Request';
-import * as Response from '../Response';
+import { RuntimeException } from 'effect/Cause';
+import { dieMessage, flatMap, map, succeed, tryPromise } from 'effect/Effect';
+import { match } from 'effect/Option';
+import { type Request, toJsRequestPromise } from '../Request';
+import { ensureOk, make } from '../Response';
 import { getErrorMessage } from '../utils/getErrorMessage';
 import { AbortError, FetchError, NotAllowedError } from './errors';
-import { Type } from './Type';
+import type { Type } from './Type';
 
 // TODO: Add examples
 
@@ -13,10 +15,10 @@ import { Type } from './Type';
  * @category Layers
  * @since 0.1.0
  */
-export const FetchLive: Type = (request: Request.Request) =>
-  Effect.tryPromise({
+export const FetchLive: Type = (request: Request) =>
+  tryPromise({
     try: async (signal) => {
-      const jsRequest = await Request.toJsRequestPromise(request, { signal });
+      const jsRequest = await toJsRequestPromise(request, { signal });
       return await globalThis.fetch(jsRequest);
     },
     catch(error) {
@@ -43,17 +45,17 @@ export const FetchLive: Type = (request: Request.Request) =>
         }
       }
 
-      return Effect.dieMessage(
+      throw new RuntimeException(
         getErrorMessage(error, 'Unknown error occurred during fetch request')
-      ) as never;
+      );
     },
   }).pipe(
-    Effect.map(Response.make),
-    Effect.flatMap(
-      Option.match({
-        onSome: Effect.succeed,
-        onNone: () => Effect.dieMessage('Failed to create Response from fetch response'),
+    map(make),
+    flatMap(
+      match({
+        onSome: succeed,
+        onNone: () => dieMessage('Failed to create Response from fetch response'),
       })
     ),
-    Effect.flatMap(Response.ensureOk)
+    flatMap(ensureOk)
   );

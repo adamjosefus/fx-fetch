@@ -2,9 +2,9 @@ import { dual } from 'effect/Function';
 import { headersIntermediateDelete } from '../utils/headersIntermediateDelete';
 import { responseToResponseIntermediate } from './inputToResponseIntermediate';
 import { makeFromResponseIntermediate } from './makeFromResponseIntermediate';
-import * as Response from './Response';
+import type { Response } from './Response';
 
-function deleteHeaderFn(self: Response.Response, name: string, value?: string): Response.Response {
+function deleteHeaderFn(self: Response, name: string, value?: string): Response {
   const intermediate = responseToResponseIntermediate(self);
   headersIntermediateDelete(intermediate.clonedHeaders, name, value);
 
@@ -42,7 +42,7 @@ export const deleteHeader: {
    * @category Combinators
    * @since 0.1.0
    */
-  (self: Response.Response, name: string, value?: string): Response.Response;
+  (self: Response, name: string, value?: string): Response;
   /**
    * Deletes a header from a Response.
    *
@@ -62,5 +62,5 @@ export const deleteHeader: {
    * @category Combinators
    * @since 0.1.0
    */
-  (name: string, value?: string): (self: Response.Response) => Response.Response;
+  (name: string, value?: string): (self: Response) => Response;
 } = dual(2, deleteHeaderFn);

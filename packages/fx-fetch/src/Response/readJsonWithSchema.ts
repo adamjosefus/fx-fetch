@@ -1,13 +1,13 @@
-import { Effect, ParseResult, Schema } from 'effect';
+import { type Effect, flatMap } from 'effect/Effect';
 import { dual } from 'effect/Function';
+import { type ParseError } from 'effect/ParseResult';
+import { decodeUnknown, type Schema } from 'effect/Schema';
 import { MalformedJsonError } from '../Cause';
-import * as Response from './Response';
+import type { Response } from './Response';
 import { readJson } from './readJson';
 
-const readJsonWithSchemaFn = <A, I, R>(
-  response: Response.Response,
-  schema: Schema.Schema<A, I, R>
-) => readJson(response).pipe(Effect.flatMap(Schema.decodeUnknown(schema)));
+const readJsonWithSchemaFn = <A, I, R>(response: Response, schema: Schema<A, I, R>) =>
+  readJson(response).pipe(flatMap(decodeUnknown(schema)));
 
 // TODO: Add tests
 // TODO: Add tests for dual APIs
@@ -26,9 +26,9 @@ export const readJsonWithSchema: {
    * @since 0.1.0
    */
   <A, I, R>(
-    response: Response.Response,
-    schema: Schema.Schema<A, I, R>
-  ): Effect.Effect<A, MalformedJsonError | ParseResult.ParseError, R>;
+    response: Response,
+    schema: Schema<A, I, R>
+  ): Effect<A, MalformedJsonError | ParseError, R>;
 
   /**
    * Reads a JSON response with the given schema.
@@ -37,8 +37,6 @@ export const readJsonWithSchema: {
    * @since 0.1.0
    */
   <A, I, R>(
-    schema: Schema.Schema<A, I, R>
-  ): (
-    response: Response.Response
-  ) => Effect.Effect<A, MalformedJsonError | ParseResult.ParseError, R>;
+    schema: Schema<A, I, R>
+  ): (response: Response) => Effect<A, MalformedJsonError | ParseError, R>;
 } = dual(2, readJsonWithSchemaFn);

@@ -1,16 +1,15 @@
-import { Chunk, Effect, Stream } from 'effect';
+import { toReadonlyArray } from 'effect/Chunk';
+import { type Effect, map } from 'effect/Effect';
 import { dual } from 'effect/Function';
-import * as Request from '../Request';
-import * as Response from '../Response';
+import { runCollect } from 'effect/Stream';
+import type { Request } from '../Request';
+import { NotOkError } from '../Response';
 import { AbortError, FetchError, NotAllowedError } from './errors';
 import { Fetch } from './Fetch';
-import { OnResponse, paginatedFetchStream } from './paginatedFetchStream';
+import { type OnResponse, paginatedFetchStream } from './paginatedFetchStream';
 
-function paginatedFetchFn<A, E, R>(request: Request.Request, onResponse: OnResponse<A, E, R>) {
-  return paginatedFetchStream(request, onResponse).pipe(
-    Stream.runCollect,
-    Effect.map(Chunk.toReadonlyArray)
-  );
+function paginatedFetchFn<A, E, R>(request: Request, onResponse: OnResponse<A, E, R>) {
+  return paginatedFetchStream(request, onResponse).pipe(runCollect, map(toReadonlyArray));
 }
 
 // TODO: Add tests for dual APIs
@@ -111,13 +110,9 @@ export const paginatedFetch: {
    * ```
    */
   <A, E, R>(
-    request: Request.Request,
+    request: Request,
     onResponse: OnResponse<A, E, R>
-  ): Effect.Effect<
-    readonly A[],
-    E | AbortError | FetchError | NotAllowedError | Response.NotOkError,
-    R | Fetch
-  >;
+  ): Effect<readonly A[], E | AbortError | FetchError | NotAllowedError | NotOkError, R | Fetch>;
   /**
    * @category Functions
    * @since 0.1.0
@@ -168,10 +163,6 @@ export const paginatedFetch: {
   <A, E, R>(
     onResponse: OnResponse<A, E, R>
   ): (
-    request: Request.Request
-  ) => Effect.Effect<
-    readonly A[],
-    E | AbortError | FetchError | NotAllowedError | Response.NotOkError,
-    R | Fetch
-  >;
+    request: Request
+  ) => Effect<readonly A[], E | AbortError | FetchError | NotAllowedError | NotOkError, R | Fetch>;
 } = dual(2, paginatedFetchFn);

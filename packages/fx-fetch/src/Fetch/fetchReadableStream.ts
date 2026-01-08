@@ -1,6 +1,6 @@
-import { Effect } from 'effect';
-import type * as Request from '../Request';
-import * as Response from '../Response';
+import { flatMap } from 'effect/Effect';
+import type { Request } from '../Request';
+import { readReadableStream } from '../Response';
 import { fetch } from './fetchFn';
 
 /**
@@ -8,7 +8,7 @@ import { fetch } from './fetchFn';
  *
  * @category Functions
  * @since 0.1.0
- * @see {@link Response.readReadableStream}
+ * @see {@link readReadableStream}
  * @example
  * ```ts
  * import { Effect } from 'effect';
@@ -33,5 +33,5 @@ import { fetch } from './fetchFn';
  * });
  * ```
  */
-export const fetchReadableStream = (request: Request.Request) =>
-  fetch(request).pipe(Effect.flatMap(Response.readReadableStream));
+export const fetchReadableStream = (request: Request) =>
+  fetch(request).pipe(flatMap(readReadableStream));

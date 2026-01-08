@@ -1,4 +1,6 @@
-import { absurd, Cause, Either } from 'effect';
+import { IllegalArgumentException } from 'effect/Cause';
+import { type Either, left as eitherLeft, right as eitherRight, isLeft } from 'effect/Either';
+import { absurd } from 'effect/Function';
 import { inputToUrlIntermediate, urlToUrlIntermediate } from '../Url/inputToUrlIntermediate';
 import { inputToSearchParamsIntermediate } from '../Url/SearchParamsIntermediate';
 import { cloneHeadersIntermediate } from '../utils/cloneHeadersIntermediate';
@@ -6,10 +8,10 @@ import { inputToHeadersIntermediate } from '../utils/inputToHeadersIntermediate'
 import { isArray } from '../utils/isArray';
 import { normalizeAndCloneBody } from '../utils/normalizeAndCloneBody';
 import { classifyRequestInput } from './classifyRequestInput';
-import { isMethod, Method } from './Method';
-import { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
-import * as Request from './Request';
-import { RequestIntermediate } from './RequestIntermediate';
+import { isMethod, type Method } from './Method';
+import type { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
+import type { Request } from './Request';
+import type { RequestIntermediate } from './RequestIntermediate';
 
 /**
  * @internal We clone just the array of signals. Not signals themselves, because we want keep the same abort behavior.
@@ -64,24 +66,24 @@ function isMethodValid(method: unknown): method is Method {
  */
 function jsRequestToRequestIntermediate(
   jsRequest: globalThis.Request
-): Either.Either<RequestIntermediate, Cause.IllegalArgumentException> {
+): Either<RequestIntermediate, IllegalArgumentException> {
   if (jsRequest.bodyUsed) {
-    return Either.left(
-      new Cause.IllegalArgumentException('Request cannot be created. Body has already been used.')
+    return eitherLeft(
+      new IllegalArgumentException('Request cannot be created. Body has already been used.')
     );
   }
 
   const url = inputToUrlIntermediate(jsRequest.url);
-  if (Either.isLeft(url)) {
-    return Either.left(
-      new Cause.IllegalArgumentException('Request cannot be created. Invalid URL input.')
+  if (isLeft(url)) {
+    return eitherLeft(
+      new IllegalArgumentException('Request cannot be created. Invalid URL input.')
     );
   }
 
   const normalizedMethod = normalizeMethod(jsRequest.method);
   if (!isMethodValid(normalizedMethod)) {
-    return Either.left(
-      new Cause.IllegalArgumentException(
+    return eitherLeft(
+      new IllegalArgumentException(
         `Request cannot be created. Invalid HTTP method: "${normalizedMethod}".`
       )
     );
@@ -106,19 +108,19 @@ function jsRequestToRequestIntermediate(
     referrerPolicy: normalizeReferrerPolicy(jsRequest.referrerPolicy),
   };
 
-  return Either.right(request);
+  return eitherRight(request);
 }
 
 function optionsToRequestIntermediate(
-  options: Request.Request.Options
-): Either.Either<RequestIntermediate, Cause.IllegalArgumentException> {
+  options: Request.Options
+): Either<RequestIntermediate, IllegalArgumentException> {
   const { searchParams: searchParamsInput, ...parts } = options;
 
-  // Compile-time check that "parts" satisfies Request.Request.Parts
-  const _typeCheck: Request.Request.Parts = parts;
+  // Compile-time check that "parts" satisfies Request.Parts
+  const _typeCheck: Request.Parts = parts;
 
   const requestIntermediate = partsToRequestIntermediate(parts);
-  if (Either.isLeft(requestIntermediate)) {
+  if (isLeft(requestIntermediate)) {
     return requestIntermediate;
   }
 
@@ -143,20 +145,20 @@ function optionsToRequestIntermediate(
  * without keeping references to the input object.
  */
 function partsToRequestIntermediate(
-  parts: Request.Request.Parts
-): Either.Either<RequestIntermediate, Cause.IllegalArgumentException> {
+  parts: Request.Parts
+): Either<RequestIntermediate, IllegalArgumentException> {
   const url = inputToUrlIntermediate(parts.url);
 
-  if (Either.isLeft(url)) {
-    return Either.left(
-      new Cause.IllegalArgumentException('Request cannot be created. Invalid URL input.')
+  if (isLeft(url)) {
+    return eitherLeft(
+      new IllegalArgumentException('Request cannot be created. Invalid URL input.')
     );
   }
 
   const normalizedMethod = normalizeMethod(parts.method);
   if (!isMethodValid(normalizedMethod)) {
-    return Either.left(
-      new Cause.IllegalArgumentException(
+    return eitherLeft(
+      new IllegalArgumentException(
         `Request cannot be created. Invalid HTTP method: "${normalizedMethod}".`
       )
     );
@@ -181,14 +183,14 @@ function partsToRequestIntermediate(
     referrerPolicy: normalizeReferrerPolicy(parts.referrerPolicy),
   };
 
-  return Either.right(request);
+  return eitherRight(request);
 }
 
 /**
  * @internal Converts a Request.Request to mutable RequestIntermediate
  * without keeping references to the input object.
  */
-export function requestToRequestIntermediate(request: Request.Request): RequestIntermediate {
+export function requestToRequestIntermediate(request: Request): RequestIntermediate {
   return {
     cache: request.cache,
     clonedBody: normalizeAndCloneBody(request.body),
@@ -212,13 +214,13 @@ export function requestToRequestIntermediate(request: Request.Request): RequestI
  * without keeping references to the input object.
  */
 export function inputToRequestIntermediate(
-  input: Request.Request.Input
-): Either.Either<RequestIntermediate, Cause.IllegalArgumentException> {
+  input: Request.Input
+): Either<RequestIntermediate, IllegalArgumentException> {
   const classified = classifyRequestInput(input);
 
   switch (classified.type) {
     case 'request': {
-      return Either.right(requestToRequestIntermediate(classified.input));
+      return eitherRight(requestToRequestIntermediate(classified.input));
     }
 
     case 'jsRequest': {

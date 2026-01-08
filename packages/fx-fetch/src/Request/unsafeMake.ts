@@ -1,7 +1,7 @@
-import { Either } from 'effect';
+import { isLeft } from 'effect/Either';
 import { inputToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
-import * as Request from './Request';
+import type { Request } from './Request';
 
 // TODO: Add tests for dual APIs
 
@@ -23,9 +23,9 @@ import * as Request from './Request';
  * @category Constructors
  * @since 0.1.0
  */
-export function unsafeMake(input: Request.Request.Input): Request.Request {
+export function unsafeMake(input: Request.Input): Request {
   const intermediate = inputToRequestIntermediate(input);
-  if (Either.isLeft(intermediate)) {
+  if (isLeft(intermediate)) {
     throw intermediate.left;
   }
 

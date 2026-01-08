@@ -1,4 +1,4 @@
-import * as Request from './Request';
+import type { Request } from './Request';
 
 /**
  * Gets the abort signal of the request.
@@ -19,5 +19,5 @@ import * as Request from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const getSignal = (self: Request.Request): globalThis.AbortSignal | undefined =>
+export const getSignal = (self: Request): globalThis.AbortSignal | undefined =>
   self.signals.length > 0 ? AbortSignal.any([...self.signals]) : undefined;

@@ -1,6 +1,6 @@
 import { headersToJsHeaders } from '../utils/headersToJsHeaders';
 import { getHeaders } from './getHeaders';
-import * as Response from './Response';
+import type { Response } from './Response';
 
 /**
  * Converts a Response's headers to a standard JavaScript Headers object.
@@ -21,6 +21,6 @@ import * as Response from './Response';
  * @since 0.1.0
  * @category Conversions
  */
-export function toJsHeaders(self: Response.Response): globalThis.Headers {
+export function toJsHeaders(self: Response): globalThis.Headers {
   return self.pipe(getHeaders, headersToJsHeaders);
 }

@@ -1,11 +1,11 @@
 import { dual } from 'effect/Function';
+import type { Url } from '../Url';
 import { urlToUrlIntermediate } from './inputToUrlIntermediate';
 import { makeFromUrlIntermediate } from './makeFromUrlIntermediate';
-import { SearchParamsInput } from './SearchParamsInput';
+import type { SearchParamsInput } from './SearchParamsInput';
 import { inputToSearchParamValueIntermediate } from './SearchParamValueIntermediate';
-import * as Url from './Url';
 
-function setSearchParamsFn(url: Url.Url, params: SearchParamsInput): Url.Url {
+function setSearchParamsFn(url: Url, params: SearchParamsInput): Url {
   const intermediate = urlToUrlIntermediate(url);
 
   for (const [key, value] of Object.entries(params)) {
@@ -99,7 +99,7 @@ export const setSearchParams: {
    * @category Combinators
    * @since 0.1.0
    */
-  (url: Url.Url, params: SearchParamsInput): Url.Url;
+  (url: Url, params: SearchParamsInput): Url;
 
   /**
    * Sets or updates multiple search parameters in the existing URL's query string.
@@ -137,5 +137,5 @@ export const setSearchParams: {
    * @category Combinators
    * @since 0.1.0
    */
-  (params: SearchParamsInput): (url: Url.Url) => Url.Url;
+  (params: SearchParamsInput): (url: Url) => Url;
 } = dual(2, setSearchParamsFn);

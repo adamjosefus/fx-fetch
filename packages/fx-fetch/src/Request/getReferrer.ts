@@ -1,4 +1,4 @@
-import * as Request from './Request';
+import type { Request } from './Request';
 
 /**
  * Gets the referrer of the request.
@@ -15,4 +15,4 @@ import * as Request from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const getReferrer = (self: Request.Request): string | undefined => self.referrer;
+export const getReferrer = (self: Request): string | undefined => self.referrer;

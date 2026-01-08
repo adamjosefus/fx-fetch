@@ -1,5 +1,5 @@
-import * as Url from '../Url';
-import * as Request from './Request';
+import type { Url } from '../Url';
+import type { Request } from './Request';
 
 /**
  * Gets the URL of the request.
@@ -16,4 +16,4 @@ import * as Request from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const getUrl = (self: Request.Request): Url.Url => self.url;
+export const getUrl = (self: Request): Url => self.url;

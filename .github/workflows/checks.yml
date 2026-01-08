@@ -11,10 +11,10 @@ jobs:
     name: 💯 Checks
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: Install pnpm
+      - name: 🟧 Install pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 10
@@ -36,3 +36,8 @@ jobs:
 
       - name: 📐 Format & Lint
         run: pnpm fmt
+
+      - name: 🏗️ Build
+        run: |
+          pnpm build
+          pnpm nx run website:build

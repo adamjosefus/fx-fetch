@@ -1,7 +1,7 @@
-import { Either } from 'effect';
+import { isLeft } from 'effect/Either';
 import { inputToResponseIntermediate } from './inputToResponseIntermediate';
 import { makeFromResponseIntermediate } from './makeFromResponseIntermediate';
-import * as Response from './Response';
+import type { Response } from './Response';
 
 // TODO: Add tests for dual APIs
 // TODO: Add examples
@@ -13,10 +13,10 @@ import * as Response from './Response';
  * @category Models
  * @since 0.1.0
  */
-export function unsafeMake(input: Response.Response.Input): Response.Response {
+export function unsafeMake(input: Response.Input): Response {
   const intermediate = inputToResponseIntermediate(input);
 
-  if (Either.isLeft(intermediate)) {
+  if (isLeft(intermediate)) {
     throw intermediate.left;
   }
 

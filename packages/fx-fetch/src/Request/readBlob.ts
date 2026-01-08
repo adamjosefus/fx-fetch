@@ -1,7 +1,7 @@
-import { Effect } from 'effect';
+import { tryPromise } from 'effect/Effect';
 import { MalformedBlobError } from '../Cause';
 import { readBodyAsBlobOrThrow } from '../utils/readBodyAsBlobOrThrow';
-import * as Request from './Request';
+import type { Request } from './Request';
 
 // TODO: Add examples
 
@@ -20,8 +20,8 @@ import * as Request from './Request';
  * @category Conversions
  * @since 0.1.0
  */
-export const readBlob = (self: Request.Request) =>
-  Effect.tryPromise({
+export const readBlob = (self: Request) =>
+  tryPromise({
     try: () => readBodyAsBlobOrThrow(self.body),
     catch: (error) =>
       new MalformedBlobError({

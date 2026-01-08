@@ -1,4 +1,4 @@
-import * as Request from './Request';
+import type { Request } from './Request';
 
 /**
  * Gets the integrity value of the request.
@@ -18,4 +18,4 @@ import * as Request from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const getIntegrity = (self: Request.Request): string | undefined => self.integrity;
+export const getIntegrity = (self: Request): string | undefined => self.integrity;

@@ -1,7 +1,7 @@
-import { Effect } from 'effect';
+import { tryPromise } from 'effect/Effect';
 import { MalformedArrayBufferError } from '../Cause';
 import { readBodyAsArrayBufferOrThrow } from '../utils/readBodyAsArrayBufferOrThrow';
-import * as Request from './Request';
+import type { Request } from './Request';
 
 /**
  * Reads the body of a Request as an ArrayBuffer.
@@ -18,8 +18,8 @@ import * as Request from './Request';
  * @category Conversions
  * @since 0.1.0
  */
-export const readArrayBuffer = (self: Request.Request) =>
-  Effect.tryPromise({
+export const readArrayBuffer = (self: Request) =>
+  tryPromise({
     try: () => readBodyAsArrayBufferOrThrow(self.body),
     catch: (error) =>
       new MalformedArrayBufferError({

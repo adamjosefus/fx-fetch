@@ -1,6 +1,6 @@
 import { absurd } from 'effect';
 import { isArray } from '../utils/isArray';
-import { SearchParamValueInput } from './SearchParamValueInput';
+import type { SearchParamValueInput } from './SearchParamValueInput';
 
 /**
  * @internal Mutable intermediate representation of a Url.Url.

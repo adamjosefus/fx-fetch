@@ -1,5 +1,5 @@
-import { Data } from 'effect';
-import type * as Response from './Response';
+import { TaggedError } from 'effect/Data';
+import type { Response } from './Response';
 
 /**
  * Thrown if the response is not OK. So the status code is not in the range 200-299.
@@ -7,7 +7,7 @@ import type * as Response from './Response';
  * @category Errors
  * @since 0.1.0
  */
-export class NotOkError extends Data.TaggedError('NotOkError')<{
-  response: Response.Response;
+export class NotOkError extends TaggedError('NotOkError')<{
+  response: Response;
   reason: 'client-error' | 'informational' | 'redirection' | 'server-error';
 }> {}

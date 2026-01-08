@@ -1,7 +1,7 @@
-import { Effect } from 'effect';
+import { tryPromise } from 'effect/Effect';
 import { MalformedFormDataError } from '../Cause';
 import { readBodyAsFormDataOrThrow } from '../utils/readBodyAsFormDataOrThrow';
-import * as Request from './Request';
+import { type Request } from './Request';
 
 // TODO: Add examples
 
@@ -20,8 +20,8 @@ import * as Request from './Request';
  * @category Conversions
  * @since 0.1.0
  */
-export const readFormData = (self: Request.Request) =>
-  Effect.tryPromise({
+export const readFormData = (self: Request) =>
+  tryPromise({
     try: () => readBodyAsFormDataOrThrow(self.body),
     catch: (error) =>
       new MalformedFormDataError({

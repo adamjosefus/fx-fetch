@@ -1,4 +1,4 @@
-import * as Url from './Url';
+import { TypeId, type Url } from '../Url';
 
 /**
  * Checks if the given value is a Url.
@@ -16,7 +16,7 @@ import * as Url from './Url';
  * @category Guards
  * @since 0.1.0
  */
-export function isUrl(value: unknown): value is Url.Url {
+export function isUrl(value: unknown): value is Url {
   const isObject = typeof value === 'object' && value !== null;
 
   if (!isObject) {
@@ -24,7 +24,7 @@ export function isUrl(value: unknown): value is Url.Url {
   }
 
   // biome-ignore lint/suspicious/noExplicitAny: It's safe to use `any` for property detection.
-  const hasTypeId = (value as any)[Url.TypeId] === Url.TypeId;
+  const hasTypeId = (value as any)[TypeId] === TypeId;
   // biome-ignore lint/suspicious/noExplicitAny: It's safe to use `any` for property detection.
   const hasTag = (value as any)._tag === 'Url';
 

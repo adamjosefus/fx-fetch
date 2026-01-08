@@ -1,7 +1,7 @@
-import { Effect } from 'effect';
+import { tryPromise } from 'effect/Effect';
 import { MalformedReadableStreamError } from '../Cause';
 import { readBodyAsReadableStreamOrThrow } from '../utils/readBodyAsReadableStreamOrThrow';
-import * as Response from './Response';
+import type { Response } from './Response';
 
 // TODO: Add tests
 
@@ -11,8 +11,8 @@ import * as Response from './Response';
  * @category Conversions
  * @since 0.1.0
  */
-export const readReadableStream = (response: Response.Response) =>
-  Effect.tryPromise({
+export const readReadableStream = (response: Response) =>
+  tryPromise({
     try: () => readBodyAsReadableStreamOrThrow(response.body),
     catch: (error) =>
       new MalformedReadableStreamError({

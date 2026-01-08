@@ -1,4 +1,4 @@
-import { Data } from 'effect';
+import { TaggedError } from 'effect/Data';
 
 /**
  * Thrown if the request is not valid `ArrayBuffer`.
@@ -6,7 +6,7 @@ import { Data } from 'effect';
  * @category Errors
  * @since 0.1.0
  */
-export class MalformedArrayBufferError extends Data.TaggedError('MalformedArrayBufferError')<{
+export class MalformedArrayBufferError extends TaggedError('MalformedArrayBufferError')<{
   message: string;
   cause: unknown;
 }> {}
@@ -17,7 +17,7 @@ export class MalformedArrayBufferError extends Data.TaggedError('MalformedArrayB
  * @category Errors
  * @since 0.1.0
  */
-export class MalformedBlobError extends Data.TaggedError('MalformedBlobError')<{
+export class MalformedBlobError extends TaggedError('MalformedBlobError')<{
   message: string;
   cause: unknown;
 }> {}
@@ -28,7 +28,7 @@ export class MalformedBlobError extends Data.TaggedError('MalformedBlobError')<{
  * @category Errors
  * @since 0.1.0
  */
-export class MalformedReadableStreamError extends Data.TaggedError('MalformedStreamError')<{
+export class MalformedReadableStreamError extends TaggedError('MalformedReadableStreamError')<{
   message: string;
   cause: unknown;
 }> {}
@@ -39,7 +39,7 @@ export class MalformedReadableStreamError extends Data.TaggedError('MalformedStr
  * @category Errors
  * @since 0.1.0
  */
-export class MalformedBytesError extends Data.TaggedError('MalformedBytesError')<{
+export class MalformedBytesError extends TaggedError('MalformedBytesError')<{
   message: string;
   cause: unknown;
 }> {}
@@ -50,7 +50,7 @@ export class MalformedBytesError extends Data.TaggedError('MalformedBytesError')
  * @category Errors
  * @since 0.1.0
  */
-export class MalformedFormDataError extends Data.TaggedError('MalformedFormDataError')<{
+export class MalformedFormDataError extends TaggedError('MalformedFormDataError')<{
   message: string;
   cause: unknown;
 }> {}
@@ -61,7 +61,7 @@ export class MalformedFormDataError extends Data.TaggedError('MalformedFormDataE
  * @category Errors
  * @since 0.1.0
  */
-export class MalformedJsonError extends Data.TaggedError('MalformedJsonError')<{
+export class MalformedJsonError extends TaggedError('MalformedJsonError')<{
   message: string;
   cause: unknown;
 }> {}
@@ -72,7 +72,7 @@ export class MalformedJsonError extends Data.TaggedError('MalformedJsonError')<{
  * @category Errors
  * @since 0.1.0
  */
-export class MalformedTextError extends Data.TaggedError('MalformedTextError')<{
+export class MalformedTextError extends TaggedError('MalformedTextError')<{
   message: string;
   cause: unknown;
 }> {}
@@ -83,6 +83,6 @@ export class MalformedTextError extends Data.TaggedError('MalformedTextError')<{
  * @category Errors
  * @since 0.1.0
  */
-export class BodyIsNotPresentError extends Data.TaggedError('BodyIsNotPresentError')<{
+export class BodyIsNotPresentError extends TaggedError('BodyIsNotPresentError')<{
   message: string;
 }> {}

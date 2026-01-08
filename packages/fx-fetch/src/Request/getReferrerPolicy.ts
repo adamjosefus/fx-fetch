@@ -1,5 +1,5 @@
-import { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
-import * as Request from './Request';
+import type { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
+import type { Request } from './Request';
 
 /**
  * Gets the referrer policy of the request.
@@ -19,5 +19,5 @@ import * as Request from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const getReferrerPolicy = (self: Request.Request): NormalizedReferrerPolicy | undefined =>
+export const getReferrerPolicy = (self: Request): NormalizedReferrerPolicy | undefined =>
   self.referrerPolicy;

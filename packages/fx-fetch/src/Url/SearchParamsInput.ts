@@ -1,4 +1,4 @@
-import { SearchParamValueInput } from './SearchParamValueInput';
+import type { SearchParamValueInput } from './SearchParamValueInput';
 
 /**
  * @internal Represents all possible inputs for URL search parameters.

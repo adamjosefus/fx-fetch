@@ -1,11 +1,11 @@
 import { dual } from 'effect/Function';
-import * as Url from '../Url';
+import type { Url } from '../Url';
 import { urlToUrlIntermediate } from '../Url/inputToUrlIntermediate';
 import { requestToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
-import * as Request from './Request';
+import type { Request } from './Request';
 
-function mapUrlFn(self: Request.Request, fn: (url: Url.Url) => Url.Url): Request.Request {
+function mapUrlFn(self: Request, fn: (url: Url) => Url): Request {
   const prevUrl = self.url;
   const nextUrl = fn(prevUrl);
 
@@ -48,7 +48,7 @@ export const mapUrl: {
    * @category Mapping
    * @since 0.1.0
    */
-  (self: Request.Request, fn: (url: Url.Url) => Url.Url): Request.Request;
+  (self: Request, fn: (url: Url) => Url): Request;
   /**
    * Maps over the URL of a Request.
    *
@@ -69,5 +69,5 @@ export const mapUrl: {
    * @category Mapping
    * @since 0.1.0
    */
-  (fn: (url: Url.Url) => Url.Url): (self: Request.Request) => Request.Request;
+  (fn: (url: Url) => Url): (self: Request) => Request;
 } = dual(2, mapUrlFn);

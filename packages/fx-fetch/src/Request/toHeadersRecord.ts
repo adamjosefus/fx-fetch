@@ -1,5 +1,5 @@
 import { headersToHeadersRecord } from '../utils/headersToHeadersRecord';
-import * as Request from './Request';
+import type { Request } from './Request';
 
 /**
  * Gets the headers of the request.
@@ -19,4 +19,4 @@ import * as Request from './Request';
  * @category Conversions
  * @since 0.1.0
  */
-export const toHeadersRecord = (self: Request.Request) => headersToHeadersRecord(self.headers);
+export const toHeadersRecord = (self: Request) => headersToHeadersRecord(self.headers);

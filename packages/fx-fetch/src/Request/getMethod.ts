@@ -1,5 +1,5 @@
-import { Method } from './Method';
-import * as Request from './Request';
+import type { Method } from './Method';
+import type { Request } from './Request';
 
 /**
  * Gets the HTTP method of the request.
@@ -16,4 +16,4 @@ import * as Request from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const getMethod = (self: Request.Request): Method => self.method;
+export const getMethod = (self: Request): Method => self.method;

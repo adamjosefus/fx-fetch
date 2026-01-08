@@ -1,5 +1,5 @@
-import { Effect } from 'effect';
-import type * as Request from '../Request';
+import { fnUntraced } from 'effect/Effect';
+import type { Request } from '../Request';
 import { Fetch } from './Fetch';
 
 /**
@@ -34,7 +34,7 @@ import { Fetch } from './Fetch';
  * );
  * ```
  */
-export const fetch = Effect.fnUntraced(function* (request: Request.Request) {
+export const fetch = fnUntraced(function* (request: Request) {
   const fetchFn = yield* Fetch;
   return yield* fetchFn(request);
 });

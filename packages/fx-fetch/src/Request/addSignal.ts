@@ -1,9 +1,9 @@
 import { dual } from 'effect/Function';
 import { requestToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
-import * as Request from './Request';
+import type { Request } from './Request';
 
-function addSignalFn(self: Request.Request, signal: AbortSignal): Request.Request {
+function addSignalFn(self: Request, signal: AbortSignal): Request {
   const intermediate = requestToRequestIntermediate(self);
   intermediate.clonedSignals.push(signal);
 
@@ -41,7 +41,7 @@ export const addSignal: {
    * @category Combinators
    * @since 0.1.0
    */
-  (self: Request.Request, signal: AbortSignal): Request.Request;
+  (self: Request, signal: AbortSignal): Request;
   /**
    * Adds an abort signal to a Request.
    *
@@ -62,5 +62,5 @@ export const addSignal: {
    * @category Combinators
    * @since 0.1.0
    */
-  (signal: AbortSignal): (self: Request.Request) => Request.Request;
+  (signal: AbortSignal): (self: Request) => Request;
 } = dual(2, addSignalFn);

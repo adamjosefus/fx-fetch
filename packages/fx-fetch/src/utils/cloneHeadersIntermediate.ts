@@ -1,5 +1,5 @@
-import { Headers } from './Headers';
-import { HeadersIntermediate } from './HeadersIntermediate';
+import type { Headers } from './Headers';
+import type { HeadersIntermediate } from './HeadersIntermediate';
 import { Lowercase } from './Lowercase';
 
 /**

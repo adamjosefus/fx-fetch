@@ -1,11 +1,8 @@
 import { dual } from 'effect/Function';
-import * as Url from '../Url';
-import * as Request from './Request';
+import type { Url } from '../Url';
+import type { Request } from './Request';
 
-function flatMapUrlFn(
-  self: Request.Request,
-  fn: (url: Url.Url) => Request.Request
-): Request.Request {
+function flatMapUrlFn(self: Request, fn: (url: Url) => Request): Request {
   const nextRequest = fn(self.url);
 
   return nextRequest;
@@ -46,7 +43,7 @@ export const flatMapUrl: {
    * @category Mapping
    * @since 0.1.0
    */
-  (request: Request.Request, fn: (url: Url.Url) => Request.Request): Request.Request;
+  (request: Request, fn: (url: Url) => Request): Request;
   /**
    * Maps over the URL of a Request and returns a new Request.
    *
@@ -69,5 +66,5 @@ export const flatMapUrl: {
    * @category Mapping
    * @since 0.1.0
    */
-  (fn: (url: Url.Url) => Request.Request): (request: Request.Request) => Request.Request;
+  (fn: (url: Url) => Request): (request: Request) => Request;
 } = dual(2, flatMapUrlFn);

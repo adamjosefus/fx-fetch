@@ -1,7 +1,8 @@
-import { Effect, Stream } from 'effect';
+import { type Effect, map as effectMap } from 'effect/Effect';
 import { dual } from 'effect/Function';
+import { fromReadableStream, type Stream } from 'effect/Stream';
 import { MalformedReadableStreamError } from '../Cause';
-import * as Request from './Request';
+import type { Request } from './Request';
 import { readReadableStream } from './readReadableStream';
 
 type Options<E> = {
@@ -9,10 +10,10 @@ type Options<E> = {
   readonly releaseLockOnEnd?: boolean | undefined;
 };
 
-const readStreamFn = <E>(self: Request.Request, options: Options<E>) =>
+const readStreamFn = <E>(self: Request, options: Options<E>) =>
   readReadableStream(self).pipe(
-    Effect.map((readableStream) =>
-      Stream.fromReadableStream({
+    effectMap((readableStream) =>
+      fromReadableStream({
         evaluate: () => readableStream,
         onError: options.onError,
         releaseLockOnEnd: options.releaseLockOnEnd,
@@ -59,13 +60,9 @@ export const readStream: {
    * @since 0.1.0
    */
   <E>(
-    self: Request.Request,
+    self: Request,
     options: Options<E>
-  ): Effect.Effect<
-    Stream.Stream<Uint8Array<ArrayBufferLike>, E, never>,
-    MalformedReadableStreamError,
-    never
-  >;
+  ): Effect<Stream<Uint8Array<ArrayBufferLike>, E, never>, MalformedReadableStreamError, never>;
 
   /**
    * Reads a ReadableStream request.
@@ -91,10 +88,6 @@ export const readStream: {
   <E>(
     options: Options<E>
   ): (
-    self: Request.Request
-  ) => Effect.Effect<
-    Stream.Stream<Uint8Array<ArrayBufferLike>, E, never>,
-    MalformedReadableStreamError,
-    never
-  >;
+    self: Request
+  ) => Effect<Stream<Uint8Array<ArrayBufferLike>, E, never>, MalformedReadableStreamError, never>;
 } = dual(2, readStreamFn);

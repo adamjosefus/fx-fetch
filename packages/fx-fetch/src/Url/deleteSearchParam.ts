@@ -1,11 +1,11 @@
 import { dual } from 'effect/Function';
+import type { Url } from '../Url';
 import { urlToUrlIntermediate } from './inputToUrlIntermediate';
 import { makeFromUrlIntermediate } from './makeFromUrlIntermediate';
-import { SearchParamValueInput } from './SearchParamValueInput';
+import type { SearchParamValueInput } from './SearchParamValueInput';
 import { inputToSearchParamValueIntermediate } from './SearchParamValueIntermediate';
-import * as Url from './Url';
 
-function deleteSearchParamFn(url: Url.Url, key: string, value: SearchParamValueInput): Url.Url {
+function deleteSearchParamFn(url: Url, key: string, value: SearchParamValueInput): Url {
   const urlIntermediate = urlToUrlIntermediate(url);
   const normalizedValues = inputToSearchParamValueIntermediate(value);
 
@@ -102,7 +102,7 @@ export const deleteSearchParam: {
    * @category Combinators
    * @since 0.1.0
    */
-  (url: Url.Url, key: string, value: SearchParamValueInput): Url.Url;
+  (url: Url, key: string, value: SearchParamValueInput): Url;
   /**
    * Deletes search parameters from a Url.
    * If a value is provided, only that value is removed; otherwise, all values for the key are removed.
@@ -136,5 +136,5 @@ export const deleteSearchParam: {
    * @category Combinators
    * @since 0.1.0
    */
-  (key: string, value: SearchParamValueInput): (url: Url.Url) => Url.Url;
+  (key: string, value: SearchParamValueInput): (url: Url) => Url;
 } = dual(3, deleteSearchParamFn);

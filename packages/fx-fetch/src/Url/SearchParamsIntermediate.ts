@@ -2,8 +2,8 @@ import { isArray } from '../utils/isArray';
 import { isJsUrlSearchParams } from '../utils/isJsUrlSearchParams';
 import { isMap } from '../utils/isMap';
 import { objectEntries } from '../utils/objectEntries';
-import { SearchParamsInput } from './SearchParamsInput';
-import { SearchParamValueInput } from './SearchParamValueInput';
+import type { SearchParamsInput } from './SearchParamsInput';
+import type { SearchParamValueInput } from './SearchParamValueInput';
 import { inputToSearchParamValueIntermediate } from './SearchParamValueIntermediate';
 
 /**

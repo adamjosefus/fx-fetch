@@ -1,6 +1,6 @@
-import { Effect } from 'effect';
-import type * as Request from '../Request';
-import * as Response from '../Response';
+import { flatMap } from 'effect/Effect';
+import type { Request } from '../Request';
+import { readBytes } from '../Response';
 import { fetch } from './fetchFn';
 
 /**
@@ -8,7 +8,7 @@ import { fetch } from './fetchFn';
  *
  * @category Functions
  * @since 0.1.0
- * @see {@link Response.readBytes}
+ * @see {@link readBytes}
  * @example
  * ```ts
  * import { Effect } from 'effect';
@@ -33,5 +33,4 @@ import { fetch } from './fetchFn';
  * });
  * ```
  */
-export const fetchBytes = (request: Request.Request) =>
-  fetch(request).pipe(Effect.flatMap(Response.readBytes));
+export const fetchBytes = (request: Request) => fetch(request).pipe(flatMap(readBytes));

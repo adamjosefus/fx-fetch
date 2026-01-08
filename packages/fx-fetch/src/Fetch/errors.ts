@@ -1,4 +1,4 @@
-import { Data } from 'effect';
+import { TaggedError } from 'effect/Data';
 
 /**
  * Wrap for TypeError. It is al most impossible to categorize all possible errors. Because it depends on the environment (browser, nodejs, deno, etc), location, network, etc.
@@ -21,7 +21,7 @@ import { Data } from 'effect';
  * @category Errors
  * @since 0.1.0
  */
-export class FetchError extends Data.TaggedError('FetchError')<{
+export class FetchError extends TaggedError('FetchError')<{
   message: string;
   cause: TypeError;
 }> {}
@@ -32,7 +32,7 @@ export class FetchError extends Data.TaggedError('FetchError')<{
  * @category Errors
  * @since 0.1.0
  */
-export class AbortError extends Data.TaggedError('AbortError')<{
+export class AbortError extends TaggedError('AbortError')<{
   message: string;
   cause: unknown;
 }> {}
@@ -44,7 +44,7 @@ export class AbortError extends Data.TaggedError('AbortError')<{
  * @category Errors
  * @since 0.1.0
  */
-export class NotAllowedError extends Data.TaggedError('NotAllowedError')<{
+export class NotAllowedError extends TaggedError('NotAllowedError')<{
   message: string;
   cause: unknown;
 }> {}

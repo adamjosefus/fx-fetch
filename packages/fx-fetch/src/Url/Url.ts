@@ -1,6 +1,6 @@
-import { Pipeable } from 'effect';
-import { SearchParams } from './SearchParams';
-import { SearchParamsInput } from './SearchParamsInput';
+import type { Pipeable } from 'effect/Pipeable';
+import type { SearchParams } from './SearchParams';
+import type { SearchParamsInput } from './SearchParamsInput';
 
 /**
  * @category Symbols
@@ -18,7 +18,7 @@ export type TypeId = typeof TypeId;
  * @category Models
  * @since 0.1.0
  */
-interface Proto extends Pipeable.Pipeable {
+interface Proto extends Pipeable {
   readonly [TypeId]: TypeId;
 }
 

@@ -1,5 +1,5 @@
 import { pipe } from 'effect';
-import { Headers } from './Headers';
+import type { Headers } from './Headers';
 import { objectFromEntries } from './objectFromEntries';
 
 /**

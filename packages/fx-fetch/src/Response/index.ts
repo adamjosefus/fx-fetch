@@ -8,7 +8,7 @@ export { getHeaders } from './getHeaders';
 export { isOk } from './isOk';
 export { isResponse } from './isResponse';
 export { make } from './make';
-export { Response, TypeId } from './Response';
+export { type Response, TypeId } from './Response';
 export { readArrayBuffer } from './readArrayBuffer';
 export { readBlob } from './readBlob';
 export { readBytes } from './readBytes';
