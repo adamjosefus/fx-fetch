@@ -37,5 +37,6 @@ export { setUrlSearchParam } from './setUrlSearchParam';
 export { toHeadersRecord } from './toHeadersRecord';
 export { toJsHeaders } from './toJsHeaders';
 export { toJsRequestPromise } from './toJsRequestPromise';
+export { toParts } from './toParts';
 export { unsafeMake } from './unsafeMake';
 export { unsafeSetUrl } from './unsafeSetUrl';

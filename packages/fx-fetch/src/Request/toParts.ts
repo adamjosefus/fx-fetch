@@ -3,19 +3,19 @@ import { getHeaders } from './getHeaders';
 import type { Request } from './Request';
 
 /**
- * Converts a Request's headers to a standard JavaScript Headers object.
+ * Converts a Request to its constituent parts as a plain object.
  *
  * @example
  * ```ts
  * import { Request } from 'fx-fetch';
  *
- * const request = Request.create('GET', '/api/users', {
- *   'Content-Type': 'application/json',
- *   'Authorization': 'Bearer token123'
+ * const request = Request.unsafeMake({
+ *   url: 'https://example.com/api/users',
+ *   method: 'GET',
  * });
  *
- * const headers = toJsHeaders(request);
- * console.log(headers.get('Content-Type')); // 'application/json'
+ * const parts = Request.toParts(request);
+ * console.log(parts.url); // { 'url': 'https://example.com/api/users', ... }
  * ```
  *
  * @since 0.1.0
