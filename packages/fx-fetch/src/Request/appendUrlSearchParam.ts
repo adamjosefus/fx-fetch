@@ -1,15 +1,11 @@
 import { dual } from 'effect/Function';
-import * as Url from '../Url';
+import { appendSearchParam } from '../Url';
 import { SearchParamValueInput } from '../Url/SearchParamValueInput';
 import { mapUrl } from './mapUrl';
-import * as Request from './Request';
+import type { Request } from './Request';
 
-function appendUrlSearchParamFn(
-  self: Request.Request,
-  key: string,
-  value: SearchParamValueInput
-): Request.Request {
-  return mapUrl(self, (url) => Url.appendSearchParam(url, key, value));
+function appendUrlSearchParamFn(self: Request, key: string, value: SearchParamValueInput): Request {
+  return mapUrl(self, (url) => appendSearchParam(url, key, value));
 }
 
 // TODO: Add tests
@@ -43,7 +39,7 @@ export const appendUrlSearchParam: {
    * @category Combinators
    * @since 0.1.0
    */
-  (self: Request.Request, key: string, value: SearchParamValueInput): Request.Request;
+  (self: Request, key: string, value: SearchParamValueInput): Request;
   /**
    * Appends a search parameter to the URL of a Request.
    *
@@ -63,5 +59,5 @@ export const appendUrlSearchParam: {
    * @category Combinators
    * @since 0.1.0
    */
-  (key: string, value: SearchParamValueInput): (self: Request.Request) => Request.Request;
+  (key: string, value: SearchParamValueInput): (self: Request) => Request;
 } = dual(3, appendUrlSearchParamFn);

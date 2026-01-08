@@ -1,4 +1,4 @@
-import * as Request from './Request';
+import type { Request } from './Request';
 
 /**
  * Checks if the request is keep-alive.
@@ -15,4 +15,4 @@ import * as Request from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const isKeepalive = (self: Request.Request): boolean => self.keepalive;
+export const isKeepalive = (self: Request): boolean => self.keepalive;

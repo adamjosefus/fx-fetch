@@ -1,4 +1,4 @@
-import { Brand } from 'effect';
+import { type Brand, error, refined } from 'effect/Brand';
 
 /**
  * A type representing uppercase strings.
@@ -6,8 +6,8 @@ import { Brand } from 'effect';
  * @category Brands
  * @since 0.1.0
  */
-export type Uppercase = string & Brand.Brand<'Uppercase'>;
-export const Uppercase = Brand.refined<Uppercase>(
+export type Uppercase = string & Brand<'Uppercase'>;
+export const Uppercase = refined<Uppercase>(
   (s) => s === s.toUpperCase(),
-  (s) => Brand.error(`Expected "${s}" to be uppercase`)
+  (s) => error(`Expected "${s}" to be uppercase`)
 );

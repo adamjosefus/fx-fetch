@@ -1,21 +1,23 @@
-import { Effect, ParseResult, Schema } from 'effect';
+import { type Effect, flatMap } from 'effect/Effect';
 import { dual } from 'effect/Function';
-import * as Cause from '../Cause';
-import type * as Request from '../Request';
-import * as Response from '../Response';
+import { type ParseError } from 'effect/ParseResult';
+import { type Schema } from 'effect/Schema';
+import { MalformedJsonError } from '../Cause';
+import type { Request } from '../Request';
+import { NotOkError, readJsonWithSchema } from '../Response';
 import { AbortError, FetchError, NotAllowedError } from './errors';
 import { Fetch } from './Fetch';
 import { fetch } from './fetchFn';
 
-const fetchJsonWithSchemaFn = <A, I, R>(request: Request.Request, schema: Schema.Schema<A, I, R>) =>
-  fetch(request).pipe(Effect.flatMap(Response.readJsonWithSchema(schema)));
+const fetchJsonWithSchemaFn = <A, I, R>(request: Request, schema: Schema<A, I, R>) =>
+  fetch(request).pipe(flatMap(readJsonWithSchema(schema)));
 
 /**
  * Fetches and reads a JSON response with the given schema.
  *
  * @category Conversions
  * @since 0.1.0
- * @see {@link Response.readJsonWithSchema}
+ * @see {@link readJsonWithSchema}
  * @example
  * ```ts
  * import { Effect, Schema } from 'effect';
@@ -52,7 +54,7 @@ export const fetchJsonWithSchema: {
    *
    * @category Conversions
    * @since 0.1.0
-   * @see {@link Response.readJsonWithSchema}
+   * @see {@link readJsonWithSchema}
    * @example
    * ```ts
    * import { Effect, Schema } from 'effect';
@@ -84,16 +86,11 @@ export const fetchJsonWithSchema: {
    * ```
    */
   <A, I, R>(
-    request: Request.Request,
-    schema: Schema.Schema<A, I, R>
-  ): Effect.Effect<
+    request: Request,
+    schema: Schema<A, I, R>
+  ): Effect<
     A,
-    | AbortError
-    | FetchError
-    | NotAllowedError
-    | Response.NotOkError
-    | Cause.MalformedJsonError
-    | ParseResult.ParseError,
+    AbortError | FetchError | NotAllowedError | NotOkError | MalformedJsonError | ParseError,
     R | Fetch
   >;
 
@@ -102,7 +99,7 @@ export const fetchJsonWithSchema: {
    *
    * @category Conversions
    * @since 0.1.0
-   * @see {@link Response.readJsonWithSchema}
+   * @see {@link readJsonWithSchema}
    * @example
    * ```ts
    * import { Effect, Schema } from 'effect';
@@ -134,17 +131,12 @@ export const fetchJsonWithSchema: {
    * ```
    */
   <A, I, R>(
-    schema: Schema.Schema<A, I, R>
+    schema: Schema<A, I, R>
   ): (
-    request: Request.Request
-  ) => Effect.Effect<
+    request: Request
+  ) => Effect<
     A,
-    | AbortError
-    | FetchError
-    | NotAllowedError
-    | Response.NotOkError
-    | Cause.MalformedJsonError
-    | ParseResult.ParseError,
+    AbortError | FetchError | NotAllowedError | NotOkError | MalformedJsonError | ParseError,
     R | Fetch
   >;
 } = dual(2, fetchJsonWithSchemaFn);

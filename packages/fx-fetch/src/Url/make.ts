@@ -1,7 +1,8 @@
-import { Either, Option } from 'effect';
+import { isLeft } from 'effect/Either';
+import { liftThrowable } from 'effect/Option';
 import { inputToUrlIntermediate } from './inputToUrlIntermediate';
 import { makeFromUrlIntermediate } from './makeFromUrlIntermediate';
-import * as Url from './Url';
+import type { Url } from './Url';
 
 /**
  * Creates an immutable Url object. Throws an error if the input is invalid.
@@ -16,9 +17,9 @@ import * as Url from './Url';
  * @category Models
  * @since 0.1.0
  */
-export function unsafeMake(input: Url.Url.Input): Url.Url {
+export function unsafeMake(input: Url.Input): Url {
   const result = inputToUrlIntermediate(input);
-  if (Either.isLeft(result)) {
+  if (isLeft(result)) {
     throw result.left; // Throw the propagated error
   }
 
@@ -42,4 +43,4 @@ export function unsafeMake(input: Url.Url.Input): Url.Url {
  * @category Models
  * @since 0.1.0
  */
-export const make = Option.liftThrowable(unsafeMake);
+export const make = liftThrowable(unsafeMake);

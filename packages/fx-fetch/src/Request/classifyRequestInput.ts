@@ -1,13 +1,11 @@
 import { isRequest } from './isRequest';
-import * as Request from './Request';
+import type { Request } from './Request';
 
 function isJsRequest(input: unknown): input is globalThis.Request {
   return input instanceof globalThis.Request;
 }
 
-function isRequestOptions(
-  input: Request.Request.Options | Request.Request.Parts
-): input is Request.Request.Options {
+function isRequestOptions(input: Request.Options | Request.Parts): input is Request.Options {
   const hasSearchParams = 'searchParams' in input;
 
   if (hasSearchParams) {
@@ -20,10 +18,10 @@ function isRequestOptions(
 /**
  * @internal Determines the type of Request.Request.Input
  */
-export function classifyRequestInput(input: Request.Request.Input):
+export function classifyRequestInput(input: Request.Input):
   | {
       readonly type: 'request';
-      readonly input: Request.Request;
+      readonly input: Request;
     }
   | {
       readonly type: 'jsRequest';
@@ -31,11 +29,11 @@ export function classifyRequestInput(input: Request.Request.Input):
     }
   | {
       readonly type: 'options';
-      readonly input: Request.Request.Options;
+      readonly input: Request.Options;
     }
   | {
       readonly type: 'parts';
-      readonly input: Request.Request.Parts;
+      readonly input: Request.Parts;
     } {
   if (isRequest(input)) {
     return {

@@ -1,4 +1,4 @@
-import { Option } from 'effect';
+import { liftThrowable } from 'effect/Option';
 import { unsafeMake } from './unsafeMake';
 
 /**
@@ -19,4 +19,4 @@ import { unsafeMake } from './unsafeMake';
  * @category Constructors
  * @since 0.1.0
  */
-export const make = Option.liftThrowable(unsafeMake);
+export const make = liftThrowable(unsafeMake);

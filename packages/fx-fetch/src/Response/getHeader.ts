@@ -1,8 +1,8 @@
 import { dual } from 'effect/Function';
 import { headersGetSingle } from '../utils/headersGetSingle';
-import * as Response from './Response';
+import type { Response } from './Response';
 
-function getHeaderFn(self: Response.Response, name: string) {
+function getHeaderFn(self: Response, name: string) {
   return headersGetSingle(self.headers, name);
 }
 
@@ -49,7 +49,7 @@ export const getHeader: {
    * @category Getters
    * @since 0.1.0
    */
-  (self: Response.Response, name: string): readonly string[] | undefined;
+  (self: Response, name: string): readonly string[] | undefined;
   /**
    * Retrieves the values of a specific header from a Response.
    *
@@ -73,5 +73,5 @@ export const getHeader: {
    * @category Getters
    * @since 0.1.0
    */
-  (name: string): (self: Response.Response) => readonly string[] | undefined;
+  (name: string): (self: Response) => readonly string[] | undefined;
 } = dual(2, getHeaderFn);

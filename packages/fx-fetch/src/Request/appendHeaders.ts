@@ -3,9 +3,9 @@ import { HeadersInput } from '../utils/HeadersInput';
 import { headersIntermediateAppend } from '../utils/headersIntermediateAppend';
 import { requestToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
-import * as Request from './Request';
+import type { Request } from './Request';
 
-function appendHeadersFn(self: Request.Request, headers: HeadersInput): Request.Request {
+function appendHeadersFn(self: Request, headers: HeadersInput): Request {
   const intermediate = requestToRequestIntermediate(self);
   headersIntermediateAppend(intermediate.clonedHeaders, headers);
 
@@ -49,7 +49,7 @@ export const appendHeaders: {
    * @category Combinators
    * @since 0.1.0
    */
-  (self: Request.Request, headers: HeadersInput): Request.Request;
+  (self: Request, headers: HeadersInput): Request;
   /**
    * Merges new headers into a Request, appending values to existing headers.
    *
@@ -72,5 +72,5 @@ export const appendHeaders: {
    * @category Combinators
    * @since 0.1.0
    */
-  (headers: HeadersInput): (self: Request.Request) => Request.Request;
+  (headers: HeadersInput): (self: Request) => Request;
 } = dual(2, appendHeadersFn);

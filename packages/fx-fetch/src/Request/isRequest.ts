@@ -1,4 +1,4 @@
-import * as Request from './Request';
+import { type Request, TypeId } from './Request';
 
 /**
  * Checks if the given value is a Request.
@@ -15,7 +15,7 @@ import * as Request from './Request';
  * @category Guards
  * @since 0.1.0
  */
-export function isRequest(value: unknown): value is Request.Request {
+export function isRequest(value: unknown): value is Request {
   const isObject = typeof value === 'object' && value !== null;
 
   if (!isObject) {
@@ -23,7 +23,7 @@ export function isRequest(value: unknown): value is Request.Request {
   }
 
   // biome-ignore lint/suspicious/noExplicitAny: It's safe to use `any` for property detection.
-  const hasTypeId = (value as any)[Request.TypeId] === Request.TypeId;
+  const hasTypeId = (value as any)[TypeId] === TypeId;
   // biome-ignore lint/suspicious/noExplicitAny: It's safe to use `any` for property detection.
   const hasTag = (value as any)._tag === 'Request';
 

@@ -1,7 +1,7 @@
-import { Effect } from 'effect';
+import { tryPromise } from 'effect/Effect';
 import { MalformedBytesError } from '../Cause';
 import { readBodyAsBytesOrThrow } from '../utils/readBodyAsBytesOrThrow';
-import * as Response from './Response';
+import type { Response } from './Response';
 
 // TODO: Add examples
 
@@ -11,8 +11,8 @@ import * as Response from './Response';
  * @category Conversions
  * @since 0.1.0
  */
-export const readBytes = (response: Response.Response) =>
-  Effect.tryPromise({
+export const readBytes = (response: Response) =>
+  tryPromise({
     try: () => readBodyAsBytesOrThrow(response.body),
     catch: (error) =>
       new MalformedBytesError({

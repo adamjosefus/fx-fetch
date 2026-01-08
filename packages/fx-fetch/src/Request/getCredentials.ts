@@ -1,4 +1,4 @@
-import * as Request from './Request';
+import type { Request } from './Request';
 
 /**
  * Gets the credentials mode of the request.
@@ -15,5 +15,5 @@ import * as Request from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const getCredentials = (self: Request.Request): globalThis.RequestCredentials | undefined =>
+export const getCredentials = (self: Request): globalThis.RequestCredentials | undefined =>
   self.credentials;

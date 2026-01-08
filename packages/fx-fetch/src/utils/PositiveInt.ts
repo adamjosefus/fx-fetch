@@ -1,4 +1,4 @@
-import { Brand } from 'effect';
+import { all, type Brand } from 'effect/Brand';
 import { Int } from './Int';
 import { Positive } from './Positive';
 
@@ -8,5 +8,5 @@ import { Positive } from './Positive';
  * @category Brands
  * @since 0.1.0
  */
-export const PositiveInt = Brand.all(Int, Positive);
-export type PositiveInt = Brand.Brand.FromConstructor<typeof PositiveInt>;
+export const PositiveInt = all(Int, Positive);
+export type PositiveInt = Brand.FromConstructor<typeof PositiveInt>;

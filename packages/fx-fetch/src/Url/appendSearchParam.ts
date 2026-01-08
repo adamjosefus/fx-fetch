@@ -1,11 +1,11 @@
 import { dual } from 'effect/Function';
+import type { Url } from '../Url';
 import { urlToUrlIntermediate } from './inputToUrlIntermediate';
 import { makeFromUrlIntermediate } from './makeFromUrlIntermediate';
 import { SearchParamValueInput } from './SearchParamValueInput';
 import { inputToSearchParamValueIntermediate } from './SearchParamValueIntermediate';
-import * as Url from './Url';
 
-function appendSearchParamFn(url: Url.Url, key: string, value: SearchParamValueInput): Url.Url {
+function appendSearchParamFn(url: Url, key: string, value: SearchParamValueInput): Url {
   const normalizedValue = inputToSearchParamValueIntermediate(value);
   if (normalizedValue === undefined) {
     return url; // Skip undefined values
@@ -56,7 +56,7 @@ export const appendSearchParam: {
    * @category Combinators
    * @since 0.1.0
    */
-  (url: Url.Url, key: string, value: SearchParamValueInput): Url.Url;
+  (url: Url, key: string, value: SearchParamValueInput): Url;
 
   /**
    * Appends a search parameter to a Url.
@@ -76,5 +76,5 @@ export const appendSearchParam: {
    * @category Combinators
    * @since 0.1.0
    */
-  (key: string, value: SearchParamValueInput): (url: Url.Url) => Url.Url;
+  (key: string, value: SearchParamValueInput): (url: Url) => Url;
 } = dual(3, appendSearchParamFn);

@@ -1,5 +1,5 @@
-import { Pipeable } from 'effect';
-import * as Url from '../Url';
+import type { Pipeable } from 'effect/Pipeable';
+import type { Url } from '../Url';
 import { BodyInput } from '../utils/BodyInput';
 import { Headers } from '../utils/Headers';
 import { HeadersInput } from '../utils/HeadersInput';
@@ -20,7 +20,7 @@ export type TypeId = typeof TypeId;
  * @category Models
  * @since 0.1.0
  */
-interface Proto extends Pipeable.Pipeable {
+interface Proto extends Pipeable {
   readonly [TypeId]: TypeId;
 }
 
@@ -38,7 +38,7 @@ export interface Response extends Proto {
   readonly status: number;
   readonly statusText: string;
   readonly type: globalThis.ResponseType;
-  readonly url: Url.Url | undefined;
+  readonly url: Url | undefined;
 }
 
 export namespace Response {
@@ -53,7 +53,7 @@ export namespace Response {
     readonly status?: number;
     readonly statusText?: string;
     readonly type?: globalThis.ResponseType;
-    readonly url?: Url.Url.Input;
+    readonly url?: Url.Input;
   };
 
   /**

@@ -2,9 +2,9 @@ import { dual } from 'effect/Function';
 import { headersIntermediateDelete } from '../utils/headersIntermediateDelete';
 import { requestToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
-import * as Request from './Request';
+import type { Request } from './Request';
 
-function deleteHeaderFn(self: Request.Request, name: string, value?: string): Request.Request {
+function deleteHeaderFn(self: Request, name: string, value?: string): Request {
   const intermediate = requestToRequestIntermediate(self);
   headersIntermediateDelete(intermediate.clonedHeaders, name, value);
 
@@ -42,7 +42,7 @@ export const deleteHeader: {
    * @category Combinators
    * @since 0.1.0
    */
-  (self: Request.Request, name: string, value?: string): Request.Request;
+  (self: Request, name: string, value?: string): Request;
   /**
    * Deletes a header from a Request.
    *
@@ -62,5 +62,5 @@ export const deleteHeader: {
    * @category Combinators
    * @since 0.1.0
    */
-  (name: string, value?: string): (self: Request.Request) => Request.Request;
+  (name: string, value?: string): (self: Request) => Request;
 } = dual(2, deleteHeaderFn);

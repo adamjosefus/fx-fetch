@@ -1,15 +1,16 @@
-import { Effect, Stream } from 'effect';
+import { type Effect, flatMap } from 'effect/Effect';
 import { dual } from 'effect/Function';
+import { type Stream } from 'effect/Stream';
 import { MalformedReadableStreamError } from '../Cause';
-import type * as Request from '../Request';
-import { NotOkError } from '../Response';
-import { Options, readStream } from '../Response/readStream';
+import type { Request } from '../Request';
+import { NotOkError, readStream } from '../Response';
+import { Options } from '../Response/readStream';
 import { AbortError, FetchError, NotAllowedError } from './errors';
 import { Fetch } from './Fetch';
 import { fetch } from './fetchFn';
 
-const fetchStreamFn = <E>(request: Request.Request, options: Options<E>) =>
-  fetch(request).pipe(Effect.flatMap(readStream(options)));
+const fetchStreamFn = <E>(request: Request, options: Options<E>) =>
+  fetch(request).pipe(flatMap(readStream(options)));
 
 /**
  * Fetches and reads a stream response.
@@ -91,10 +92,10 @@ export const fetchStream: {
    * ```
    */
   <E>(
-    request: Request.Request,
+    request: Request,
     options: Options<E>
-  ): Effect.Effect<
-    Stream.Stream<Uint8Array<ArrayBufferLike>, E, never>,
+  ): Effect<
+    Stream<Uint8Array<ArrayBufferLike>, E, never>,
     AbortError | FetchError | NotAllowedError | NotOkError | MalformedReadableStreamError,
     Fetch
   >;
@@ -141,9 +142,9 @@ export const fetchStream: {
   <E>(
     options: Options<E>
   ): (
-    request: Request.Request
-  ) => Effect.Effect<
-    Stream.Stream<Uint8Array<ArrayBufferLike>, E, never>,
+    request: Request
+  ) => Effect<
+    Stream<Uint8Array<ArrayBufferLike>, E, never>,
     AbortError | FetchError | NotAllowedError | NotOkError | MalformedReadableStreamError,
     Fetch
   >;

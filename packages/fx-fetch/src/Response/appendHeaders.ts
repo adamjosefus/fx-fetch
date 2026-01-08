@@ -3,9 +3,9 @@ import { HeadersInput } from '../utils/HeadersInput';
 import { headersIntermediateAppend } from '../utils/headersIntermediateAppend';
 import { responseToResponseIntermediate } from './inputToResponseIntermediate';
 import { makeFromResponseIntermediate } from './makeFromResponseIntermediate';
-import * as Response from './Response';
+import type { Response } from './Response';
 
-function appendHeadersFn(self: Response.Response, headers: HeadersInput): Response.Response {
+function appendHeadersFn(self: Response, headers: HeadersInput): Response {
   const intermediate = responseToResponseIntermediate(self);
   headersIntermediateAppend(intermediate.clonedHeaders, headers);
 
@@ -48,7 +48,7 @@ export const appendHeaders: {
    * @category Combinators
    * @since 0.1.0
    */
-  (self: Response.Response, headers: HeadersInput): Response.Response;
+  (self: Response, headers: HeadersInput): Response;
   /**
    * Merges new headers into a Response, appending values to existing headers.
    *
@@ -71,5 +71,5 @@ export const appendHeaders: {
    * @category Combinators
    * @since 0.1.0
    */
-  (headers: HeadersInput): (self: Response.Response) => Response.Response;
+  (headers: HeadersInput): (self: Response) => Response;
 } = dual(2, appendHeadersFn);

@@ -1,6 +1,6 @@
 import { headersToJsHeaders } from '../utils/headersToJsHeaders';
 import { getHeaders } from './getHeaders';
-import * as Request from './Request';
+import type { Request } from './Request';
 
 /**
  * Converts a Request's headers to a standard JavaScript Headers object.
@@ -21,6 +21,6 @@ import * as Request from './Request';
  * @since 0.1.0
  * @category Conversions
  */
-export function toJsHeaders(self: Request.Request): globalThis.Headers {
+export function toJsHeaders(self: Request): globalThis.Headers {
   return self.pipe(getHeaders, headersToJsHeaders);
 }

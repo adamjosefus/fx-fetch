@@ -1,6 +1,6 @@
+import { Url } from '../Url';
 import { formatUrlUntrusted } from './formatUrlUntrusted';
 import { urlToUrlIntermediate } from './inputToUrlIntermediate';
-import * as Url from './Url';
 
 /**
  * Converts a Url.Url to a string.
@@ -16,7 +16,7 @@ import * as Url from './Url';
  * @category Conversions
  * @since 0.1.0
  */
-export function format(url: Url.Url): string {
+export function format(url: Url): string {
   const intermediate = urlToUrlIntermediate(url);
 
   // We can trust to our inputs because they are validated and normalized from the start

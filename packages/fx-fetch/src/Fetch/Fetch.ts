@@ -1,6 +1,7 @@
-import { Context, Effect } from 'effect';
-import * as Request from '../Request';
-import * as Response from '../Response';
+import { Tag } from 'effect/Context';
+import { type Effect } from 'effect/Effect';
+import { Request } from '../Request';
+import { NotOkError, Response } from '../Response';
 import { AbortError, FetchError, NotAllowedError } from './errors';
 
 /**
@@ -24,13 +25,9 @@ import { AbortError, FetchError, NotAllowedError } from './errors';
  * @category Services
  * @since 0.1.0
  */
-export class Fetch extends Context.Tag('fx-fetch/Fetch')<
+export class Fetch extends Tag('fx-fetch/Fetch')<
   Fetch,
   (
-    request: Request.Request
-  ) => Effect.Effect<
-    Response.Response,
-    AbortError | FetchError | NotAllowedError | Response.NotOkError,
-    never
-  >
+    request: Request
+  ) => Effect<Response, AbortError | FetchError | NotAllowedError | NotOkError, never>
 >() {}

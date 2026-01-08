@@ -1,7 +1,7 @@
-import { Effect } from 'effect';
+import { tryPromise } from 'effect/Effect';
 import { MalformedJsonError } from '../Cause';
 import { readBodyAsJsonOrThrow } from '../utils/readBodyAsJsonOrThrow';
-import * as Request from './Request';
+import type { Request } from './Request';
 
 /**
  * Reads the body of a Request as JSON.
@@ -18,8 +18,8 @@ import * as Request from './Request';
  * @category Conversions
  * @since 0.1.0
  */
-export const readJson = (self: Request.Request) =>
-  Effect.tryPromise({
+export const readJson = (self: Request) =>
+  tryPromise({
     try: () => readBodyAsJsonOrThrow(self.body),
     catch: (error) =>
       new MalformedJsonError({

@@ -1,4 +1,4 @@
-import * as Request from './Request';
+import type { Request } from './Request';
 
 /**
  * Gets the request mode.
@@ -15,4 +15,4 @@ import * as Request from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const getMode = (self: Request.Request): globalThis.RequestMode | undefined => self.mode;
+export const getMode = (self: Request): globalThis.RequestMode | undefined => self.mode;

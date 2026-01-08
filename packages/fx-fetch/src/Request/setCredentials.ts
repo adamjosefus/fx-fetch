@@ -1,9 +1,9 @@
 import { dual } from 'effect/Function';
 import { requestToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
-import * as Request from './Request';
+import type { Request } from './Request';
 
-function setCredentialsFn(self: Request.Request, credentials: RequestCredentials): Request.Request {
+function setCredentialsFn(self: Request, credentials: RequestCredentials): Request {
   const intermediate = requestToRequestIntermediate(self);
   intermediate.credentials = credentials;
 
@@ -46,7 +46,7 @@ export const setCredentials: {
    * @category Combinators
    * @since 0.1.0
    */
-  (self: Request.Request, credentials: RequestCredentials): Request.Request;
+  (self: Request, credentials: RequestCredentials): Request;
   /**
    * Sets credentials mode in a request.
    *
@@ -66,5 +66,5 @@ export const setCredentials: {
    * @category Combinators
    * @since 0.1.0
    */
-  (credentials: RequestCredentials): (self: Request.Request) => Request.Request;
+  (credentials: RequestCredentials): (self: Request) => Request;
 } = dual(2, setCredentialsFn);

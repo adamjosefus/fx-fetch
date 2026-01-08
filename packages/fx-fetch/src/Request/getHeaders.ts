@@ -1,6 +1,6 @@
 import { Headers } from '../utils/Headers';
 import { headersGetAll } from '../utils/headersGetAll';
-import * as Request from './Request';
+import type { Request } from './Request';
 
 /**
  * Gets the headers of the request.
@@ -20,4 +20,4 @@ import * as Request from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const getHeaders = (self: Request.Request): Headers => headersGetAll(self.headers);
+export const getHeaders = (self: Request): Headers => headersGetAll(self.headers);

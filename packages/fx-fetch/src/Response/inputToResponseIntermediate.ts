@@ -1,22 +1,21 @@
-import { Cause, Either, Option } from 'effect';
 import { IllegalArgumentException } from 'effect/Cause';
-import * as Url from '../Url';
+import { type Either, isLeft, left, right } from 'effect/Either';
+import { fromNullable, getOrElse, map as optionMap } from 'effect/Option';
+import type { Url } from '../Url';
 import { inputToUrlIntermediate, urlToUrlIntermediate } from '../Url/inputToUrlIntermediate';
 import { UrlIntermediate } from '../Url/UrlIntermediate';
 import { cloneHeadersIntermediate } from '../utils/cloneHeadersIntermediate';
 import { inputToHeadersIntermediate } from '../utils/inputToHeadersIntermediate';
 import { normalizeAndCloneBody } from '../utils/normalizeAndCloneBody';
 import { isResponse } from './isResponse';
-import * as Response from './Response';
+import type { Response } from './Response';
 import { ResponseIntermediate } from './ResponseIntermediate';
 
 /**
  * @internal Checks if the given value is a custom "Response.Init" object. This guard is not general purpose
  * and is only used in the context of `Response.Response.Options | Response.Response.Parts` which is a union of three specific types.
  */
-function isResponseOptions(
-  value: Response.Response.Options | Response.Response.Parts
-): value is Response.Response.Options {
+function isResponseOptions(value: Response.Options | Response.Parts): value is Response.Options {
   const isObject = typeof value === 'object' && value !== null;
   if (!isObject) {
     return false;
@@ -62,7 +61,7 @@ function normalizeType(type: globalThis.ResponseType | undefined): globalThis.Re
   return type ?? 'default';
 }
 
-function normalizeResponseUrlInput(input: Url.Url.Input | undefined): Url.Url.Input | undefined {
+function normalizeResponseUrlInput(input: Url.Input | undefined): Url.Input | undefined {
   if (input === '') {
     return undefined;
   }
@@ -76,14 +75,14 @@ function normalizeResponseUrlInput(input: Url.Url.Input | undefined): Url.Url.In
  */
 function jsResponseToResponseIntermediate(
   jsResponse: globalThis.Response
-): Either.Either<ResponseIntermediate, IllegalArgumentException> {
+): Either<ResponseIntermediate, IllegalArgumentException> {
   if (jsResponse.bodyUsed) {
-    return Either.left(
+    return left(
       new IllegalArgumentException('Response cannot be created. Body has already been used.')
     );
   }
 
-  const parts: Response.Response.Parts = {
+  const parts: Response.Parts = {
     body: jsResponse.body,
     headers: jsResponse.headers,
     redirected: jsResponse.redirected,
@@ -101,9 +100,9 @@ function jsResponseToResponseIntermediate(
  * without keeping references to the input object.
  */
 function optionsToResponseIntermediate(
-  options: Response.Response.Options
-): Either.Either<ResponseIntermediate, IllegalArgumentException> {
-  const parts: Response.Response.Parts = {
+  options: Response.Options
+): Either<ResponseIntermediate, IllegalArgumentException> {
+  const parts: Response.Parts = {
     body: options.body,
     headers: options.init?.headers,
     redirected: undefined, // globalThis.ResponseInit does not have `redirected` property
@@ -121,28 +120,27 @@ function optionsToResponseIntermediate(
  * without keeping references to the input object.
  */
 function partsToResponseIntermediate(
-  parts: Response.Response.Parts
-): Either.Either<ResponseIntermediate, IllegalArgumentException> {
+  parts: Response.Parts
+): Either<ResponseIntermediate, IllegalArgumentException> {
   const normalizedStatus = normalizeStatus(parts.status);
 
   if (!isStatusValid(normalizedStatus)) {
-    return Either.left(
+    return left(
       new IllegalArgumentException(
         `Response cannot be created. Status code "${parts.status}" is not valid.`
       )
     );
   }
 
-  const url: Either.Either<UrlIntermediate | undefined, Cause.IllegalArgumentException> =
-    Option.fromNullable(normalizeResponseUrlInput(parts.url)).pipe(
-      Option.map((urlInput) => inputToUrlIntermediate(urlInput)),
-      Option.getOrElse(() => Either.right(undefined))
-    );
+  const url: Either<UrlIntermediate | undefined, IllegalArgumentException> = fromNullable(
+    normalizeResponseUrlInput(parts.url)
+  ).pipe(
+    optionMap((urlInput) => inputToUrlIntermediate(urlInput)),
+    getOrElse(() => right(undefined))
+  );
 
-  if (Either.isLeft(url)) {
-    return Either.left(
-      new IllegalArgumentException('Response cannot be created. Invalid URL input.')
-    );
+  if (isLeft(url)) {
+    return left(new IllegalArgumentException('Response cannot be created. Invalid URL input.'));
   }
 
   const intermediate: ResponseIntermediate = {
@@ -155,14 +153,14 @@ function partsToResponseIntermediate(
     type: normalizeType(parts.type),
   };
 
-  return Either.right(intermediate);
+  return right(intermediate);
 }
 
 /**
  * @internal Converts a globalThis.Response to mutable ResponseIntermediate
  * without keeping references to the input object.
  */
-export function responseToResponseIntermediate(response: Response.Response): ResponseIntermediate {
+export function responseToResponseIntermediate(response: Response): ResponseIntermediate {
   return {
     clonedBody: normalizeAndCloneBody(response.body),
     clonedHeaders: cloneHeadersIntermediate(response.headers),
@@ -179,10 +177,10 @@ export function responseToResponseIntermediate(response: Response.Response): Res
  * without keeping references to the input object.
  */
 export function inputToResponseIntermediate(
-  input: Response.Response.Input
-): Either.Either<ResponseIntermediate, IllegalArgumentException> {
+  input: Response.Input
+): Either<ResponseIntermediate, IllegalArgumentException> {
   if (isResponse(input)) {
-    return Either.right(responseToResponseIntermediate(input));
+    return right(responseToResponseIntermediate(input));
   }
 
   if (isJsResponse(input)) {

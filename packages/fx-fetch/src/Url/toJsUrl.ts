@@ -1,5 +1,5 @@
+import type { Url } from '../Url';
 import { format } from './format';
-import * as Url from './Url';
 
 // TODO: Add tests
 
@@ -17,6 +17,6 @@ import * as Url from './Url';
  * @category Conversions
  * @since 0.1.0
  */
-export function toJsUrl(url: Url.Url): globalThis.URL {
+export function toJsUrl(url: Url): globalThis.URL {
   return new globalThis.URL(format(url)); // Cannot throw because we validated the input
 }

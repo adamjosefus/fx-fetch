@@ -1,6 +1,6 @@
 import { headersToJsHeaders } from '../utils/headersToJsHeaders';
 import { getHeaders } from './getHeaders';
-import * as Request from './Request';
+import type { Request } from './Request';
 
 /**
  * Converts a Request's headers to a standard JavaScript Headers object.
@@ -21,7 +21,7 @@ import * as Request from './Request';
  * @since 0.1.0
  * @category Conversions
  */
-export function toParts(self: Request.Request): Request.Request.Parts {
+export function toParts(self: Request): Request.Parts {
   return {
     body: self.body,
     cache: self.cache,

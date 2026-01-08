@@ -1,4 +1,4 @@
-import { Pipeable } from 'effect';
+import type { Pipeable } from 'effect/Pipeable';
 import { SearchParams } from './SearchParams';
 import { SearchParamsInput } from './SearchParamsInput';
 
@@ -18,7 +18,7 @@ export type TypeId = typeof TypeId;
  * @category Models
  * @since 0.1.0
  */
-interface Proto extends Pipeable.Pipeable {
+interface Proto extends Pipeable {
   readonly [TypeId]: TypeId;
 }
 

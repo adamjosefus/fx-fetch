@@ -1,6 +1,6 @@
-import { Brand } from 'effect';
+import { all, type Brand } from 'effect/Brand';
 import { Int } from './Int';
 import { Negative } from './Negative';
 
-export const NegativeInt = Brand.all(Int, Negative);
-export type NegativeInt = Brand.Brand.FromConstructor<typeof NegativeInt>;
+export const NegativeInt = all(Int, Negative);
+export type NegativeInt = Brand.FromConstructor<typeof NegativeInt>;

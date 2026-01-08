@@ -1,7 +1,8 @@
-import { absurd, Effect } from 'effect';
+import { absurd } from 'effect';
+import { type Effect, succeed, suspend } from 'effect/Effect';
 import { NotOkError } from './errors';
 import { isOk } from './isOk';
-import * as Response from './Response';
+import type { Response } from './Response';
 
 function getNotOkReason(status: number): NotOkError['reason'] {
   if (status >= 100 && status < 200) {
@@ -34,10 +35,10 @@ function getNotOkReason(status: number): NotOkError['reason'] {
  * @category Combinators
  * @since 0.1.0
  */
-export function ensureOk(response: Response.Response) {
-  return Effect.suspend((): Effect.Effect<Response.Response, NotOkError, never> => {
+export function ensureOk(response: Response) {
+  return suspend((): Effect<Response, NotOkError, never> => {
     if (isOk(response)) {
-      return Effect.succeed(response);
+      return succeed(response);
     }
 
     return new NotOkError({

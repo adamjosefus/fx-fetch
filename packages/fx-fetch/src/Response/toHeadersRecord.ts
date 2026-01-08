@@ -1,5 +1,5 @@
 import { headersToHeadersRecord } from '../utils/headersToHeadersRecord';
-import * as Response from './Response';
+import type { Response } from './Response';
 
 /**
  * Gets the headers of the response.
@@ -19,4 +19,4 @@ import * as Response from './Response';
  * @category Conversions
  * @since 0.1.0
  */
-export const toHeadersRecord = (self: Response.Response) => headersToHeadersRecord(self.headers);
+export const toHeadersRecord = (self: Response) => headersToHeadersRecord(self.headers);

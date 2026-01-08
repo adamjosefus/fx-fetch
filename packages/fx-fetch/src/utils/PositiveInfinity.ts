@@ -1,4 +1,4 @@
-import { Brand } from 'effect';
+import { type Brand, error, refined } from 'effect/Brand';
 
 /**
  * A type representing a positive infinity value.
@@ -6,8 +6,8 @@ import { Brand } from 'effect';
  * @category Brands
  * @since 0.1.0
  */
-export type PositiveInfinity = number & Brand.Brand<'PositiveInfinity'>;
-export const PositiveInfinity = Brand.refined<PositiveInfinity>(
+export type PositiveInfinity = number & Brand<'PositiveInfinity'>;
+export const PositiveInfinity = refined<PositiveInfinity>(
   (n) => n === Number.POSITIVE_INFINITY,
-  (n) => Brand.error(`Expected ${n} to be a positive infinity`)
+  (n) => error(`Expected ${n} to be a positive infinity`)
 );

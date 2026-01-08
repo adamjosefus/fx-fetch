@@ -1,11 +1,11 @@
 import { dual } from 'effect/Function';
-import { HeadersInput } from '../utils/HeadersInput';
+import type { HeadersInput } from '../utils/HeadersInput';
 import { headersIntermediateSet } from '../utils/headersIntermediateSet';
 import { responseToResponseIntermediate } from './inputToResponseIntermediate';
 import { makeFromResponseIntermediate } from './makeFromResponseIntermediate';
-import * as Response from './Response';
+import type { Response } from './Response';
 
-function setHeadersFn(self: Response.Response, headers: HeadersInput): Response.Response {
+function setHeadersFn(self: Response, headers: HeadersInput): Response {
   const intermediate = responseToResponseIntermediate(self);
   headersIntermediateSet(intermediate.clonedHeaders, headers);
 
@@ -49,7 +49,7 @@ export const setHeaders: {
    * @category Combinators
    * @since 0.1.0
    */
-  (self: Response.Response, headers: HeadersInput): Response.Response;
+  (self: Response, headers: HeadersInput): Response;
   /**
    * Clears existing headers and sets new headers in a Response.
    *
@@ -72,5 +72,5 @@ export const setHeaders: {
    * @category Combinators
    * @since 0.1.0
    */
-  (headers: HeadersInput): (self: Response.Response) => Response.Response;
+  (headers: HeadersInput): (self: Response) => Response;
 } = dual(2, setHeadersFn);

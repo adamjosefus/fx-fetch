@@ -1,15 +1,15 @@
-import { Either } from 'effect';
+import { isLeft } from 'effect/Either';
 import { dual } from 'effect/Function';
-import * as Url from '../Url';
+import type { Url } from '../Url';
 import { inputToUrlIntermediate } from '../Url/inputToUrlIntermediate';
 import { requestToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
-import * as Request from './Request';
+import type { Request } from './Request';
 
-function unsafeSetUrlFn(self: Request.Request, url: Url.Url.Input): Request.Request {
+function unsafeSetUrlFn(self: Request, url: Url.Input): Request {
   const urlResult = inputToUrlIntermediate(url);
 
-  if (Either.isLeft(urlResult)) {
+  if (isLeft(urlResult)) {
     throw urlResult.left;
   }
 
@@ -51,7 +51,7 @@ export const unsafeSetUrl: {
    * @category Combinators
    * @since 0.1.0
    */
-  (self: Request.Request, url: Url.Url.Input): Request.Request;
+  (self: Request, url: Url.Input): Request;
   /**
    * Unsafely sets the URL of a Request (throws on invalid).
    *
@@ -71,5 +71,5 @@ export const unsafeSetUrl: {
    * @category Combinators
    * @since 0.1.0
    */
-  (url: Url.Url.Input): (self: Request.Request) => Request.Request;
+  (url: Url.Input): (self: Request) => Request;
 } = dual(2, unsafeSetUrlFn);

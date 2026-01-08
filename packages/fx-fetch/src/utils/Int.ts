@@ -1,4 +1,4 @@
-import { Brand } from 'effect';
+import { type Brand, error, refined } from 'effect/Brand';
 
 /**
  * A type representing an integer.
@@ -6,8 +6,8 @@ import { Brand } from 'effect';
  * @category Brands
  * @since 0.1.0
  */
-export type Int = number & Brand.Brand<'Int'>;
-export const Int = Brand.refined<Int>(
+export type Int = number & Brand<'Int'>;
+export const Int = refined<Int>(
   (n) => Number.isInteger(n),
-  (n) => Brand.error(`Expected ${n} to be an integer`)
+  (n) => error(`Expected ${n} to be an integer`)
 );

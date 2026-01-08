@@ -1,5 +1,5 @@
-import { Pipeable } from 'effect';
-import * as Url from '../Url';
+import type { Pipeable } from 'effect/Pipeable';
+import type { Url } from '../Url';
 import { SearchParamsInput } from '../Url/SearchParamsInput';
 import { BodyInput } from '../utils/BodyInput';
 import { Headers } from '../utils/Headers';
@@ -23,7 +23,7 @@ export type TypeId = typeof TypeId;
  * @category Models
  * @since 0.1.0
  */
-interface Proto extends Pipeable.Pipeable {
+interface Proto extends Pipeable {
   readonly [TypeId]: TypeId;
 }
 
@@ -48,7 +48,7 @@ export interface Request extends Proto {
   readonly referrer: string | undefined;
   readonly referrerPolicy: NormalizedReferrerPolicy | undefined;
   readonly signals: readonly globalThis.AbortSignal[];
-  readonly url: Url.Url;
+  readonly url: Url;
 }
 
 export namespace Request {
@@ -70,7 +70,7 @@ export namespace Request {
     readonly referrer?: string;
     readonly referrerPolicy?: ReferrerPolicy;
     readonly signal?: AbortSignal;
-    readonly url: Url.Url.Input;
+    readonly url: Url.Input;
   };
 
   /**

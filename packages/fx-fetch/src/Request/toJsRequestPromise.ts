@@ -1,7 +1,7 @@
-import * as Url from '../Url';
+import { toJsUrl } from '../Url';
 import { headersToJsHeaders } from '../utils/headersToJsHeaders';
 import { resolveBlobOrThrow } from '../utils/resolveBlobOrThrow';
-import * as Request from './Request';
+import type { Request } from './Request';
 
 function combineAbortSignals(
   signals: readonly AbortSignal[],
@@ -34,8 +34,8 @@ type Options = {
  * @category Conversions
  * @since 0.1.0
  */
-export async function toJsRequestPromise(self: Request.Request, options?: Options) {
-  const url = Url.toJsUrl(self.url);
+export async function toJsRequestPromise(self: Request, options?: Options) {
+  const url = toJsUrl(self.url);
   const body = self.body !== undefined ? await resolveBlobOrThrow(self.body) : null;
   const signal = combineAbortSignals(self.signals, options?.signal);
 

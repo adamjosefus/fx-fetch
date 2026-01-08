@@ -1,6 +1,6 @@
 import { Headers } from '../utils/Headers';
 import { headersGetAll } from '../utils/headersGetAll';
-import * as Response from './Response';
+import type { Response } from './Response';
 
 /**
  * Gets the headers of the response.
@@ -20,4 +20,4 @@ import * as Response from './Response';
  * @category Getters
  * @since 0.1.0
  */
-export const getHeaders = (self: Response.Response): Headers => headersGetAll(self.headers);
+export const getHeaders = (self: Response): Headers => headersGetAll(self.headers);

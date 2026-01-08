@@ -1,7 +1,7 @@
-import { Effect } from 'effect';
+import { tryPromise } from 'effect/Effect';
 import { MalformedTextError } from '../Cause';
 import { readBodyAsTextOrThrow } from '../utils/readBodyAsTextOrThrow';
-import * as Response from './Response';
+import type { Response } from './Response';
 
 // TODO: Add examples
 
@@ -11,8 +11,8 @@ import * as Response from './Response';
  * @category Conversions
  * @since 0.1.0
  */
-export const readText = (response: Response.Response) =>
-  Effect.tryPromise({
+export const readText = (response: Response) =>
+  tryPromise({
     try: () => readBodyAsTextOrThrow(response.body),
     catch: (error) =>
       new MalformedTextError({

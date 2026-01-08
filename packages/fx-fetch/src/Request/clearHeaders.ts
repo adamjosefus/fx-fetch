@@ -1,7 +1,7 @@
 import { headersIntermediateClear } from '../utils/headersIntermediateClear';
 import { requestToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
-import * as Request from './Request';
+import type { Request } from './Request';
 
 // TODO: Add tests
 
@@ -19,7 +19,7 @@ import * as Request from './Request';
  * @category Combinators
  * @since 0.1.0
  */
-export function clearHeaders(self: Request.Request): Request.Request {
+export function clearHeaders(self: Request): Request {
   const intermediate = requestToRequestIntermediate(self);
   headersIntermediateClear(intermediate.clonedHeaders);
 
