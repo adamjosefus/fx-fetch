@@ -28,7 +28,7 @@ export class MalformedBlobError extends TaggedError('MalformedBlobError')<{
  * @category Errors
  * @since 0.1.0
  */
-export class MalformedReadableStreamError extends TaggedError('MalformedStreamError')<{
+export class MalformedReadableStreamError extends TaggedError('MalformedReadableStreamError')<{
   message: string;
   cause: unknown;
 }> {}
