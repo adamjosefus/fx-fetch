@@ -1,3 +1,4 @@
+import { RuntimeException } from 'effect/Cause';
 import { dieMessage, flatMap, map, succeed, tryPromise } from 'effect/Effect';
 import { match } from 'effect/Option';
 import { Request, toJsRequestPromise } from '../Request';
@@ -44,9 +45,9 @@ export const FetchLive: Type = (request: Request) =>
         }
       }
 
-      return dieMessage(
+      throw new RuntimeException(
         getErrorMessage(error, 'Unknown error occurred during fetch request')
-      ) as never;
+      );
     },
   }).pipe(
     map(make),
