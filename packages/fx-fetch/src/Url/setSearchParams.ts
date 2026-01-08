@@ -2,7 +2,7 @@ import { dual } from 'effect/Function';
 import type { Url } from '../Url';
 import { urlToUrlIntermediate } from './inputToUrlIntermediate';
 import { makeFromUrlIntermediate } from './makeFromUrlIntermediate';
-import { SearchParamsInput } from './SearchParamsInput';
+import type { SearchParamsInput } from './SearchParamsInput';
 import { inputToSearchParamValueIntermediate } from './SearchParamValueIntermediate';
 
 function setSearchParamsFn(url: Url, params: SearchParamsInput): Url {

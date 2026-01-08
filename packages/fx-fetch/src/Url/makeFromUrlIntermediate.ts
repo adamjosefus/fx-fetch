@@ -1,6 +1,6 @@
 import type { Url } from '../Url';
 import { Proto } from './Proto';
-import { UrlIntermediate } from './UrlIntermediate';
+import type { UrlIntermediate } from './UrlIntermediate';
 
 /**
  * @internal Makes a Url.Url from UrlIntermediate.

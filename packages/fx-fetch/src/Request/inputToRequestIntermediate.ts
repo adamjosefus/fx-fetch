@@ -8,10 +8,10 @@ import { inputToHeadersIntermediate } from '../utils/inputToHeadersIntermediate'
 import { isArray } from '../utils/isArray';
 import { normalizeAndCloneBody } from '../utils/normalizeAndCloneBody';
 import { classifyRequestInput } from './classifyRequestInput';
-import { isMethod, Method } from './Method';
-import { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
-import { Request } from './Request';
-import { RequestIntermediate } from './RequestIntermediate';
+import { isMethod, type Method } from './Method';
+import type { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
+import type { Request } from './Request';
+import type { RequestIntermediate } from './RequestIntermediate';
 
 /**
  * @internal We clone just the array of signals. Not signals themselves, because we want keep the same abort behavior.

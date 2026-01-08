@@ -21,7 +21,7 @@ export { isKeepalive } from './isKeepalive';
 export { isRequest } from './isRequest';
 export { make } from './make';
 export { mapUrl } from './mapUrl';
-export { Request, TypeId } from './Request';
+export { type Request, TypeId } from './Request';
 export { readArrayBuffer } from './readArrayBuffer';
 export { readBlob } from './readBlob';
 export { readBytes } from './readBytes';

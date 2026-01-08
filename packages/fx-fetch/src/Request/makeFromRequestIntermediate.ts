@@ -1,7 +1,7 @@
 import { makeFromUrlIntermediate } from '../Url/makeFromUrlIntermediate';
 import { Proto } from './Proto';
 import type { Request } from './Request';
-import { RequestIntermediate } from './RequestIntermediate';
+import type { RequestIntermediate } from './RequestIntermediate';
 
 /**
  * @internal Makes a Request.Request from RequestIntermediate.

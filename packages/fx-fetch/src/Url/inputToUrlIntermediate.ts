@@ -7,7 +7,7 @@ import { formatUrlUntrusted } from './formatUrlUntrusted';
 import { isUrl } from './isUrl';
 import { inputToSearchParamsIntermediate } from './SearchParamsIntermediate';
 import type { Url } from './Url';
-import { UrlIntermediate } from './UrlIntermediate';
+import type { UrlIntermediate } from './UrlIntermediate';
 
 function isUrlOptions(value: unknown): value is Url.Options {
   const isObject = typeof value === 'object' && value !== null;

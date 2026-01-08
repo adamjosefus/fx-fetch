@@ -1,5 +1,5 @@
 import { dual } from 'effect/Function';
-import { HeadersInput } from '../utils/HeadersInput';
+import type { HeadersInput } from '../utils/HeadersInput';
 import { headersIntermediateSet } from '../utils/headersIntermediateSet';
 import { requestToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';

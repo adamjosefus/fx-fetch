@@ -1,4 +1,4 @@
-import { HeadersIntermediate } from './HeadersIntermediate';
+import type { HeadersIntermediate } from './HeadersIntermediate';
 
 /**
  * @internal Clears all headers from the given HeadersIntermediate.

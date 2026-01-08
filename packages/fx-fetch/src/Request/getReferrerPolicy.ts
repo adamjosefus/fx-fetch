@@ -1,4 +1,4 @@
-import { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
+import type { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
 import type { Request } from './Request';
 
 /**

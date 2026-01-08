@@ -1,6 +1,6 @@
 import type { Pipeable } from 'effect/Pipeable';
-import { SearchParams } from './SearchParams';
-import { SearchParamsInput } from './SearchParamsInput';
+import type { SearchParams } from './SearchParams';
+import type { SearchParamsInput } from './SearchParamsInput';
 
 /**
  * @category Symbols

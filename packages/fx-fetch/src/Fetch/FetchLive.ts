@@ -1,11 +1,11 @@
 import { RuntimeException } from 'effect/Cause';
 import { dieMessage, flatMap, map, succeed, tryPromise } from 'effect/Effect';
 import { match } from 'effect/Option';
-import { Request, toJsRequestPromise } from '../Request';
+import { type Request, toJsRequestPromise } from '../Request';
 import { ensureOk, make } from '../Response';
 import { getErrorMessage } from '../utils/getErrorMessage';
 import { AbortError, FetchError, NotAllowedError } from './errors';
-import { Type } from './Type';
+import type { Type } from './Type';
 
 // TODO: Add examples
 

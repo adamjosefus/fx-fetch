@@ -1,5 +1,5 @@
-import { HeadersInput } from './HeadersInput';
-import { HeadersIntermediate } from './HeadersIntermediate';
+import type { HeadersInput } from './HeadersInput';
+import type { HeadersIntermediate } from './HeadersIntermediate';
 import { isArray } from './isArray';
 import { isMap } from './isMap';
 import { Lowercase } from './Lowercase';

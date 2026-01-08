@@ -1,6 +1,6 @@
 import { dual } from 'effect/Function';
 import { setSearchParam } from '../Url';
-import { SearchParamValueInput } from '../Url/SearchParamValueInput';
+import type { SearchParamValueInput } from '../Url/SearchParamValueInput';
 import { mapUrl } from './mapUrl';
 import type { Request } from './Request';
 

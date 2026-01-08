@@ -1,11 +1,11 @@
 import type { Pipeable } from 'effect/Pipeable';
 import type { Url } from '../Url';
-import { SearchParamsInput } from '../Url/SearchParamsInput';
-import { BodyInput } from '../utils/BodyInput';
-import { Headers } from '../utils/Headers';
-import { HeadersInput } from '../utils/HeadersInput';
-import { Method } from './Method';
-import { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
+import type { SearchParamsInput } from '../Url/SearchParamsInput';
+import type { BodyInput } from '../utils/BodyInput';
+import type { Headers } from '../utils/Headers';
+import type { HeadersInput } from '../utils/HeadersInput';
+import type { Method } from './Method';
+import type { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
 
 /**
  * @category Symbols

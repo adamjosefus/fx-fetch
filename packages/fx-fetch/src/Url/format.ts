@@ -1,4 +1,4 @@
-import { Url } from '../Url';
+import type { Url } from '../Url';
 import { formatUrlUntrusted } from './formatUrlUntrusted';
 import { urlToUrlIntermediate } from './inputToUrlIntermediate';
 

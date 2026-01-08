@@ -1,4 +1,4 @@
-import { SearchParamsIntermediate } from './SearchParamsIntermediate';
+import type { SearchParamsIntermediate } from './SearchParamsIntermediate';
 
 /**
  * @internal

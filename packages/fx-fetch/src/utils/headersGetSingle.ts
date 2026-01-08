@@ -1,4 +1,4 @@
-import { Headers } from './Headers';
+import type { Headers } from './Headers';
 import { toLowercase } from './toLowercase';
 
 /**

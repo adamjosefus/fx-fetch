@@ -3,13 +3,13 @@ import { type Either, isLeft, left, right } from 'effect/Either';
 import { fromNullable, getOrElse, map as optionMap } from 'effect/Option';
 import type { Url } from '../Url';
 import { inputToUrlIntermediate, urlToUrlIntermediate } from '../Url/inputToUrlIntermediate';
-import { UrlIntermediate } from '../Url/UrlIntermediate';
+import type { UrlIntermediate } from '../Url/UrlIntermediate';
 import { cloneHeadersIntermediate } from '../utils/cloneHeadersIntermediate';
 import { inputToHeadersIntermediate } from '../utils/inputToHeadersIntermediate';
 import { normalizeAndCloneBody } from '../utils/normalizeAndCloneBody';
 import { isResponse } from './isResponse';
 import type { Response } from './Response';
-import { ResponseIntermediate } from './ResponseIntermediate';
+import type { ResponseIntermediate } from './ResponseIntermediate';
 
 /**
  * @internal Checks if the given value is a custom "Response.Init" object. This guard is not general purpose

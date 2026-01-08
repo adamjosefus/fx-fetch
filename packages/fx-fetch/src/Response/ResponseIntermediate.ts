@@ -1,5 +1,5 @@
-import { UrlIntermediate } from '../Url/UrlIntermediate';
-import { HeadersIntermediate } from '../utils/HeadersIntermediate';
+import type { UrlIntermediate } from '../Url/UrlIntermediate';
+import type { HeadersIntermediate } from '../utils/HeadersIntermediate';
 
 /**
  * @internal Mutable intermediate representation of a Response.Response.

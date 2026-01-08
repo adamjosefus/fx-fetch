@@ -1,5 +1,5 @@
-import { SearchParamsIntermediate } from './SearchParamsIntermediate';
-import { UrlIntermediate } from './UrlIntermediate';
+import type { SearchParamsIntermediate } from './SearchParamsIntermediate';
+import type { UrlIntermediate } from './UrlIntermediate';
 
 function createJsSearchParams(searchParams: SearchParamsIntermediate): globalThis.URLSearchParams {
   const jsSearchParams = new globalThis.URLSearchParams();

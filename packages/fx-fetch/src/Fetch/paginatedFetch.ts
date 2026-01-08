@@ -6,7 +6,7 @@ import type { Request } from '../Request';
 import { NotOkError } from '../Response';
 import { AbortError, FetchError, NotAllowedError } from './errors';
 import { Fetch } from './Fetch';
-import { OnResponse, paginatedFetchStream } from './paginatedFetchStream';
+import { type OnResponse, paginatedFetchStream } from './paginatedFetchStream';
 
 function paginatedFetchFn<A, E, R>(request: Request, onResponse: OnResponse<A, E, R>) {
   return paginatedFetchStream(request, onResponse).pipe(runCollect, map(toReadonlyArray));

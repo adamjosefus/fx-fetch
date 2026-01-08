@@ -1,4 +1,4 @@
-import { HeadersIntermediate } from './HeadersIntermediate';
+import type { HeadersIntermediate } from './HeadersIntermediate';
 import { toLowercase } from './toLowercase';
 
 /**

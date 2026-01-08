@@ -13,4 +13,4 @@ export { fetchStream } from './fetchStream';
 export { fetchText } from './fetchText';
 export { paginatedFetch } from './paginatedFetch';
 export { paginatedFetchStream } from './paginatedFetchStream';
-export { Type } from './Type';
+export type { Type } from './Type';

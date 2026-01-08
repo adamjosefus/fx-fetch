@@ -1,7 +1,7 @@
 import { unsafeMake } from '../Url';
 import { Proto } from './Proto';
 import type { Response } from './Response';
-import { ResponseIntermediate } from './ResponseIntermediate';
+import type { ResponseIntermediate } from './ResponseIntermediate';
 
 /**
  * @internal

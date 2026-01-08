@@ -1,7 +1,7 @@
 import { Tag } from 'effect/Context';
 import { type Effect } from 'effect/Effect';
-import { Request } from '../Request';
-import { NotOkError, Response } from '../Response';
+import type { Request } from '../Request';
+import { NotOkError, type Response } from '../Response';
 import { AbortError, FetchError, NotAllowedError } from './errors';
 
 /**

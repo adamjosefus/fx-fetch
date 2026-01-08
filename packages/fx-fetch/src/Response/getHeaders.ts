@@ -1,4 +1,4 @@
-import { Headers } from '../utils/Headers';
+import type { Headers } from '../utils/Headers';
 import { headersGetAll } from '../utils/headersGetAll';
 import type { Response } from './Response';
 

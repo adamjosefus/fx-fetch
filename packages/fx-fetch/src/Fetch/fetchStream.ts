@@ -4,7 +4,7 @@ import { type Stream } from 'effect/Stream';
 import { MalformedReadableStreamError } from '../Cause';
 import type { Request } from '../Request';
 import { NotOkError, readStream } from '../Response';
-import { Options } from '../Response/readStream';
+import type { Options } from '../Response/readStream';
 import { AbortError, FetchError, NotAllowedError } from './errors';
 import { Fetch } from './Fetch';
 import { fetch } from './fetchFn';

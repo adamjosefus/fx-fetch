@@ -1,5 +1,5 @@
-import { HeadersInput } from './HeadersInput';
-import { HeadersIntermediate } from './HeadersIntermediate';
+import type { HeadersInput } from './HeadersInput';
+import type { HeadersIntermediate } from './HeadersIntermediate';
 import { inputToHeadersIntermediate } from './inputToHeadersIntermediate';
 
 /**

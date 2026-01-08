@@ -1,4 +1,4 @@
-import { Headers } from './Headers';
+import type { Headers } from './Headers';
 
 /**
  * @internal Converts a Headers instance to a global Headers instance.

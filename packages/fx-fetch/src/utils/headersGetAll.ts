@@ -1,4 +1,4 @@
-import { Headers } from './Headers';
+import type { Headers } from './Headers';
 
 /**
  * @internal Returns the `Headers` representation of the given `HeadersIntermediate`.

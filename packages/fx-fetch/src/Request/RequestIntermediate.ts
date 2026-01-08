@@ -1,7 +1,7 @@
-import { UrlIntermediate } from '../Url/UrlIntermediate';
-import { HeadersIntermediate } from '../utils/HeadersIntermediate';
-import { Method } from './Method';
-import { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
+import type { UrlIntermediate } from '../Url/UrlIntermediate';
+import type { HeadersIntermediate } from '../utils/HeadersIntermediate';
+import type { Method } from './Method';
+import type { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
 
 /**
  * @internal Mutable intermediate representation of a Request.Request.

@@ -6,4 +6,4 @@ export { make, unsafeMake } from './make';
 export { setSearchParam } from './setSearchParam';
 export { setSearchParams } from './setSearchParams';
 export { toJsUrl } from './toJsUrl';
-export { TypeId, Url } from './Url';
+export { TypeId, type Url } from './Url';

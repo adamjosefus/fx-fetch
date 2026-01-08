@@ -3,7 +3,7 @@ import { dual } from 'effect/Function';
 import { type ParseError } from 'effect/ParseResult';
 import { decodeUnknown, type Schema } from 'effect/Schema';
 import { MalformedJsonError } from '../Cause';
-import { Request } from './Request';
+import type { Request } from './Request';
 import { readJson } from './readJson';
 
 const readJsonWithSchemaFn = <A, I, R>(self: Request, schema: Schema<A, I, R>) =>

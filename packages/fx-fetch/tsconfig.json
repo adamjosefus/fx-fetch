@@ -23,6 +23,7 @@
     "noPropertyAccessFromIndexSignature": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "verbatimModuleSyntax": true,
     "plugins": [
       {
         "name": "@effect/language-service",

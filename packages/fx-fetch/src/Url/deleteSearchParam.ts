@@ -1,8 +1,8 @@
 import { dual } from 'effect/Function';
-import { Url } from '../Url';
+import type { Url } from '../Url';
 import { urlToUrlIntermediate } from './inputToUrlIntermediate';
 import { makeFromUrlIntermediate } from './makeFromUrlIntermediate';
-import { SearchParamValueInput } from './SearchParamValueInput';
+import type { SearchParamValueInput } from './SearchParamValueInput';
 import { inputToSearchParamValueIntermediate } from './SearchParamValueIntermediate';
 
 function deleteSearchParamFn(url: Url, key: string, value: SearchParamValueInput): Url {
