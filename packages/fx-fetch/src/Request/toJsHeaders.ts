@@ -9,12 +9,16 @@ import type { Request } from './Request';
  * ```ts
  * import { Request } from 'fx-fetch';
  *
- * const request = Request.create('GET', '/api/users', {
- *   'Content-Type': 'application/json',
- *   'Authorization': 'Bearer token123'
+ * const request = Request.unsafeMake({
+ *   method: 'GET',
+ *   url: 'https://example.com/api/users',
+ *   headers: {
+ *     'Content-Type': 'application/json',
+ *     Authorization: 'Bearer token123',
+ *   },
  * });
  *
- * const headers = toJsHeaders(request);
+ * const headers = Request.toJsHeaders(request);
  * console.log(headers.get('Content-Type')); // 'application/json'
  * ```
  *
