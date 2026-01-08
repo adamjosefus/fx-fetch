@@ -18,7 +18,8 @@
     "plugins": [
       {
         "name": "@effect/language-service",
-        "namespaceImportPackages": ["effect"]
+        "namespaceImportPackages": ["effect"],
+        "topLevelNamedReexports": "follow"
       }
     ],
     "resolveJsonModule": true,
