@@ -1,9 +1,5 @@
 ## 1.0.4 (2026-01-08)
 
-### 🚀 Features
-
-- Add examples for handling structured error payloads in documentation ([8f0e5ca](https://github.com/adamjosefus/fx-fetch/commit/8f0e5ca))
-
 ### 🩹 Fixes
 
 - Correct TaggedError tag for MalformedReadableStreamError ([de78128](https://github.com/adamjosefus/fx-fetch/commit/de78128))
@@ -12,8 +8,6 @@
 
 ### 📐 Refactor
 
-- Remove unused CSS variables and styles from custom.css ([51df1a3](https://github.com/adamjosefus/fx-fetch/commit/51df1a3))
-- Update content structure and improve clarity in index.mdx ([5e8b44c](https://github.com/adamjosefus/fx-fetch/commit/5e8b44c))
 - Improve tree shaking ability ([8407731](https://github.com/adamjosefus/fx-fetch/commit/8407731))
 - Use verbatimModuleSyntax ([2a3ca15](https://github.com/adamjosefus/fx-fetch/commit/2a3ca15))
 - Simplify tsconfig.json for better module handling ([bd9d487](https://github.com/adamjosefus/fx-fetch/commit/bd9d487))
