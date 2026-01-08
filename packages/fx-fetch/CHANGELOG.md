@@ -1,3 +1,30 @@
+## 1.0.4 (2026-01-08)
+
+### 🚀 Features
+
+- Add examples for handling structured error payloads in documentation ([8f0e5ca](https://github.com/adamjosefus/fx-fetch/commit/8f0e5ca))
+
+### 🩹 Fixes
+
+- Correct TaggedError tag for MalformedReadableStreamError ([de78128](https://github.com/adamjosefus/fx-fetch/commit/de78128))
+- Throw RuntimeException for unknown fetch errors ([0913ecc](https://github.com/adamjosefus/fx-fetch/commit/0913ecc))
+- Update example in toJsHeaders documentation for clarity and consistency ([0f0e467](https://github.com/adamjosefus/fx-fetch/commit/0f0e467))
+
+### 📐 Refactor
+
+- Remove unused CSS variables and styles from custom.css ([51df1a3](https://github.com/adamjosefus/fx-fetch/commit/51df1a3))
+- Update content structure and improve clarity in index.mdx ([5e8b44c](https://github.com/adamjosefus/fx-fetch/commit/5e8b44c))
+- Improve tree shaking ability ([8407731](https://github.com/adamjosefus/fx-fetch/commit/8407731))
+- Use verbatimModuleSyntax ([2a3ca15](https://github.com/adamjosefus/fx-fetch/commit/2a3ca15))
+- Simplify tsconfig.json for better module handling ([bd9d487](https://github.com/adamjosefus/fx-fetch/commit/bd9d487))
+- Add missing toParts function to convert Request to its constituent parts ([cc9b330](https://github.com/adamjosefus/fx-fetch/commit/cc9b330))
+- Add topLevelNamedReexports to TypeScript plugin configuration ([50516fa](https://github.com/adamjosefus/fx-fetch/commit/50516fa))
+- Improve tree shaking ability ([#38](https://github.com/adamjosefus/fx-fetch/pull/38))
+
+### ❤️ Thank You
+
+- Adam Josefus @adamjosefus
+
 ## 1.0.3 (2026-01-03)
 
 ### 🩹 Fixes
