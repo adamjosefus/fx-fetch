@@ -103,6 +103,7 @@ describe('Request.classifyRequestInput', () => {
       keepalive: true,
       method: 'POST',
       mode: 'no-cors',
+      // @ts-expect-error - priority is not standard but supported in some environments
       priority: 'high',
       redirect: 'manual',
       referrer: 'https://example.eu',

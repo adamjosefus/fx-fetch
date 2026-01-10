@@ -6,6 +6,7 @@ import { inputToSearchParamsIntermediate } from '../Url/SearchParamsIntermediate
 import { cloneHeadersIntermediate } from '../utils/cloneHeadersIntermediate';
 import { inputToHeadersIntermediate } from '../utils/inputToHeadersIntermediate';
 import { isArray } from '../utils/isArray';
+import type * as localThis from '../utils/localThis';
 import { normalizeAndCloneBody } from '../utils/normalizeAndCloneBody';
 import { classifyRequestInput } from './classifyRequestInput';
 import { isMethod, type Method } from './Method';
@@ -17,7 +18,7 @@ import type { RequestIntermediate } from './RequestIntermediate';
  * @internal We clone just the array of signals. Not signals themselves, because we want keep the same abort behavior.
  */
 function normalizeAndCloneSignals(
-  value: AbortSignal | readonly AbortSignal[] | undefined
+  value: localThis.AbortSignal | readonly localThis.AbortSignal[] | undefined
 ): RequestIntermediate['clonedSignals'] {
   if (value === undefined) {
     return [];
@@ -43,7 +44,7 @@ function normalizeKeepalive(keepalive: boolean | undefined): boolean {
 }
 
 function normalizeReferrerPolicy(
-  referrerPolicy: globalThis.ReferrerPolicy | undefined
+  referrerPolicy: localThis.ReferrerPolicy | undefined
 ): NormalizedReferrerPolicy | undefined {
   if (referrerPolicy === undefined) {
     return undefined;
@@ -65,7 +66,7 @@ function isMethodValid(method: unknown): method is Method {
  * without keeping references to the input object.
  */
 function jsRequestToRequestIntermediate(
-  jsRequest: globalThis.Request
+  jsRequest: localThis.Request
 ): Either<RequestIntermediate, IllegalArgumentException> {
   if (jsRequest.bodyUsed) {
     return eitherLeft(

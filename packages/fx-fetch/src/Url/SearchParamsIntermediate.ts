@@ -1,6 +1,7 @@
 import { isArray } from '../utils/isArray';
 import { isJsUrlSearchParams } from '../utils/isJsUrlSearchParams';
 import { isMap } from '../utils/isMap';
+import type * as localThis from '../utils/localThis';
 import { objectEntries } from '../utils/objectEntries';
 import type { SearchParamsInput } from './SearchParamsInput';
 import type { SearchParamValueInput } from './SearchParamValueInput';
@@ -16,7 +17,7 @@ function normalizeSearchParamsString(queryString: string): string {
 }
 
 function jsUrlSearchParamsToSearchParamsIntermediate(
-  jsUrlSearchParams: globalThis.URLSearchParams
+  jsUrlSearchParams: localThis.URLSearchParams
 ): SearchParamsIntermediate {
   // Implementation here
   const intermediate = new Map<string, string[]>();
@@ -33,7 +34,9 @@ function jsUrlSearchParamsToSearchParamsIntermediate(
 
 function stringToSearchParamsIntermediate(searchParamsString: string): SearchParamsIntermediate {
   // Implementation here
-  const jsUrlSearchParams = new URLSearchParams(normalizeSearchParamsString(searchParamsString)); // `URLSearchParams` never throws
+  const jsUrlSearchParams = new globalThis.URLSearchParams(
+    normalizeSearchParamsString(searchParamsString)
+  ); // `URLSearchParams` never throws
   return jsUrlSearchParamsToSearchParamsIntermediate(jsUrlSearchParams);
 }
 

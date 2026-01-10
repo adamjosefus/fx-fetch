@@ -1,4 +1,5 @@
 import { BodyIsNotPresentError } from '../Cause';
+import type * as localThis from './localThis';
 import { resolveBlobOrThrow } from './resolveBlobOrThrow';
 
 /**
@@ -6,12 +7,12 @@ import { resolveBlobOrThrow } from './resolveBlobOrThrow';
  * @internal
  */
 export async function readBodyAsArrayBufferOrThrow(
-  body: Promise<Blob> | undefined
+  body: Promise<localThis.Blob> | undefined
 ): Promise<ArrayBuffer> {
   if (body === undefined) {
     throw new BodyIsNotPresentError({ message: 'Body is not present' });
   }
 
-  const blob: Blob = await resolveBlobOrThrow(body);
+  const blob: localThis.Blob = await resolveBlobOrThrow(body);
   return await blob.arrayBuffer();
 }

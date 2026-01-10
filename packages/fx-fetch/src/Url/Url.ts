@@ -1,4 +1,5 @@
 import type { Pipeable } from 'effect/Pipeable';
+import type * as localThis from '../utils/localThis';
 import type { SearchParams } from './SearchParams';
 import type { SearchParamsInput } from './SearchParamsInput';
 
@@ -61,7 +62,7 @@ export namespace Url {
    * @since 0.1.0
    */
   export type Options = {
-    readonly url: globalThis.URL | string;
+    readonly url: localThis.URL | string;
     readonly searchParams?: SearchParamsInput;
   };
 
@@ -69,5 +70,5 @@ export namespace Url {
    * @category Models
    * @since 0.1.0
    */
-  export type Input = Url | Parts | Options | string | globalThis.URL;
+  export type Input = Url | Parts | Options | string | localThis.URL;
 }

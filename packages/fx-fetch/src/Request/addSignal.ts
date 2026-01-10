@@ -1,9 +1,10 @@
 import { dual } from 'effect/Function';
+import type * as localThis from '../utils/localThis';
 import { requestToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
 import type { Request } from './Request';
 
-function addSignalFn(self: Request, signal: AbortSignal): Request {
+function addSignalFn(self: Request, signal: localThis.AbortSignal): Request {
   const intermediate = requestToRequestIntermediate(self);
   intermediate.clonedSignals.push(signal);
 
@@ -41,7 +42,7 @@ export const addSignal: {
    * @category Combinators
    * @since 0.1.0
    */
-  (self: Request, signal: AbortSignal): Request;
+  (self: Request, signal: localThis.AbortSignal): Request;
   /**
    * Adds an abort signal to a Request.
    *
@@ -62,5 +63,5 @@ export const addSignal: {
    * @category Combinators
    * @since 0.1.0
    */
-  (signal: AbortSignal): (self: Request) => Request;
+  (signal: localThis.AbortSignal): (self: Request) => Request;
 } = dual(2, addSignalFn);

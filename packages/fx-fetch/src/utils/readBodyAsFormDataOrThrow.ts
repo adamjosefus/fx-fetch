@@ -1,4 +1,5 @@
 import { BodyIsNotPresentError } from '../Cause';
+import type * as localThis from './localThis';
 import { resolveBlobOrThrow } from './resolveBlobOrThrow';
 
 /**
@@ -6,8 +7,8 @@ import { resolveBlobOrThrow } from './resolveBlobOrThrow';
  * @internal
  */
 export async function readBodyAsFormDataOrThrow(
-  body: Promise<Blob> | undefined
-): Promise<FormData> {
+  body: Promise<localThis.Blob> | undefined
+): Promise<localThis.FormData> {
   if (body === undefined) {
     throw new BodyIsNotPresentError({ message: 'Body is not present.' });
   }

@@ -1,3 +1,4 @@
+import type * as localThis from '../utils/localThis';
 import type { Request } from './Request';
 
 /**
@@ -15,4 +16,4 @@ import type { Request } from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const getRedirect = (self: Request): globalThis.RequestRedirect | undefined => self.redirect;
+export const getRedirect = (self: Request): localThis.RequestRedirect | undefined => self.redirect;

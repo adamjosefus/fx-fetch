@@ -3,7 +3,7 @@
     "isolatedModules": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": false,
-    "lib": ["ESNext", "DOM", "DOM.Iterable", "DOM.AsyncIterable"],
+    "lib": ["ESNext"],
     "module": "ESNext",
     "moduleDetection": "force",
     "moduleResolution": "bundler",

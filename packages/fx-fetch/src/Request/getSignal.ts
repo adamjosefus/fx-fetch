@@ -1,3 +1,4 @@
+import type * as localThis from '../utils/localThis';
 import type { Request } from './Request';
 
 /**
@@ -19,5 +20,5 @@ import type { Request } from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const getSignal = (self: Request): globalThis.AbortSignal | undefined =>
-  self.signals.length > 0 ? AbortSignal.any([...self.signals]) : undefined;
+export const getSignal = (self: Request): localThis.AbortSignal | undefined =>
+  self.signals.length > 0 ? globalThis.AbortSignal.any([...self.signals]) : undefined;

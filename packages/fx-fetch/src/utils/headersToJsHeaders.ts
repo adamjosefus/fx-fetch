@@ -1,9 +1,10 @@
 import type { Headers } from './Headers';
+import type * as localThis from './localThis';
 
 /**
  * @internal Converts a Headers instance to a global Headers instance.
  */
-export function headersToJsHeaders(headers: Headers): globalThis.Headers {
+export function headersToJsHeaders(headers: Headers): localThis.Headers {
   const jsHeaders = new globalThis.Headers();
 
   for (const [key, values] of headers) {

@@ -1,11 +1,13 @@
+import type * as localThis from './localThis';
+
 /**
  * Safely resolves a Promise<Blob> and throws detailed errors if it fails.
  *
  * @internal
  */
-export async function resolveBlobOrThrow(blob: Promise<Blob>): Promise<Blob> {
+export async function resolveBlobOrThrow(blob: Promise<localThis.Blob>): Promise<localThis.Blob> {
   try {
-    const resolvedBlob: Blob = await blob; // We need to ensure the promise resolves
+    const resolvedBlob: localThis.Blob = await blob; // We need to ensure the promise resolves
     return resolvedBlob;
   } catch (error) {
     if (error instanceof TypeError) {

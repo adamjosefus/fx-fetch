@@ -1,3 +1,4 @@
+import type * as localThis from '../utils/localThis';
 import type { SearchParamValueInput } from './SearchParamValueInput';
 
 /**
@@ -5,7 +6,7 @@ import type { SearchParamValueInput } from './SearchParamValueInput';
  */
 export type SearchParamsInput =
   | { readonly [key: string]: SearchParamValueInput }
-  | globalThis.URLSearchParams
+  | localThis.URLSearchParams
   | readonly (readonly [key: string, value: SearchParamValueInput])[]
   | ReadonlyMap<string, SearchParamValueInput>
   | string;
