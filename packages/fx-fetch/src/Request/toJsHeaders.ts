@@ -1,4 +1,5 @@
 import { headersToJsHeaders } from '../utils/headersToJsHeaders';
+import type * as localThis from '../utils/localThis';
 import { getHeaders } from './getHeaders';
 import type { Request } from './Request';
 
@@ -25,6 +26,6 @@ import type { Request } from './Request';
  * @since 0.1.0
  * @category Conversions
  */
-export function toJsHeaders(self: Request): globalThis.Headers {
+export function toJsHeaders(self: Request): localThis.Headers {
   return self.pipe(getHeaders, headersToJsHeaders);
 }

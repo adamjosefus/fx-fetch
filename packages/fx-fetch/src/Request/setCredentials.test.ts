@@ -8,7 +8,7 @@ describe('Request.setCredentials', () => {
       method: 'GET',
     });
 
-    const credentials: RequestCredentials = 'include';
+    const credentials = 'include' as const;
 
     // Data-first form: setCredentials(request, credentials)
     const a = Request.setCredentials(request, credentials);

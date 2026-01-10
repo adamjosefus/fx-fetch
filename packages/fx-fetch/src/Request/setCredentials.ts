@@ -1,9 +1,10 @@
 import { dual } from 'effect/Function';
+import type * as localThis from '../utils/localThis';
 import { requestToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
 import type { Request } from './Request';
 
-function setCredentialsFn(self: Request, credentials: RequestCredentials): Request {
+function setCredentialsFn(self: Request, credentials: localThis.RequestCredentials): Request {
   const intermediate = requestToRequestIntermediate(self);
   intermediate.credentials = credentials;
 
@@ -46,7 +47,7 @@ export const setCredentials: {
    * @category Combinators
    * @since 0.1.0
    */
-  (self: Request, credentials: RequestCredentials): Request;
+  (self: Request, credentials: localThis.RequestCredentials): Request;
   /**
    * Sets credentials mode in a request.
    *
@@ -66,5 +67,5 @@ export const setCredentials: {
    * @category Combinators
    * @since 0.1.0
    */
-  (credentials: RequestCredentials): (self: Request) => Request;
+  (credentials: localThis.RequestCredentials): (self: Request) => Request;
 } = dual(2, setCredentialsFn);

@@ -63,8 +63,8 @@ describe('Response.unsafeMake', () => {
   });
 
   test('makeFromJsResponse', () => {
-    const bodyInit: globalThis.BodyInit = `{"name":"John","age":30}`;
-    const responseInit: Required<globalThis.ResponseInit> = {
+    const bodyInit = `{"name":"John","age":30}`;
+    const responseInit = {
       headers: {
         'content-type': 'application/json',
       },

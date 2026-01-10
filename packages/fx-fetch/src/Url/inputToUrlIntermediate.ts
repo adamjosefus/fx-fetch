@@ -2,6 +2,7 @@ import { IllegalArgumentException } from 'effect/Cause';
 import { type Either, map as eitherMap, isLeft, left, right } from 'effect/Either';
 import { pipe } from 'effect/Function';
 import { isJsUrl } from '../utils/isJsUrl';
+import type * as localThis from '../utils/localThis';
 import { toLowercase } from '../utils/toLowercase';
 import { formatUrlUntrusted } from './formatUrlUntrusted';
 import { isUrl } from './isUrl';
@@ -131,7 +132,7 @@ function isUrlConstructable(url: UrlIntermediate): boolean {
   try {
     // Validate by attempting to create a URL string and passing it to the URL constructor
     const urlString = formatUrlUntrusted(url);
-    const _url = new URL(urlString); // Throws if invalid
+    const _url = new globalThis.URL(urlString); // Throws if invalid
 
     return true;
   } catch (_error) {
@@ -205,7 +206,7 @@ function partsToUrlIntermediate(
  * @internal Converts a globalThis.URL to mutable UrlIntermediate
  * without keeping references to the input object.
  */
-function jsUrlToUrlIntermediate(jsUrl: globalThis.URL): UrlIntermediate {
+function jsUrlToUrlIntermediate(jsUrl: localThis.URL): UrlIntermediate {
   // Construct from globalThis.URL cannot fail, so we always return a Right
   return {
     clonedSearchParams: inputToSearchParamsIntermediate(jsUrl.searchParams),

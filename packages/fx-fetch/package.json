@@ -50,10 +50,6 @@
     "test": "vitest run ./src",
     "validate": "tsc"
   },
-  "dependencies": {
-    "@types/node": ">=20",
-    "effect": "^3"
-  },
   "devDependencies": {
     "@biomejs/biome": "^2.3.11",
     "@effect/language-service": "0.64.1",
@@ -62,6 +58,10 @@
     "typescript": "^5.9.3",
     "vitest": "^4.0.16",
     "zshy": "^0.7.0"
+  },
+  "peerDependencies": {
+    "@types/node": ">=20",
+    "effect": "^3"
   },
   "zshy": {
     "exports": {
