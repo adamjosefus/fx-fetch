@@ -35,6 +35,9 @@ importers:
 
   packages/fx-fetch:
     dependencies:
+      '@standard-schema/spec':
+        specifier: ^1
+        version: 1.0.0
       '@types/node':
         specifier: '>=20'
         version: 24.10.4
