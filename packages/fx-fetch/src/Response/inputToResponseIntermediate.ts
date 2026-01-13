@@ -6,6 +6,7 @@ import { inputToUrlIntermediate, urlToUrlIntermediate } from '../Url/inputToUrlI
 import type { UrlIntermediate } from '../Url/UrlIntermediate';
 import { cloneHeadersIntermediate } from '../utils/cloneHeadersIntermediate';
 import { inputToHeadersIntermediate } from '../utils/inputToHeadersIntermediate';
+import type * as localThis from '../utils/localThis';
 import { normalizeAndCloneBody } from '../utils/normalizeAndCloneBody';
 import { isResponse } from './isResponse';
 import type { Response } from './Response';
@@ -37,7 +38,7 @@ function isResponseOptions(value: Response.Options | Response.Parts): value is R
 /**
  * @internal Checks if the given value is a vanilla Response object.
  */
-function isJsResponse(value: unknown): value is globalThis.Response {
+function isJsResponse(value: unknown): value is localThis.Response {
   return value instanceof globalThis.Response;
 }
 
@@ -57,7 +58,7 @@ function normalizeStatusText(statusText: string | undefined): string {
   return statusText ?? '';
 }
 
-function normalizeType(type: globalThis.ResponseType | undefined): globalThis.ResponseType {
+function normalizeType(type: localThis.ResponseType | undefined): localThis.ResponseType {
   return type ?? 'default';
 }
 
@@ -74,7 +75,7 @@ function normalizeResponseUrlInput(input: Url.Input | undefined): Url.Input | un
  * without keeping references to the input object.
  */
 function jsResponseToResponseIntermediate(
-  jsResponse: globalThis.Response
+  jsResponse: localThis.Response
 ): Either<ResponseIntermediate, IllegalArgumentException> {
   if (jsResponse.bodyUsed) {
     return left(

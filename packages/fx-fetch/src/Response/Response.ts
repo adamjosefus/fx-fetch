@@ -3,6 +3,7 @@ import type { Url } from '../Url';
 import type { BodyInput } from '../utils/BodyInput';
 import type { Headers } from '../utils/Headers';
 import type { HeadersInput } from '../utils/HeadersInput';
+import type * as localThis from '../utils/localThis';
 
 /**
  * @category Symbols
@@ -37,7 +38,7 @@ export interface Response extends Proto {
   readonly redirected: boolean;
   readonly status: number;
   readonly statusText: string;
-  readonly type: globalThis.ResponseType;
+  readonly type: localThis.ResponseType;
   readonly url: Url | undefined;
 }
 
@@ -52,7 +53,7 @@ export namespace Response {
     readonly redirected?: boolean;
     readonly status?: number;
     readonly statusText?: string;
-    readonly type?: globalThis.ResponseType;
+    readonly type?: localThis.ResponseType;
     readonly url?: Url.Input;
   };
 
@@ -63,12 +64,12 @@ export namespace Response {
    */
   export type Options = {
     readonly body?: BodyInput;
-    readonly init?: globalThis.ResponseInit;
+    readonly init?: localThis.ResponseInit;
   };
 
   /**
    * @category Models
    * @since 0.1.0
    */
-  export type Input = Response | Parts | Options | globalThis.Response;
+  export type Input = Response | Parts | Options | localThis.Response;
 }

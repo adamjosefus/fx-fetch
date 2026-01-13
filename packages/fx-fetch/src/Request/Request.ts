@@ -4,6 +4,7 @@ import type { SearchParamsInput } from '../Url/SearchParamsInput';
 import type { BodyInput } from '../utils/BodyInput';
 import type { Headers } from '../utils/Headers';
 import type { HeadersInput } from '../utils/HeadersInput';
+import type * as localThis from '../utils/localThis';
 import type { Method } from './Method';
 import type { NormalizedReferrerPolicy } from './NormalizedReferrerPolicy';
 
@@ -36,18 +37,18 @@ interface Proto extends Pipeable {
 export interface Request extends Proto {
   readonly _tag: 'Request';
   readonly body: Promise<Blob> | undefined;
-  readonly cache: globalThis.RequestCache | undefined;
-  readonly credentials: globalThis.RequestCredentials | undefined;
+  readonly cache: localThis.RequestCache | undefined;
+  readonly credentials: localThis.RequestCredentials | undefined;
   readonly headers: Headers;
   readonly integrity: string | undefined;
   readonly keepalive: boolean;
   readonly method: Method;
-  readonly mode: globalThis.RequestMode | undefined;
-  readonly priority: globalThis.RequestPriority | undefined;
-  readonly redirect: globalThis.RequestRedirect | undefined;
+  readonly mode: localThis.RequestMode | undefined;
+  readonly priority: localThis.RequestPriority | undefined;
+  readonly redirect: localThis.RequestRedirect | undefined;
   readonly referrer: string | undefined;
   readonly referrerPolicy: NormalizedReferrerPolicy | undefined;
-  readonly signals: readonly globalThis.AbortSignal[];
+  readonly signals: readonly localThis.AbortSignal[];
   readonly url: Url;
 }
 
@@ -58,18 +59,18 @@ export namespace Request {
    */
   export type Parts = {
     readonly body?: BodyInput;
-    readonly cache?: RequestCache;
-    readonly credentials?: RequestCredentials;
+    readonly cache?: localThis.RequestCache;
+    readonly credentials?: localThis.RequestCredentials;
     readonly headers?: HeadersInput;
     readonly integrity?: string;
     readonly keepalive?: boolean;
     readonly method?: string;
-    readonly mode?: RequestMode;
-    readonly priority?: RequestPriority;
-    readonly redirect?: RequestRedirect;
+    readonly mode?: localThis.RequestMode;
+    readonly priority?: localThis.RequestPriority;
+    readonly redirect?: localThis.RequestRedirect;
     readonly referrer?: string;
-    readonly referrerPolicy?: ReferrerPolicy;
-    readonly signal?: AbortSignal;
+    readonly referrerPolicy?: localThis.ReferrerPolicy;
+    readonly signal?: localThis.AbortSignal;
     readonly url: Url.Input;
   };
 
@@ -85,5 +86,5 @@ export namespace Request {
    * @category Models
    * @since 0.1.0
    */
-  export type Input = Request | Parts | Options | globalThis.Request;
+  export type Input = Request | Parts | Options | localThis.Request;
 }

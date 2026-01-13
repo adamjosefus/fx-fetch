@@ -1,7 +1,8 @@
+import type * as localThis from '../utils/localThis';
 import { isRequest } from './isRequest';
 import type { Request } from './Request';
 
-function isJsRequest(input: unknown): input is globalThis.Request {
+function isJsRequest(input: unknown): input is localThis.Request {
   return input instanceof globalThis.Request;
 }
 
@@ -25,7 +26,7 @@ export function classifyRequestInput(input: Request.Input):
     }
   | {
       readonly type: 'jsRequest';
-      readonly input: globalThis.Request;
+      readonly input: localThis.Request;
     }
   | {
       readonly type: 'options';
