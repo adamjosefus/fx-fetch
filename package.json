@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "build": "nx build fx-fetch",
+    "dev": "pnpm build && nx dev website",
     "fmt": "biome check . --error-on-warnings && pnpm local:fmt",
     "fmt:write": "nx run-many --target=fmt:write && pnpm local:fmt:write",
     "local:fmt": "biome check . --error-on-warnings",

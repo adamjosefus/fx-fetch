@@ -63,6 +63,9 @@
     "vitest": "^4.0.16",
     "zshy": "^0.7.0"
   },
+  "peerDependencies": {
+    "@standard-schema/spec": "^1"
+  },
   "zshy": {
     "exports": {
       ".": "./src/index.ts",

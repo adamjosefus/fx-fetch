@@ -126,7 +126,8 @@ const payload = Response.readJson(response);
 If you want a shortcut that combines fetching and reading JSON, use [`Fetch.fetchJson`](../fetch/#fetchjson).
 
 :::tip
-If you want to read JSON with a specific schema, consider using [`readJsonWithSchema`](#readjsonwithschema) instead.
+If you want to read JSON with a specific schema, consider using:
+- [`readJsonWithSchema`](#readjsonwithschema) for Effect Schema
 :::
 
 ### readText
@@ -247,6 +248,31 @@ const UserSchema = Schema.Struct({
 //       │    >
 //       ▼
 const payload = Response.readJsonWithSchema(response, UserSchema);
+```
+
+### readJsonWithStandardSchemaV1
+
+The `readJsonWithStandardSchemaV1` function reads the body of a `Response`, parses it as JSON,
+and validates it against a provided [Standard Schema](https://standardschema.dev/) compatible schema.
+
+This function works with any schema library that implements the Standard Schema specification,
+including [Zod](https://zod.dev/), [Valibot](https://valibot.dev/), [ArkType](https://arktype.io/), and others.
+
+```ts showLineNumbers=false
+import { Response } from 'fx-fetch';
+import { z } from 'zod';
+
+const UserSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+});
+
+//       ┌─── Effect.Effect<
+//       │      { id: number; name: string },
+//       │      MalformedJsonError | ParseError
+//       │    >
+//       ▼
+const payload = Response.readJsonWithStandardSchemaV1(response, UserSchema);
 ```
 
 ### readStream

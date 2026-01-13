@@ -15,6 +15,7 @@ export { readBytes } from './readBytes';
 export { readFormData } from './readFormData';
 export { readJson } from './readJson';
 export { readJsonWithSchema } from './readJsonWithSchema';
+export { readJsonWithStandardSchemaV1 } from './readJsonWithStandardSchemaV1';
 export { readReadableStream } from './readReadableStream';
 export { readStream } from './readStream';
 export { readText } from './readText';
