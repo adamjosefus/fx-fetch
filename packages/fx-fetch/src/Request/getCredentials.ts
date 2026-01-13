@@ -1,3 +1,4 @@
+import type * as localThis from '../utils/localThis';
 import type { Request } from './Request';
 
 /**
@@ -15,5 +16,5 @@ import type { Request } from './Request';
  * @category Getters
  * @since 0.1.0
  */
-export const getCredentials = (self: Request): globalThis.RequestCredentials | undefined =>
+export const getCredentials = (self: Request): localThis.RequestCredentials | undefined =>
   self.credentials;

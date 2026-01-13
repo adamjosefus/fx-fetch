@@ -1,3 +1,13 @@
+## 1.0.5-beta.0 (2026-01-10)
+
+### 📐 Refactor
+
+- Make tsconfig dom agnostic ([7138fc6](https://github.com/adamjosefus/fx-fetch/commit/7138fc6))
+
+### ❤️ Thank You
+
+- Adam Josefus @adamjosefus
+
 ## 1.0.4 (2026-01-08)
 
 ### 🩹 Fixes

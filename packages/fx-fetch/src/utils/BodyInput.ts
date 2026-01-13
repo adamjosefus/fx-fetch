@@ -1,4 +1,6 @@
+import type * as localThis from './localThis';
+
 /**
  * @internal
  */
-export type BodyInput = Promise<Blob> | globalThis.BodyInit | null | undefined;
+export type BodyInput = Promise<localThis.Blob> | localThis.BodyInit | null | undefined;
