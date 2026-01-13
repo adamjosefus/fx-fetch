@@ -296,7 +296,6 @@ const payload = Response.readStream(response, {
 });
 ```
 
-
 ## Errors
 
 ### NotOkError
@@ -318,4 +317,40 @@ function fn(error: Response.NotOkError) {
   error.response; // ◀︎── Response.Response
   error.reason; // ◀︎── 'client-error' | 'informational' | 'redirection' | 'server-error'
 }
+```
+
+---
+
+## Catching Errors
+
+### notOkEither
+
+Encapsulates both success `Response` and `NotOkError` failure of an `Effect` into an `Either` type of `Response`.
+
+Transforms an `Effect<Response, NotOkError>` into an `Effect<Either<Response, Response>>`.
+
+```ts twoslash showLineNumbers=true
+import { Effect, Either } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+//       ┌─── Effect.Effect<
+//       │      void,
+//       │      | Fetch.FetchError
+//       │      | Fetch.AbortError
+//       │      | Fetch.NotAllowedError
+//       │      Fetch.Fetch
+//       │    >
+//       ▼
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: './my-endpoint' });
+
+  //       ┌─── Either.Either<
+  //       │      Response.Response, // Ok response 200-399
+  //       │      Response.Response // NotOk response 400-599
+  //       │    >
+  //       ▼
+  const result = yield* Fetch.fetch(request).pipe(
+    Response.notOkEither
+  );
+});
 ```
