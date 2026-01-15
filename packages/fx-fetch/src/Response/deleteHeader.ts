@@ -1,6 +1,7 @@
 import { dual } from 'effect/Function';
 import { headersIntermediateDelete } from '../utils/headersIntermediateDelete';
 import { responseToResponseIntermediate } from './inputToResponseIntermediate';
+import { isResponse } from './isResponse';
 import { makeFromResponseIntermediate } from './makeFromResponseIntermediate';
 import type { Response } from './Response';
 
@@ -63,4 +64,4 @@ export const deleteHeader: {
    * @since 0.1.0
    */
   (name: string, value?: string): (self: Response) => Response;
-} = dual(2, deleteHeaderFn);
+} = dual((args) => isResponse(args[0]), deleteHeaderFn);
