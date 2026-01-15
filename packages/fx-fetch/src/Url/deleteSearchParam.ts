@@ -1,11 +1,12 @@
 import { dual } from 'effect/Function';
 import type { Url } from '../Url';
 import { urlToUrlIntermediate } from './inputToUrlIntermediate';
+import { isUrl } from './isUrl';
 import { makeFromUrlIntermediate } from './makeFromUrlIntermediate';
 import type { SearchParamValueInput } from './SearchParamValueInput';
 import { inputToSearchParamValueIntermediate } from './SearchParamValueIntermediate';
 
-function deleteSearchParamFn(url: Url, key: string, value: SearchParamValueInput): Url {
+function deleteSearchParamFn(url: Url, key: string, value?: SearchParamValueInput): Url {
   const urlIntermediate = urlToUrlIntermediate(url);
   const normalizedValues = inputToSearchParamValueIntermediate(value);
 
@@ -60,7 +61,7 @@ function deleteSearchParamFn(url: Url, key: string, value: SearchParamValueInput
  *
  * // Remove all 'tag' parameters
  * url.pipe(
- *   Url.deleteSearchParam('tag', undefined),
+ *   Url.deleteSearchParam('tag'),
  *   Url.format // 'https://example.com'
  * );
  * ```
@@ -94,7 +95,7 @@ export const deleteSearchParam: {
    *
    * // Remove all 'tag' parameters
    * url.pipe(
-   *   Url.deleteSearchParam('tag', undefined),
+   *   Url.deleteSearchParam('tag'),
    *   Url.format // 'https://example.com'
    * );
    * ```
@@ -102,7 +103,7 @@ export const deleteSearchParam: {
    * @category Combinators
    * @since 0.1.0
    */
-  (url: Url, key: string, value: SearchParamValueInput): Url;
+  (url: Url, key: string, value?: SearchParamValueInput): Url;
   /**
    * Deletes search parameters from a Url.
    * If a value is provided, only that value is removed; otherwise, all values for the key are removed.
@@ -128,7 +129,7 @@ export const deleteSearchParam: {
    *
    * // Remove all 'tag' parameters
    * url.pipe(
-   *   Url.deleteSearchParam('tag', undefined),
+   *   Url.deleteSearchParam('tag'),
    *   Url.format // 'https://example.com'
    * );
    * ```
@@ -136,5 +137,5 @@ export const deleteSearchParam: {
    * @category Combinators
    * @since 0.1.0
    */
-  (key: string, value: SearchParamValueInput): (url: Url) => Url;
-} = dual(3, deleteSearchParamFn);
+  (key: string, value?: SearchParamValueInput): (url: Url) => Url;
+} = dual((args) => isUrl(args[0]), deleteSearchParamFn);
