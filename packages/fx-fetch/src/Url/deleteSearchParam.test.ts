@@ -2,31 +2,34 @@ import { describe, expect, expectTypeOf, test } from 'vitest';
 import * as Url from './index';
 
 describe('Url.deleteSearchParam', () => {
-  test('dual api', () => {
+  test('dual api without value (deletes all)', () => {
     const url = Url.unsafeMake('https://example.com?page=1&limit=10');
     const key = 'page';
 
-    // Dual API: Data-first
-    const a = Url.deleteSearchParam(url, key, undefined);
+    // Data-first form: deleteSearchParam(url, key)
+    const a = Url.deleteSearchParam(url, key);
 
-    // Dual API: Data-last
-    const b = Url.deleteSearchParam(key, undefined)(url);
+    // Data-last form: deleteSearchParam(key)(url)
+    const b = Url.deleteSearchParam(key)(url);
 
     expect(a).toEqual(b);
+    expect(Url.format(a)).toBe('https://example.com?limit=10');
     expectTypeOf(a).toEqualTypeOf(b);
   });
 
-  test('deletes all values for a given key when no value is provided', () => {
+  test('dual api with value (deletes specific)', () => {
     const url = Url.unsafeMake('https://example.com?tag=new&tag=sale&tag=active');
-    const updatedUrl = Url.deleteSearchParam(url, 'tag', undefined);
+    const key = 'tag';
+    const value = 'sale';
 
-    expect(Url.format(updatedUrl)).toBe('https://example.com');
-  });
+    // Data-first form: deleteSearchParam(url, key, value)
+    const a = Url.deleteSearchParam(url, key, value);
 
-  test('deletes only the specified value for a given key', () => {
-    const url = Url.unsafeMake('https://example.com?tag=new&tag=sale&tag=active');
-    const updatedUrl = Url.deleteSearchParam(url, 'tag', 'sale');
+    // Data-last form: deleteSearchParam(key, value)(url)
+    const b = Url.deleteSearchParam(key, value)(url);
 
-    expect(Url.format(updatedUrl)).toBe('https://example.com?tag=new&tag=active');
+    expect(a).toEqual(b);
+    expect(Url.format(a)).toBe('https://example.com?tag=new&tag=active');
+    expectTypeOf(a).toEqualTypeOf(b);
   });
 });

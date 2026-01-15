@@ -1,6 +1,6 @@
 import { Chunk, Effect, Stream } from 'effect';
 import { describe, expect, expectTypeOf, test } from 'vitest';
-import * as Response from '.';
+import * as Request from '.';
 
 function collectUint8ArrayStream(
   stream: Stream.Stream<Uint8Array<ArrayBufferLike>, Error, never>
@@ -22,12 +22,8 @@ function collectUint8ArrayStream(
     .pipe(Effect.runPromise);
 }
 
-describe('Response.readStream', () => {
-  const response = Response.unsafeMake({
-    ok: true,
-    status: 200,
-    statusText: '200 OK',
-    type: 'default',
+describe('Request.readStream', () => {
+  const request = Request.unsafeMake({
     url: 'https://example.com',
     body: `{"name":"John","age":30}`,
   });
@@ -37,11 +33,17 @@ describe('Response.readStream', () => {
   };
 
   test('dualApi', async () => {
-    const aStream = await Response.readStream(response, options);
-    const bStream = await Response.readStream(options)(response);
+    const aStream = await Request.readStream(request, options);
+    const bStream = await Request.readStream(options)(request);
 
-    const aExit = await aStream.pipe(Effect.map(collectUint8ArrayStream), Effect.runPromiseExit);
-    const bExit = await bStream.pipe(Effect.map(collectUint8ArrayStream), Effect.runPromiseExit);
+    const aExit = await aStream.pipe(
+      Effect.flatMap((stream) => Effect.promise(() => collectUint8ArrayStream(stream))),
+      Effect.runPromiseExit
+    );
+    const bExit = await bStream.pipe(
+      Effect.flatMap((stream) => Effect.promise(() => collectUint8ArrayStream(stream))),
+      Effect.runPromiseExit
+    );
 
     expect(aExit).toEqual(bExit);
     expectTypeOf(aStream).toEqualTypeOf(bStream);
@@ -53,11 +55,17 @@ describe('Response.readStream', () => {
       releaseLockOnEnd: true,
     };
 
-    const aStream = await Response.readStream(response, optionsWithRelease);
-    const bStream = await Response.readStream(optionsWithRelease)(response);
+    const aStream = await Request.readStream(request, optionsWithRelease);
+    const bStream = await Request.readStream(optionsWithRelease)(request);
 
-    const aExit = await aStream.pipe(Effect.map(collectUint8ArrayStream), Effect.runPromiseExit);
-    const bExit = await bStream.pipe(Effect.map(collectUint8ArrayStream), Effect.runPromiseExit);
+    const aExit = await aStream.pipe(
+      Effect.flatMap((stream) => Effect.promise(() => collectUint8ArrayStream(stream))),
+      Effect.runPromiseExit
+    );
+    const bExit = await bStream.pipe(
+      Effect.flatMap((stream) => Effect.promise(() => collectUint8ArrayStream(stream))),
+      Effect.runPromiseExit
+    );
 
     expect(aExit).toEqual(bExit);
     expectTypeOf(aStream).toEqualTypeOf(bStream);

@@ -1,6 +1,7 @@
 import { dual } from 'effect/Function';
 import { headersIntermediateDelete } from '../utils/headersIntermediateDelete';
 import { requestToRequestIntermediate } from './inputToRequestIntermediate';
+import { isRequest } from './isRequest';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
 import type { Request } from './Request';
 
@@ -63,4 +64,4 @@ export const deleteHeader: {
    * @since 0.1.0
    */
   (name: string, value?: string): (self: Request) => Request;
-} = dual(2, deleteHeaderFn);
+} = dual((args) => isRequest(args[0]), deleteHeaderFn);
