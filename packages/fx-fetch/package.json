@@ -1,6 +1,6 @@
 {
   "name": "fx-fetch",
-  "version": "1.0.5-beta.0",
+  "version": "1.1.0",
   "description": "Simple, immutable, clonable, and effect-based HTTP fetching.",
   "homepage": "https://adamjosefus.github.io/fx-fetch/",
   "repository": {

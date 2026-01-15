@@ -1,3 +1,30 @@
+## 1.1.0 (2026-01-15)
+
+### 🚀 Features
+
+- Implement `readJsonWithStandardSchemaV1` function for JSON response validation with [Standard Schema](https://standardschema.dev/schema) ([5468cb0](https://github.com/adamjosefus/fx-fetch/commit/5468cb0))
+- Add `notOkEither` function to encapsulate `Response` and `NotOkError` in Either type ([8588a8e](https://github.com/adamjosefus/fx-fetch/commit/8588a8e))
+
+### 🩹 Fixes
+
+- Update dual function to validate request type in `deleteHeader` ([a345190](https://github.com/adamjosefus/fx-fetch/commit/a345190))
+- Update dual function to validate response type in `deleteHeader` ([57c4e66](https://github.com/adamjosefus/fx-fetch/commit/57c4e66))
+- Update dual function to validate url type in `deleteSearchParam` ([0a4e4f1](https://github.com/adamjosefus/fx-fetch/commit/0a4e4f1))
+
+### 📐 Refactor
+
+- Make tsconfig dom agnostic ([a596483](https://github.com/adamjosefus/fx-fetch/commit/a596483))
+
+### 🧪 Tests
+
+- Add unit tests for `readJsonWithStandardSchemaV1` function ([ce0f0e8](https://github.com/adamjosefus/fx-fetch/commit/ce0f0e8))
+- Add unit tests for `Response.notOkEither` function ([8598fa8](https://github.com/adamjosefus/fx-fetch/commit/8598fa8))
+- Add unit tests for dual api cases ([a1044fb](https://github.com/adamjosefus/fx-fetch/commit/a1044fb))
+
+### ❤️ Thank You
+
+- Adam Josefus @adamjosefus
+
 ## 1.0.5-beta.0 (2026-01-10)
 
 ### 📐 Refactor
