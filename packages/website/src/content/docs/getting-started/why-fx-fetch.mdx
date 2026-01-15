@@ -109,14 +109,14 @@ There are two main reasons:
    3. **Network error**: The network is unreachable, DNS fails, or the connection is lost.
    4. **CORS not allowed**: The request is blocked due to Cross-Origin Resource Sharing (CORS) policy.
    5. **Invalid request parameters**:
-     - Invalid header name or value
-     - Invalid URL or unsupported protocol/scheme
-     - URL includes unwanted credentials
-     - Invalid referrer URL
-     - Invalid request mode (e.g., `navigate`, `websocket`)
-     - Forbidden HTTP method (e.g., `CONNECT`, `TRACE`, `TRACK`)
-     - Body present with `GET` or `HEAD` method
-     - Cache mode or request mode mismatch (e.g., `only-if-cached` with non-`same-origin`)
+      - Invalid header name or value
+      - Invalid URL or unsupported protocol/scheme
+      - URL includes unwanted credentials
+      - Invalid referrer URL
+      - Invalid request mode (e.g., `navigate`, `websocket`)
+      - Forbidden HTTP method (e.g., `CONNECT`, `TRACE`, `TRACK`)
+      - Body present with `GET` or `HEAD` method
+      - Cache mode or request mode mismatch (e.g., `only-if-cached` with non-`same-origin`)
    6. **Blocked by permissions policy**: The browser or environment blocks the request due to security or permissions settings.
    7. **Out of memory**: The environment cannot allocate enough memory to complete the request _(rare)_.
    

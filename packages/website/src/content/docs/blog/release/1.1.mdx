@@ -1,0 +1,55 @@
+---
+pagefind: false
+title: Release 1.1
+excerpt: Implemented JSON response validation with Standard Schema and added new utility functions. Several refactors and fixes for better performance and reliability.
+date: 2026-01-15
+authors:
+  - adamjosefus
+tags:
+  - FxFetch
+  - Releases
+---
+
+## 1.1.0 (2026-01-15)
+
+This release includes new features and many small fixes and refactors that improve the library's overall quality.
+We took a huge step toward making Fx-Fetch much more agnostic to the runtime environment by making the tsconfig DOM agnostic.
+
+### 🚀 Features
+
+- Implement [`readJsonWithStandardSchemaV1`](../../../response#readjsonwithstandardschemav1) function for JSON response validation with [Standard Schema](https://standardschema.dev/schema) ([5468cb0](https://github.com/adamjosefus/fx-fetch/commit/5468cb0))
+- Add [`notOkEither`](../../../response#notokeither) function to encapsulate `Response` and `NotOkError` in Either type ([8588a8e](https://github.com/adamjosefus/fx-fetch/commit/8588a8e))
+
+### 📐 Refactor
+
+- Make tsconfig dom agnostic ([a596483](https://github.com/adamjosefus/fx-fetch/commit/a596483))
+- Add unit tests for `readJsonWithStandardSchemaV1` function ([ce0f0e8](https://github.com/adamjosefus/fx-fetch/commit/ce0f0e8))
+- Add unit tests for `Response.notOkEither` function ([8598fa8](https://github.com/adamjosefus/fx-fetch/commit/8598fa8))
+- Add unit tests for dual api cases ([a1044fb](https://github.com/adamjosefus/fx-fetch/commit/a1044fb))
+- Make tsconfig dom agnostic ([7138fc6](https://github.com/adamjosefus/fx-fetch/commit/7138fc6))
+- Improve tree shaking ability ([8407731](https://github.com/adamjosefus/fx-fetch/commit/8407731))
+- Use verbatimModuleSyntax ([2a3ca15](https://github.com/adamjosefus/fx-fetch/commit/2a3ca15))
+- Simplify tsconfig.json for better module handling ([bd9d487](https://github.com/adamjosefus/fx-fetch/commit/bd9d487))
+- Add missing toParts function to convert Request to its constituent parts ([cc9b330](https://github.com/adamjosefus/fx-fetch/commit/cc9b330))
+- Add topLevelNamedReexports to TypeScript plugin configuration ([50516fa](https://github.com/adamjosefus/fx-fetch/commit/50516fa))
+- Improve tree shaking ability ([#38](https://github.com/adamjosefus/fx-fetch/pull/38))
+- Add deprecation notice for `Response.Response.Options` type ([a2a1ded](https://github.com/adamjosefus/fx-fetch/commit/a2a1ded))
+- replace  generic Error with IllegalArgumentException in response handling functions ([804d6f2](https://github.com/adamjosefus/fx-fetch/commit/804d6f2))
+
+
+### 🩹 Fixes
+
+- Update dual function to validate request type in `deleteHeader` ([a345190](https://github.com/adamjosefus/fx-fetch/commit/a345190))
+- Update dual function to validate response type in `deleteHeader` ([57c4e66](https://github.com/adamjosefus/fx-fetch/commit/57c4e66))
+- Update dual function to validate url type in `deleteSearchParam` ([0a4e4f1](https://github.com/adamjosefus/fx-fetch/commit/0a4e4f1))
+- Correct TaggedError tag for MalformedReadableStreamError ([de78128](https://github.com/adamjosefus/fx-fetch/commit/de78128))
+- Throw RuntimeException for unknown fetch errors ([0913ecc](https://github.com/adamjosefus/fx-fetch/commit/0913ecc))
+- Update example in toJsHeaders documentation for clarity and consistency ([0f0e467](https://github.com/adamjosefus/fx-fetch/commit/0f0e467))
+- Fix formatting of the URL credentials. ([83b8925](https://github.com/adamjosefus/fx-fetch/commit/83b8925))
+- Fix the implementation of Url.deleteSearchParam and the dual API ([d8cfa34](https://github.com/adamjosefus/fx-fetch/commit/d8cfa34))
+- Implementation of readBodyAsBytesOrThrow fixed. It now returns a Uint8Array, as intended. ([4be1460](https://github.com/adamjosefus/fx-fetch/commit/4be1460))
+- Add missing dual api to fetchStream function ([f2050eb](https://github.com/adamjosefus/fx-fetch/commit/f2050eb))
+
+### ❤️ Thank You
+
+- Adam Josefus @adamjosefus
