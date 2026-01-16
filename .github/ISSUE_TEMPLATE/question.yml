@@ -1,0 +1,65 @@
+name: 💬 Question
+description: Ask a question about usage or get help
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question? We're happy to help! Please provide details below.
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you trying to accomplish?
+      description: Describe what you're trying to achieve
+      placeholder: I want to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you tried?
+      description: Describe what you've already attempted
+      placeholder: I tried...
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Code Snippet
+      description: Relevant code you're working with
+      render: typescript
+
+  - type: input
+    id: version
+    attributes:
+      label: fx-fetch Version
+      placeholder: e.g., 1.1.0
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      description: Where are you running `fx-fetch`?
+      options:
+        - Chromium-based browser
+        - Safari
+        - Firefox
+        - NodeJS
+        - Deno
+        - Bun
+        - Other
+  
+  - type: input
+    id: environment_version
+    attributes:
+      label: Environment Version
+      description: Version of the environment (e.g., browser version, NodeJS version)
+      placeholder: e.g., 18.0.0
+
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context that might help
