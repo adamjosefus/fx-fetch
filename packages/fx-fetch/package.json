@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.11",
-    "@effect/language-service": "0.64.1",
+    "@effect/language-service": "0.67.0",
     "@types/node": "^24",
     "dpdm": "^3.14.0",
     "typescript": "^5.9.3",
