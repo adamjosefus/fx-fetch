@@ -10,10 +10,43 @@ tags:
   - Releases
 ---
 
+import { Tabs, TabItem, Icon } from '@astrojs/starlight/components';
+
 From the last minor [release (1.0)](../1-0), many things have happened.
 
 This release includes new features and many small fixes and refactors that improve the library's overall quality.
 We took a huge step toward making Fx-Fetch much more agnostic to the runtime environment by making the tsconfig DOM agnostic.
+
+## Try it out
+
+<Tabs syncKey="dependency-manager">
+	<TabItem label="npm" icon="seti:npm">
+```bash
+npm install fx-fetch@1.1.0
+```
+	</TabItem>
+  
+	<TabItem label="pnpm" icon="pnpm">
+```bash
+pnpm add fx-fetch@1.1.0
+```
+	</TabItem>
+
+	<TabItem label="Bun" icon="bun">
+```bash
+bun add fx-fetch@1.1.0
+```
+	</TabItem>
+
+	<TabItem label="Deno" icon="deno">
+```bash
+deno install npm:fx-fetch@1.1.0
+```
+	</TabItem>
+</Tabs>
+
+
+## Changelog since 1.0
 
 ### 🚀 Features
 
