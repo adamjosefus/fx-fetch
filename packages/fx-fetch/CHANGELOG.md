@@ -1,3 +1,13 @@
+## 1.1.1 (2026-01-16)
+
+### 🩹 Fixes
+
+- Fix circular dependencies ([caaa98a](https://github.com/adamjosefus/fx-fetch/commit/caaa98a))
+
+### ❤️ Thank You
+
+- Adam Josefus @adamjosefus
+
 ## 1.1.0 (2026-01-15)
 
 ### 🚀 Features
