@@ -2,12 +2,26 @@
   "name": "fx-fetch",
   "version": "1.1.0",
   "description": "Simple, immutable, clonable, and effect-based HTTP fetching.",
+  "keywords": [
+    "clonable",
+    "EffectTS",
+    "fetch",
+    "http",
+    "immutable",
+    "mock",
+    "request",
+    "response",
+    "service",
+    "typescript",
+    "url"
+  ],
   "homepage": "https://adamjosefus.github.io/fx-fetch/",
   "repository": {
     "type": "git",
     "url": "https://github.com/adamjosefus/fx-fetch.git",
     "directory": "packages/fx-fetch"
   },
+  "license": "MIT",
   "type": "module",
   "exports": {
     ".": {
