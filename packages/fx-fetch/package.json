@@ -56,11 +56,12 @@
   ],
   "scripts": {
     "build": "zshy --project tsconfig.build.json",
+    "check": "pnpm run fmt && pnpm run circular",
     "circular": "dpdm --exit-code circular:1 ./src/index.ts",
     "fmt": "biome check . --error-on-warnings",
     "fmt:write": "biome check . --write --error-on-warnings",
     "prepare": "effect-language-service patch",
-    "prepublishOnly": "pnpm run validate && pnpm run test && pnpm run fmt && pnpm run build",
+    "prepublishOnly": "pnpm run fmt && pnpm run validate && pnpm run test && pnpm run circular && pnpm run build",
     "test": "vitest run ./src",
     "validate": "tsc"
   },
