@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://adamjosefus.github.io/fx-fetch/
+    about: Check the documentation for usage examples and API reference

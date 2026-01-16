@@ -5,21 +5,20 @@ import * as Response from '.';
 function collectUint8ArrayStream(
   stream: Stream.Stream<Uint8Array<ArrayBufferLike>, Error, never>
 ): Promise<Uint8Array<ArrayBufferLike>> {
-  return Stream.runCollect(stream)
-    .pipe(
-      Effect.map((chunk) => {
-        const parts = Chunk.toReadonlyArray(chunk);
-        const totalLength = parts.reduce((sum, p) => sum + p.length, 0);
-        const out = new Uint8Array(totalLength);
-        let offset = 0;
-        for (const part of parts) {
-          out.set(part, offset);
-          offset += part.length;
-        }
-        return out;
-      })
-    )
-    .pipe(Effect.runPromise);
+  return Stream.runCollect(stream).pipe(
+    Effect.map((chunk) => {
+      const parts = Chunk.toReadonlyArray(chunk);
+      const totalLength = parts.reduce((sum, p) => sum + p.length, 0);
+      const out = new Uint8Array(totalLength);
+      let offset = 0;
+      for (const part of parts) {
+        out.set(part, offset);
+        offset += part.length;
+      }
+      return out;
+    }),
+    Effect.runPromise
+  );
 }
 
 describe('Response.readStream', () => {

@@ -1,4 +1,4 @@
-import { TypeId, type Url } from '../Url';
+import { TypeId, type Url } from './Url';
 
 /**
  * Checks if the given value is a Url.

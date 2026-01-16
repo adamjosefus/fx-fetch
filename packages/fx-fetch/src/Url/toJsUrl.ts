@@ -1,6 +1,6 @@
-import type { Url } from '../Url';
 import type * as localThis from '../utils/localThis';
 import { format } from './format';
+import type { Url } from './Url';
 
 // TODO: Add tests
 

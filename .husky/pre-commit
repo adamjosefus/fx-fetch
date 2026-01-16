@@ -1,1 +1,2 @@
 pnpm fmt:write --staged --no-errors-on-unmatched
+pnpm validate
