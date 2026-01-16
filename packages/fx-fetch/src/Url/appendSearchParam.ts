@@ -1,9 +1,9 @@
 import { dual } from 'effect/Function';
-import type { Url } from '../Url';
 import { urlToUrlIntermediate } from './inputToUrlIntermediate';
 import { makeFromUrlIntermediate } from './makeFromUrlIntermediate';
 import type { SearchParamValueInput } from './SearchParamValueInput';
 import { inputToSearchParamValueIntermediate } from './SearchParamValueIntermediate';
+import type { Url } from './Url';
 
 function appendSearchParamFn(url: Url, key: string, value: SearchParamValueInput): Url {
   const normalizedValue = inputToSearchParamValueIntermediate(value);

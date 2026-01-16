@@ -1,6 +1,6 @@
-import type { Url } from '../Url';
 import { formatUrlUntrusted } from './formatUrlUntrusted';
 import { urlToUrlIntermediate } from './inputToUrlIntermediate';
+import type { Url } from './Url';
 
 /**
  * Converts a Url.Url to a string.

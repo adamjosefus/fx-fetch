@@ -1,5 +1,5 @@
-import type { Url } from '../Url';
 import { Proto } from './Proto';
+import type { Url } from './Url';
 import type { UrlIntermediate } from './UrlIntermediate';
 
 /**
