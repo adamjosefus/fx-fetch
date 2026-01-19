@@ -46,8 +46,8 @@ importers:
         specifier: ^2.3.11
         version: 2.3.11
       '@effect/language-service':
-        specifier: ^0.67.0
-        version: 0.67.0
+        specifier: ^0.69.2
+        version: 0.69.2
       '@types/node':
         specifier: ^24
         version: 24.10.4
@@ -792,8 +792,8 @@ packages:
     resolution: {integrity: sha512-kzyuwOAQnXJNLS9PSyrk0CWk35nWJW/zl/6KvnTBMFK65gm7U1/Z5BqjxeapjZCIhQcM/DsrEmcbRwDyXyXK4A==}
     engines: {node: '>=14'}
 
-  '@effect/language-service@0.67.0':
-    resolution: {integrity: sha512-8yTlGnKbayq37sM523A98tZzxXmLaizAa/sNN2BpqnXz9aa0DgVN9gon5xmvWSb6jNbK8J6xNtOYrFFKSJRpIg==}
+  '@effect/language-service@0.69.2':
+    resolution: {integrity: sha512-2On4UIuY4ChXyiz/wEJ0LDOmgWhY1Bhc9SQTVL27NEVr/6Mlux4yTWy7cPRTFwQUCmhldsF/kHMWVTkzsR348A==}
     hasBin: true
 
   '@emmetio/abbreviation@2.3.3':
@@ -5125,7 +5125,7 @@ snapshots:
 
   '@ctrl/tinycolor@4.2.0': {}
 
-  '@effect/language-service@0.67.0': {}
+  '@effect/language-service@0.69.2': {}
 
   '@emmetio/abbreviation@2.3.3':
     dependencies:
