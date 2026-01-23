@@ -11,6 +11,7 @@ export { fetchJsonWithSchema } from './fetchJsonWithSchema';
 export { fetchReadableStream } from './fetchReadableStream';
 export { fetchStream } from './fetchStream';
 export { fetchText } from './fetchText';
+export { layer } from './layer';
 export { paginatedFetch } from './paginatedFetch';
 export { paginatedFetchStream } from './paginatedFetchStream';
 export type { Type } from './Type';
