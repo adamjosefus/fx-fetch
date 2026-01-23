@@ -16,6 +16,15 @@ import { unsafeMake } from './unsafeMake';
  * });
  * ```
  *
+ * @example
+ * ```ts
+ * import { Request } from 'fx-fetch';
+ *
+ * //       ┌─── Option.Option<Request.Request>
+ * //       ▼
+ * const request = Request.make('https://example.com');
+ * ```
+ *
  * @category Constructors
  * @since 0.1.0
  */
