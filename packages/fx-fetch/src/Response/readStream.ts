@@ -21,9 +21,6 @@ const readStreamFn = <E>(response: Response, options: Options<E>) =>
     )
   );
 
-// TODO: Add tests for dual APIs
-// TODO: Add examples
-
 /**
  * Reads a ReadableStream response.
  *

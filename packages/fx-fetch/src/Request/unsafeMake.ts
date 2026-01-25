@@ -3,8 +3,6 @@ import { inputToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
 import type { Request } from './Request';
 
-// TODO: Add tests for dual APIs
-
 /**
  * Creates a immutable Request object. Throws an error if the input is invalid.
  *
