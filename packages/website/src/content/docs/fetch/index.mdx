@@ -57,6 +57,31 @@ program.pipe(
 
 Having fetch as a service allows you to easily swap implementations for testing, mocking, or other purposes.
 
+### layer
+
+The `layer` export provides a convenient way to use the live Fetch implementation with Effect's layer composition.
+This is the recommended approach when building applications with multiple layers.
+
+```ts twoslash showLineNumbers=false
+import { Effect } from 'effect';
+import { Fetch, Request } from 'fx-fetch';
+
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: 'https://example.com' });
+  const response = yield* Fetch.fetch(request);
+});
+
+program.pipe(
+  Effect.provide(Fetch.layer), // ◀︎── Provide Fetch layer
+  Effect.runPromise
+);
+```
+
+:::tip
+Use `Fetch.layer` when composing with other layers using `Layer.merge` or `Layer.provide`.
+Use `Effect.provideService(Fetch.Fetch, Fetch.FetchLive)` for simple, one-off usage.
+:::
+
 ### fetchJson
 
 The `fetchJson` function is a helper that combines `fetch` with [`Response.readJson`](../response/#readjson). It is syntactic sugar for better ergonomics.
@@ -273,6 +298,160 @@ const program = Fetch.paginatedFetchStream(
       nextRequest, // ◀︎── Option.Option<Request.Request>
     };
   })
+);
+```
+
+## Middleware
+
+The `makeMiddlewareLayer` function creates a middleware Layer that allows customizing request and response handling.
+This is useful for adding cross-cutting concerns like authentication, logging, or request transformation.
+
+### makeMiddlewareLayer
+
+The middleware can transform requests before they are sent and responses after they are received.
+Both `mapRequest` and `mapResponse` are optional - if not provided, they pass through unchanged.
+
+**Execution order:** `mapRequest → fetch → mapResponse → ensureOk`
+
+```ts twoslash showLineNumbers=false
+import { Effect } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+//       ┌─── Layer<Fetch, never, never>
+//       ▼
+const authMiddlewareLayer = Fetch.makeMiddlewareLayer({
+  mapRequest: (request) =>
+    Effect.succeed(
+      Request.appendHeaders(request, { Authorization: 'Bearer token' })
+    ),
+});
+
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: 'https://api.example.com/data' });
+  const response = yield* Fetch.fetch(request);
+});
+
+program.pipe(
+  Effect.provide(authMiddlewareLayer), // ◀︎── Middleware adds Authorization header
+  Effect.runPromise
+);
+```
+
+#### Middleware with Dependencies
+
+The middleware layer properly tracks Effect requirements, allowing you to inject dependencies like configuration services.
+
+```ts twoslash showLineNumbers=false
+import { Context, Effect, Layer } from 'effect';
+import { Fetch, Request } from 'fx-fetch';
+
+// Service for configuration
+class Config extends Context.Tag('Config')<Config, { apiKey: string }>() {}
+
+//       ┌─── Layer<Fetch, never, Config>
+//       ▼
+const authMiddlewareLayer = Fetch.makeMiddlewareLayer({
+  mapRequest: (request) =>
+    Effect.gen(function* () {
+      const config = yield* Config;
+      return Request.appendHeaders(request, { 'X-API-Key': config.apiKey });
+    }),
+});
+
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: 'https://api.example.com/data' });
+  const response = yield* Fetch.fetch(request);
+});
+
+program.pipe(
+  Effect.provide(authMiddlewareLayer),
+  Effect.provide(Layer.succeed(Config, { apiKey: 'my-secret-key' })),
+  Effect.runPromise
+);
+```
+
+#### Response Transformation
+
+You can also transform or inspect responses using `mapResponse`.
+
+```ts twoslash showLineNumbers=false
+import { Effect } from 'effect';
+import { Fetch } from 'fx-fetch';
+
+const loggingMiddlewareLayer = Fetch.makeMiddlewareLayer({
+  mapResponse: (response) =>
+    Effect.gen(function* () {
+      yield* Effect.log(`Response status: ${response.status}`);
+      return response;
+    }),
+});
+```
+
+:::tip
+You can combine both `mapRequest` and `mapResponse` in the same middleware to handle complete request/response lifecycle.
+:::
+
+## Testing
+
+The `makeMockLayer` function creates a mock Fetch layer for testing purposes.
+This allows you to test your code without making actual HTTP requests.
+
+### makeMockLayer
+
+The mock function receives the [`Request`](../request/) and can return either:
+- A plain [`Response`](../response/) object
+- An `Effect<Response, Error>` for simulating async behavior or errors
+
+```ts twoslash showLineNumbers=false
+import { Effect } from 'effect';
+import { Fetch, Request, Response } from 'fx-fetch';
+
+// Mock returning a simple Response
+const mockLayer = Fetch.makeMockLayer(() =>
+  Response.unsafeMake({ status: 200, ok: true, body: 'Hello' })
+);
+
+const program = Effect.gen(function* () {
+  const request = Request.unsafeMake({ url: 'https://example.com' });
+  const response = yield* Fetch.fetch(request);
+});
+
+program.pipe(
+  Effect.provide(mockLayer), // ◀︎── Uses mock instead of real fetch
+  Effect.runPromise
+);
+```
+
+#### Request-Aware Mocking
+
+The mock function receives the request, allowing you to return different responses based on the URL, headers, or other request properties.
+
+```ts twoslash showLineNumbers=false
+import { Fetch, Response, Url } from 'fx-fetch';
+
+const mockLayer = Fetch.makeMockLayer((request) => {
+  if (Url.format(request.url).includes('/users')) {
+    return Response.unsafeMake({
+      status: 200,
+      ok: true,
+      body: JSON.stringify([{ id: 1, name: 'Alice' }]),
+    });
+  }
+
+  return Response.unsafeMake({ status: 404, ok: false });
+});
+```
+
+#### Error Simulation
+
+You can simulate errors by returning an `Effect.fail` from the mock function.
+
+```ts twoslash showLineNumbers=false
+import { Effect } from 'effect';
+import { Fetch } from 'fx-fetch';
+
+const mockLayer = Fetch.makeMockLayer(() =>
+  Effect.fail(new Fetch.AbortError({ message: 'Request was aborted', cause: new Error() }))
 );
 ```
 
