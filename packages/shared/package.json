@@ -5,8 +5,8 @@
     "./biome.json": "./biome.json"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.11",
-    "typedoc": "^0.28.15",
+    "@biomejs/biome": "^2.3.12",
+    "typedoc": "^0.28.16",
     "typedoc-github-theme": "^0.3.1"
   }
 }
