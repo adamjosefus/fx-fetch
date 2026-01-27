@@ -66,12 +66,12 @@
     "validate": "tsc"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.11",
-    "@effect/language-service": "^0.69.2",
+    "@biomejs/biome": "^2.3.12",
+    "@effect/language-service": "^0.72.0",
     "@types/node": "^24",
     "dpdm": "^3.14.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.17",
+    "vitest": "^4.0.18",
     "zshy": "^0.7.0"
   },
   "peerDependencies": {
