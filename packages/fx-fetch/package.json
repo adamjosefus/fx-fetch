@@ -1,6 +1,6 @@
 {
   "name": "fx-fetch",
-  "version": "1.1.2-beta.0",
+  "version": "1.1.2-beta.1",
   "description": "Simple, immutable, clonable, and effect-based HTTP fetching.",
   "keywords": [
     "clonable",
