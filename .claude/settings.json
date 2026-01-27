@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm fmt:*)",
+      "Bash(pnpm fmt:write:*)",
+      "Bash(pnpm check:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm validate:*)"
+    ]
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  }
+}

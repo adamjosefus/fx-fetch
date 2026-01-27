@@ -3,8 +3,6 @@ import { inputToRequestIntermediate } from './inputToRequestIntermediate';
 import { makeFromRequestIntermediate } from './makeFromRequestIntermediate';
 import type { Request } from './Request';
 
-// TODO: Add tests for dual APIs
-
 /**
  * Creates a immutable Request object. Throws an error if the input is invalid.
  *
@@ -18,6 +16,15 @@ import type { Request } from './Request';
  *   url: 'https://example.com',
  *   method: 'POST'
  * });
+ * ```
+ *
+ * @example
+ * ```ts
+ * import { Request } from 'fx-fetch';
+ *
+ * //       ┌─── Request.Request
+ * //       ▼
+ * const request = Request.unsafeMake('https://example.com');
  * ```
  *
  * @category Constructors

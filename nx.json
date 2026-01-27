@@ -65,14 +65,20 @@
         "{projectRoot}/dist"
       ]
     },
-    "fmt": {},
-    "fmt:write": {},
+    "fmt": {
+      "cache": true
+    },
+    "fmt:write": {
+      "cache": false
+    },
     "validate": {
+      "cache": true,
       "dependsOn": [
         "^validate"
       ]
     },
     "test": {
+      "cache": true,
       "dependsOn": [
         "^test",
         "validate",

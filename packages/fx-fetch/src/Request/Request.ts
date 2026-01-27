@@ -86,5 +86,5 @@ export namespace Request {
    * @category Models
    * @since 0.1.0
    */
-  export type Input = Request | Parts | Options | localThis.Request;
+  export type Input = Request | Parts | Options | localThis.Request | string;
 }

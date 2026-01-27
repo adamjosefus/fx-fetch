@@ -36,6 +36,13 @@ export function classifyRequestInput(input: Request.Input):
       readonly type: 'parts';
       readonly input: Request.Parts;
     } {
+  if (typeof input === 'string') {
+    return {
+      type: 'parts',
+      input: { url: input },
+    };
+  }
+
   if (isRequest(input)) {
     return {
       type: 'request',
