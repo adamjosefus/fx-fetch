@@ -1,3 +1,21 @@
+## 1.1.2-beta.0 (2026-01-27)
+
+### 🚀 Features
+
+- **Fetch:** Implement Fetch layer ([7f75221](https://github.com/adamjosefus/fx-fetch/commit/7f75221))
+- **Fetch:** Extract the core fetch execution as internal logic and refactor FetchLive to use it. ([4288538](https://github.com/adamjosefus/fx-fetch/commit/4288538))
+- **Fetch:** Add `makeMockLayer` for creating mock Fetch layers in tests ([2550f2b](https://github.com/adamjosefus/fx-fetch/commit/2550f2b))
+- **Fetch:** Implement `makeMiddlewareLayer` for customizable request and response handling ([553e6ef](https://github.com/adamjosefus/fx-fetch/commit/553e6ef))
+
+### 📐 Refactor
+
+- **Fetch:** Refactor Fetch service response types and update example usage ([7074f19](https://github.com/adamjosefus/fx-fetch/commit/7074f19))
+- **Request:** Enhance the Request API to accept string inputs for better DX. ([4bd502e](https://github.com/adamjosefus/fx-fetch/commit/4bd502e))
+
+### ❤️ Thank You
+
+- Adam Josefus @adamjosefus
+
 ## 1.1.1 (2026-01-16)
 
 ### 🩹 Fixes
