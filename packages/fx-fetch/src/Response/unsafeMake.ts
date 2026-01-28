@@ -3,10 +3,6 @@ import { inputToResponseIntermediate } from './inputToResponseIntermediate';
 import { makeFromResponseIntermediate } from './makeFromResponseIntermediate';
 import type { Response } from './Response';
 
-// TODO: Add tests for dual APIs
-// TODO: Add examples
-// TODO: Add annotations
-
 /**
  * Creates a immutable Response object.
  *

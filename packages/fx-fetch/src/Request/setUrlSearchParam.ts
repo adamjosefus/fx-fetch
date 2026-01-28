@@ -8,8 +8,6 @@ function setUrlSearchParamFn(self: Request, key: string, value: SearchParamValue
   return mapUrl(self, (url) => setSearchParam(url, key, value));
 }
 
-// TODO: Add tests for dual APIs
-
 /**
  * Sets a search parameter in the URL of a Request.
  *

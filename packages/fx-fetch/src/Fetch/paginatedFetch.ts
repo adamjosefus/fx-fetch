@@ -12,8 +12,6 @@ function paginatedFetchFn<A, E, R>(request: Request, onResponse: OnResponse<A, E
   return paginatedFetchStream(request, onResponse).pipe(runCollect, map(toReadonlyArray));
 }
 
-// TODO: Add tests for dual APIs
-
 /**
  * @category Functions
  * @since 0.1.0

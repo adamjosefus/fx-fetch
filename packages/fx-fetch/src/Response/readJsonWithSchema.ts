@@ -9,9 +9,6 @@ import { readJson } from './readJson';
 const readJsonWithSchemaFn = <A, I, R>(response: Response, schema: Schema<A, I, R>) =>
   readJson(response).pipe(flatMap(decodeUnknown(schema)));
 
-// TODO: Add tests
-// TODO: Add tests for dual APIs
-
 /**
  * Reads a JSON response with the given schema.
  *

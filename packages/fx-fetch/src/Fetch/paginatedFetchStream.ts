@@ -31,8 +31,6 @@ function paginatedFetchStreamFn<A, E, R>(request: Request, onResponse: OnRespons
   );
 }
 
-// TODO: Add tests for dual APIs
-
 /**
  * @category Functions
  * @since 0.1.0
