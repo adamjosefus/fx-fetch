@@ -19,9 +19,6 @@ function unsafeSetUrlFn(self: Request, url: Url.Input): Request {
   return makeFromRequestIntermediate(intermediate);
 }
 
-// TODO: Add tests for dual APIs
-// TODO: Add examples
-
 /**
  * Unsafely sets the URL of a Request (throws on invalid).
  *
