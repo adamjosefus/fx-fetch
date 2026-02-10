@@ -66,10 +66,10 @@
     "validate": "tsc"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.13",
-    "@effect/language-service": "^0.72.0",
+    "@biomejs/biome": "^2.3.14",
+    "@effect/language-service": "^0.73.1",
     "@types/node": "^24",
-    "dpdm": "^3.14.0",
+    "dpdm": "^4.0.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18",
     "zshy": "^0.7.0"
