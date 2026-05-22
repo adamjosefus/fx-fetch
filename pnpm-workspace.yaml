@@ -1,9 +1,8 @@
 packages:
   - packages/*
 
-ignoredBuiltDependencies:
-  - '@swc/core'
-
-onlyBuiltDependencies:
-  - bun
-  - nx
+allowBuilds:
+  bun: true
+  nx: true
+  esbuild: true
+  sharp: true
