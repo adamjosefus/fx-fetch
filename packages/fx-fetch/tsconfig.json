@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "isolatedModules": true,
     "allowJs": true,
-    "allowSyntheticDefaultImports": false,
+    "isolatedModules": true,
     "lib": ["ESNext"],
     "module": "ESNext",
     "moduleDetection": "force",
@@ -14,7 +13,6 @@
     "noPropertyAccessFromIndexSignature": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "verbatimModuleSyntax": true,
     "plugins": [
       {
         "name": "@effect/language-service",
@@ -26,7 +24,9 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2022",
-    "useDefineForClassFields": true
+    "types": ["node"],
+    "useDefineForClassFields": true,
+    "verbatimModuleSyntax": true
   },
   "include": ["src/**/*"]
 }

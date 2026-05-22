@@ -6,3 +6,4 @@ allowBuilds:
   nx: true
   esbuild: true
   sharp: true
+  '@swc/core': true
