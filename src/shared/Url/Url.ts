@@ -1,5 +1,5 @@
 import type { Pipeable } from 'effect/Pipeable';
-import type { SearchParams } from './SearchParams/SearchParams.js';
+import type * as SearchParams from './SearchParams/SearchParams.js';
 
 /**
  * @category Symbols
@@ -35,7 +35,7 @@ export interface Url extends Proto {
   readonly pathname: string | undefined;
   readonly port: number | undefined;
   readonly protocol: string;
-  readonly searchParams: SearchParams;
+  readonly searchParams: SearchParams.SearchParams;
   readonly username: string | undefined;
 }
 
