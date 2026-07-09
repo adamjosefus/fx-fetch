@@ -1,0 +1,10 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./src" },
+    { "path": "./src/browser" },
+    { "path": "./src/bun" },
+    { "path": "./src/deno" },
+    { "path": "./src/node" }
+  ]
+}

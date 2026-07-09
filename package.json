@@ -23,13 +23,17 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "build": "zshy -p ./src/tsconfig.json",
     "check": "biome check . --error-on-warnings",
     "check:write": "biome check . --write --error-on-warnings",
     "test": "vitest run ./src ./src-browser ./src-bun ./src-deno ./src-node",
-    "validate": "tsc"
+    "validate": "tsc -b"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.3",
+    "@types/bun": "^1.3.14",
+    "@types/deno": "^2.7.0",
+    "@types/node": "^26.1.1",
     "effect": "^4.0.0-beta.94",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10",
