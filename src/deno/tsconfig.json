@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "types": ["deno"]
+    "types": ["deno"],
+    "outDir": "../../dist/deno"
   },
   "references": [{ "path": ".." }],
   "include": ["**/*.ts"]

@@ -1,8 +1,9 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "types": []
+    "types": [],
+    "outDir": "../dist"
   },
-  "include": ["*.ts"],
+  "include": ["*.ts", "shared/**/*.ts"],
   "exclude": ["browser", "bun", "deno", "node"]
 }

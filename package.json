@@ -23,10 +23,11 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "zshy -p ./src/tsconfig.json",
+    "build": "tsc -b",
+    "clean": "tsc -b --clean",
     "check": "biome check . --error-on-warnings",
     "check:write": "biome check . --write --error-on-warnings",
-    "test": "vitest run ./src ./src-browser ./src-bun ./src-deno ./src-node",
+    "test": "vitest run ./src",
     "validate": "tsc -b"
   },
   "devDependencies": {
@@ -36,18 +37,34 @@
     "@types/node": "^26.1.1",
     "effect": "^4.0.0-beta.94",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.10",
-    "zshy": "^0.7.3"
+    "vitest": "^4.1.10"
   },
   "peerDependencies": {
     "@standard-schema/spec": "^1",
     "effect": "^4"
   },
-  "zshy": {
-    "exports": {
-      ".": "./src/index.ts"
+  "files": ["dist"],
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
-    "cjs": false,
-    "esm": true
+    "./browser": {
+      "types": "./dist/browser/index.d.ts",
+      "import": "./dist/browser/index.js"
+    },
+    "./bun": {
+      "types": "./dist/bun/index.d.ts",
+      "import": "./dist/bun/index.js"
+    },
+    "./deno": {
+      "types": "./dist/deno/index.d.ts",
+      "import": "./dist/deno/index.js"
+    },
+    "./node": {
+      "types": "./dist/node/index.d.ts",
+      "import": "./dist/node/index.js"
+    }
   }
 }
