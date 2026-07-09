@@ -22,29 +22,6 @@
   },
   "license": "MIT",
   "type": "module",
-  "scripts": {
-    "build": "tsc -b",
-    "clean": "tsc -b --clean",
-    "check": "biome check . --error-on-warnings",
-    "check:write": "biome check . --write --error-on-warnings",
-    "test": "vitest run ./src",
-    "validate": "tsc -b"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^2.5.3",
-    "@types/bun": "^1.3.14",
-    "@types/deno": "^2.7.0",
-    "@types/node": "^26.1.1",
-    "effect": "^4.0.0-beta.94",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
-  },
-  "peerDependencies": {
-    "@standard-schema/spec": "^1",
-    "effect": "^4"
-  },
-  "files": ["dist"],
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -66,5 +43,30 @@
       "types": "./dist/node/index.d.ts",
       "import": "./dist/node/index.js"
     }
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "check": "biome check . --error-on-warnings",
+    "check:write": "biome check . --write --error-on-warnings",
+    "clean": "tsc -b --clean",
+    "test": "vitest run ./src",
+    "validate": "tsc -b"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.3",
+    "@types/bun": "^1.3.14",
+    "@types/deno": "^2.7.0",
+    "@types/node": "^26.1.1",
+    "effect": "^4.0.0-beta.94",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  },
+  "peerDependencies": {
+    "@standard-schema/spec": "^1",
+    "effect": "^4"
   }
 }
