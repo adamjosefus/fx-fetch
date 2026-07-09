@@ -16,8 +16,9 @@ export type Value = string | number | undefined | readonly (string | number | un
  * @category Models
  * @since 2.0.0
  */
-export type Input =
+export type Input<T> =
   | { readonly [key: string]: Value }
   | readonly (readonly [key: string, value: Value])[]
   | ReadonlyMap<string, Value>
-  | string;
+  | string
+  | T;

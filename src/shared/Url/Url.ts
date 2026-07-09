@@ -39,19 +39,23 @@ export interface Url extends Proto {
   readonly username: string | undefined;
 }
 
+type Env = {
+  readonly searchParams: unknown;
+};
+
 export namespace Url {
   /**
    * @category Models
    * @since 2.0.0
    */
-  export type Parts = {
+  export type Parts<T extends Env> = {
     readonly hash?: string;
     readonly hostname: string;
     readonly password?: string;
     readonly pathname?: string;
     readonly port?: string | number;
     readonly protocol: string;
-    readonly searchParams?: SearchParams.Input;
+    readonly searchParams?: SearchParams.Input<T['searchParams']>;
     readonly username?: string;
   };
 
@@ -59,14 +63,14 @@ export namespace Url {
    * @category Models
    * @since 2.0.0
    */
-  export type Options = {
+  export type Options<T extends Env> = {
     readonly url: string;
-    readonly searchParams?: SearchParams.Input;
+    readonly searchParams?: SearchParams.Input<T['searchParams']>;
   };
 
   /**
    * @category Models
    * @since 2.0.0
    */
-  export type Input = Url | Parts | Options | string;
+  export type Input<T extends Env> = Url | Parts<T> | Options<T> | string;
 }
