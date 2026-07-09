@@ -63,6 +63,20 @@
   },
   "peerDependencies": {
     "@standard-schema/spec": "^1",
+    "@types/bun": "^1",
+    "@types/deno": "^2",
+    "@types/node": "^26",
     "effect": "^4"
+  },
+  "peerDependenciesMeta": {
+    "@types/bun": {
+      "optional": true
+    },
+    "@types/deno": {
+      "optional": true
+    },
+    "@types/node": {
+      "optional": true
+    }
   }
 }
