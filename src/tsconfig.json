@@ -4,6 +4,6 @@
     "types": [],
     "outDir": "../dist"
   },
-  "include": ["*.ts", "shared/**/*.ts"],
+  "include": ["shared/**/*.ts"],
   "exclude": ["browser", "bun", "deno", "node"]
 }
