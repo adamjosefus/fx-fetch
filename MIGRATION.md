@@ -13,3 +13,5 @@
 
 - [ ] Přidat http metodu QUERY
 - [ ] Přidat možnost mít jakoukoli metodu HTTP
+- [ ] Zjednodušit error handling z fetch
+- [ ] Použítí layerů  z EffectTS
