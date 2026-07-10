@@ -1,9 +1,10 @@
 {
   "files": [],
   "references": [
-    { "path": "./src" },
+    { "path": "./src/core" },
     { "path": "./src/browser" },
     { "path": "./src/bun" },
-    { "path": "./src/node" }
+    { "path": "./src/node" },
+    { "path": "./src/universal" }
   ]
 }

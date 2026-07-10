@@ -1,9 +1,10 @@
 import { type Url as BaseUrl, TypeId } from '../../core/Url/index.js';
+import type { UniversalURL, UniversalURLSearchParams } from '../lib/uri-shim.js';
 
 export { TypeId };
 
 type Env = {
-  readonly searchParams: globalThis.URLSearchParams;
+  readonly searchParams: UniversalURLSearchParams;
 };
 
 /**
@@ -31,5 +32,5 @@ export namespace Url {
    * @category Models
    * @since 2.0.0
    */
-  export type Input = BaseUrl.Input<Env> | globalThis.URL;
+  export type Input = BaseUrl.Input<Env> | UniversalURL;
 }

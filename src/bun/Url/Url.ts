@@ -1,4 +1,4 @@
-import { type Url as BaseUrl, TypeId } from '../../shared/Url/index.js';
+import { type Url as BaseUrl, TypeId } from '../../core/Url/index.js';
 
 export { TypeId };
 

@@ -4,6 +4,6 @@
     "types": ["bun"],
     "outDir": "../../dist/bun"
   },
-  "references": [{ "path": ".." }],
+  "references": [{ "path": "../core" }],
   "include": ["**/*.ts"]
 }

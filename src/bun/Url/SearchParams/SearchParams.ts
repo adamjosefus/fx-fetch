@@ -2,7 +2,7 @@ import {
   type Input as BaseInput,
   type SearchParams,
   type Value,
-} from '../../../shared/Url/SearchParams/index.js';
+} from '../../../core/Url/SearchParams/index.js';
 
 export type { SearchParams, Value };
 
