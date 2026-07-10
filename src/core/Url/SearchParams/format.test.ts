@@ -1,15 +1,14 @@
 import { describe, expect, test } from 'vitest';
+import { format } from './format.js';
+import { make } from './make.js';
 
-// describe('Url.SearchParams.format', () => {
-//   test('returns true for 200 status', () => {
-//     const response = Response.unsafeMake({
-//       status: 200,
-//       statusText: '200 OK',
-//       type: 'default',
-//       url: 'https://example.com',
-//       body: 'Test body',
-//     });
+describe('Url.SearchParams.format', () => {
+  test('no params', () => {
+    const input = [] as const;
 
-//     expect(Response.isOk(response)).toBe(true);
-//   });
-// });
+    const formatted = format(make(input));
+    const expected = new globalThis.URLSearchParams(Object.fromEntries(input)).toString();
+
+    expect(formatted).toBe(expected);
+  });
+});
