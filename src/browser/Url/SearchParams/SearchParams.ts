@@ -10,4 +10,4 @@ export type { SearchParams, Value };
  * @category Models
  * @since 2.0.0
  */
-export type Input = BaseInput<globalThis.URLSearchParams>;
+export type Input = BaseInput<globalThis.URLSearchParams | string>;

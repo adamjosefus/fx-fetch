@@ -3,19 +3,19 @@ import type * as SearchParams from './SearchParams/SearchParams.js';
 
 /**
  * @category Symbols
- * @since 2.0.0
+ * @since 0.1.0
  */
 export const TypeId: unique symbol = Symbol.for('fx-fetch/Url');
 
 /**
  * @category Symbols
- * @since 2.0.0
+ * @since 0.1.0
  */
 export type TypeId = typeof TypeId;
 
 /**
  * @category Models
- * @since 2.0.0
+ * @since 0.1.0
  */
 interface Proto extends Pipeable {
   readonly [TypeId]: TypeId;
@@ -25,7 +25,7 @@ interface Proto extends Pipeable {
  * Represents immutable URL.
  *
  * @category Models
- * @since 2.0.0
+ * @since 0.1.0
  */
 export interface Url extends Proto {
   readonly _tag: 'Url';
@@ -46,7 +46,7 @@ type Env = {
 export namespace Url {
   /**
    * @category Models
-   * @since 2.0.0
+   * @since 0.1.0
    */
   export type Parts<T extends Env> = {
     readonly hash?: string;
@@ -61,7 +61,7 @@ export namespace Url {
 
   /**
    * @category Models
-   * @since 2.0.0
+   * @since 0.1.0
    */
   export type Options<T extends Env> = {
     readonly url: string;
@@ -70,7 +70,7 @@ export namespace Url {
 
   /**
    * @category Models
-   * @since 2.0.0
+   * @since 0.1.0
    */
   export type Input<T extends Env> = Url | Parts<T> | Options<T> | string;
 }
