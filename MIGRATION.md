@@ -9,3 +9,7 @@
   - `Url.SearchParams.SearchParams` - Immutabilní reprezentace URL search parametrů.
   - `Url.SearchParams.Input` - Typ pro vstupní data, která mohou být převedena na `Url.SearchParams.SearchParams`.
   - `Url.SearchParams.Value` - Typ pro hodnoty jednotlivých search parametrů.
+
+
+- [ ] Přidat http metodu QUERY
+- [ ] Přidat možnost mít jakoukoli metodu HTTP
