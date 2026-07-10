@@ -1,3 +1,4 @@
+import { format as formatSearchParams } from './SearchParams/format.js';
 import type { Url } from './Url.js';
 
 /**
@@ -24,7 +25,7 @@ export function format(url: Url): string {
     url.hostname,
     url.port !== undefined ? `:${url.port}` : '',
     url.pathname !== undefined ? `/${url.pathname}` : '',
-    url.searchParams.size > 0 ? `?${searchParams.toString()}` : '',
+    url.searchParams.size > 0 ? `?${formatSearchParams(url.searchParams)}` : '',
     url.hash !== undefined ? `#${url.hash}` : '',
   ].join('');
 
