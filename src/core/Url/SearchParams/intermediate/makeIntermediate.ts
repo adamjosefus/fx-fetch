@@ -1,9 +1,9 @@
 import { absurd } from 'effect';
-import { isMap } from '../../../_utils/isMap.js';
-import type { $SearchParams, $ValueElement } from './$SearchParams.js';
-import { valueToIntermediate } from './valueToIntermediate.js';
-import type { Input, SearchParams, Value } from '../SearchParams.js';
 import { isArray } from '../../../_utils/isArray.js';
+import { isMap } from '../../../_utils/isMap.js';
+import type { Input, SearchParams, Value } from '../SearchParams.js';
+import type { $SearchParams } from './$SearchParams.js';
+import { valueToIntermediate } from './valueToIntermediate.js';
 
 function makeIntermediateFromMap(input: ReadonlyMap<string, Value>): $SearchParams {
   const intermediate: $SearchParams = new Map();
