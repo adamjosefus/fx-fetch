@@ -126,12 +126,14 @@ function normalizePathname(pathname: string | undefined): string | undefined {
     return undefined;
   }
 
-  const withLeadingSlash = pathname.startsWith('/') ? pathname : `/${pathname}`;
-  const resolved = removeDotSegments(withLeadingSlash);
+  // `removeDotSegments` operates on an absolute path; the leading slash is an
+  // artifact of that algorithm and is dropped for the stored form (format re-adds it).
+  const absolute = pathname.startsWith('/') ? pathname : `/${pathname}`;
+  const resolved = removeDotSegments(absolute);
   const encoded = resolved.split('/').map(encodePathSegment).join('/');
-  const withoutLeadingSlash = encoded.startsWith('/') ? encoded.slice(1) : encoded;
 
-  return withoutLeadingSlash === '' ? undefined : withoutLeadingSlash;
+  const stored = encoded.slice(1);
+  return stored === '' ? undefined : stored;
 }
 
 function normalizePort(port: string | number | undefined): number | undefined {
