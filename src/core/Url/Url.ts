@@ -1,11 +1,11 @@
-import type { Pipeable } from 'effect/Pipeable';
+import type { Inspectable, Pipeable } from 'effect';
 import type * as SearchParams from './SearchParams/SearchParams.js';
 
 /**
  * @category Symbols
  * @since 0.1.0
  */
-export const TypeId: unique symbol = Symbol.for('fx-fetch/Url');
+export const TypeId = '~fx-fetch/url/Url';
 
 /**
  * @category Symbols
@@ -17,7 +17,7 @@ export type TypeId = typeof TypeId;
  * @category Models
  * @since 0.1.0
  */
-interface Proto extends Pipeable {
+export interface Proto extends Pipeable.Pipeable, Inspectable.Inspectable {
   readonly [TypeId]: TypeId;
 }
 

@@ -1,0 +1,105 @@
+import { Option } from 'effect';
+import { describe, expect, test } from 'vitest';
+import { make, unsafeMake } from './make.js';
+
+// TODO: Check the test
+
+describe('Url.make', () => {
+  test('minimal parts', () => {
+    const url = unsafeMake({ protocol: 'https', hostname: 'Example.com' });
+
+    expect(url._tag).toBe('Url');
+    expect(url.protocol).toBe('https:');
+    expect(url.hostname).toBe('example.com');
+    expect(url.hash).toBeUndefined();
+    expect(url.pathname).toBeUndefined();
+    expect(url.port).toBeUndefined();
+    expect(url.username).toBeUndefined();
+    expect(url.password).toBeUndefined();
+    expect(url.searchParams.size).toBe(0);
+  });
+
+  test('full parts are normalized', () => {
+    const url = unsafeMake({
+      protocol: 'HTTPS://',
+      hostname: 'API.Example.com',
+      port: '8080',
+      pathname: '/v1/users/',
+      hash: '#section',
+      username: 'user',
+      password: 'pass',
+      searchParams: [
+        ['q', 'hello world'],
+        ['q', 'again'],
+      ],
+    });
+
+    expect(url.protocol).toBe('https:');
+    expect(url.hostname).toBe('api.example.com');
+    expect(url.port).toBe(8080);
+    expect(url.pathname).toBe('v1/users');
+    expect(url.hash).toBe('section');
+    expect(url.username).toBe('user');
+    expect(url.password).toBe('pass');
+    expect(url.searchParams.get('q')).toEqual(['hello world', 'again']);
+  });
+
+  test('root pathname normalizes to undefined', () => {
+    const url = unsafeMake({ protocol: 'http', hostname: 'x.com', pathname: '/' });
+
+    expect(url.pathname).toBeUndefined();
+  });
+
+  test('make from existing Url clones searchParams', () => {
+    const original = unsafeMake({ protocol: 'https', hostname: 'x.com', searchParams: { a: '1' } });
+    const copy = unsafeMake(original);
+
+    expect(copy.protocol).toBe('https:');
+    expect(copy.hostname).toBe('x.com');
+    expect(copy.searchParams.get('a')).toEqual(['1']);
+    expect(copy.searchParams).not.toBe(original.searchParams);
+  });
+
+  test('make from a url string parses and normalizes', () => {
+    const url = unsafeMake(
+      'HTTPS://user:pass@API.Example.com:8080/v1/users/?q=hello+world#section'
+    );
+
+    expect(url.protocol).toBe('https:');
+    expect(url.hostname).toBe('api.example.com');
+    expect(url.port).toBe(8080);
+    expect(url.pathname).toBe('v1/users');
+    expect(url.username).toBe('user');
+    expect(url.password).toBe('pass');
+    expect(url.searchParams.get('q')).toEqual(['hello world']);
+    expect(url.hash).toBe('section');
+  });
+
+  test('make from options merges searchParams with the url query', () => {
+    const url = unsafeMake({ url: 'https://x.com/?a=1', searchParams: { b: '2' } });
+
+    expect(url.hostname).toBe('x.com');
+    expect(url.searchParams.get('a')).toEqual(['1']);
+    expect(url.searchParams.get('b')).toEqual(['2']);
+  });
+
+  test('make returns Option.some for valid input', () => {
+    const url = make({ protocol: 'https', hostname: 'x.com' });
+
+    expect(Option.isSome(url)).toBe(true);
+  });
+
+  test('invalid port is rejected', () => {
+    expect(() => unsafeMake({ protocol: 'https', hostname: 'x.com', port: 70000 })).toThrow();
+    expect(Option.isNone(make({ protocol: 'https', hostname: 'x.com', port: 70000 }))).toBe(true);
+  });
+
+  test('password without username is rejected', () => {
+    expect(() =>
+      unsafeMake({ protocol: 'https', hostname: 'x.com', password: 'secret' })
+    ).toThrow();
+    expect(Option.isNone(make({ protocol: 'https', hostname: 'x.com', password: 'secret' }))).toBe(
+      true
+    );
+  });
+});
