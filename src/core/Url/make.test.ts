@@ -35,7 +35,7 @@ describe('Url.make', () => {
     expect(url.protocol).toBe('https:');
     expect(url.hostname).toBe('api.example.com');
     expect(url.port).toBe(8080);
-    expect(url.pathname).toBe('v1/users');
+    expect(url.pathname).toBe('v1/users/');
     expect(url.hash).toBe('section');
     expect(url.username).toBe('user');
     expect(url.password).toBe('pass');
@@ -78,7 +78,7 @@ describe('Url.make', () => {
     expect(url.protocol).toBe('https:');
     expect(url.hostname).toBe('api.example.com');
     expect(url.port).toBe(8080);
-    expect(url.pathname).toBe('v1/users');
+    expect(url.pathname).toBe('v1/users/');
     expect(url.username).toBe('user');
     expect(url.password).toBe('pass');
     expect(url.searchParams.get('q')).toEqual(['hello world']);

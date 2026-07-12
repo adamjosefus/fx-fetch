@@ -15,7 +15,7 @@ function hrefByReference(input: string): string {
   return new globalThis.URL(input).href;
 }
 
-describe('Url parity with globalThis.URL', () => {
+describe('Url.format', () => {
   test('scheme and hostname', () => {
     const input = 'https://example.com';
 
@@ -68,17 +68,11 @@ describe('Url parity with globalThis.URL', () => {
     expect(format(unsafeMake(input))).toBe(hrefByReference(input));
   });
 
-  test('trailing slash is stripped from the internal pathname', () => {
+  test('trailing slash is preserved', () => {
     const input = 'https://example.com/v1/users/';
 
-    expect(unsafeMake(input).pathname).toBe('v1/users');
-  });
-
-  // Known divergence: the internal representation strips the trailing slash, so
-  // `format` cannot restore it. `new URL(...).href` keeps it.
-  test.skip('trailing slash is restored by format', () => {
-    const input = 'https://example.com/v1/users/';
-
+    // Stored without the leading slash, but the trailing slash is kept.
+    expect(unsafeMake(input).pathname).toBe('v1/users/');
     expect(format(unsafeMake(input))).toBe(hrefByReference(input));
   });
 

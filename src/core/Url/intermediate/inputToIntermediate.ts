@@ -7,10 +7,10 @@ import type { $Url } from './$Url.js';
 
 // Normalization mirrors the `globalThis.URL` constructor for special schemes,
 // without using `URL` itself. The internal representation stores the pathname
-// without its leading/trailing slashes; `format` re-adds the leading slash so its
-// output matches `new URL(...).href`. Known divergences (out of scope): IDNA/
-// punycode of unicode hostnames, raw-query preservation of bare keys, and
-// restoring a stripped trailing slash. See parity.test.ts.
+// without its leading slash (a trailing slash is kept); `format` re-adds the
+// leading slash so its output matches `new URL(...).href`. Known divergences (out
+// of scope): IDNA/punycode of unicode hostnames, and raw-query preservation of
+// bare keys. See format.test.ts.
 
 /**
  * Default ports per special scheme. A port equal to its scheme's default is
@@ -114,19 +114,12 @@ function removeDotSegments(path: string): string {
   return output;
 }
 
-function stripSlashes(value: string): string {
-  const withoutLeading = value.startsWith('/') ? value.slice(1) : value;
-
-  return withoutLeading.endsWith('/') ? withoutLeading.slice(0, -1) : withoutLeading;
-}
-
 /**
  * Normalizes a pathname for the internal representation: dot-segments are
- * resolved and segments percent-encoded (matching `new URL(...)`), but the
- * leading and trailing slashes are stripped for a clean stored form. A root or
- * empty path becomes `undefined`. `format` re-adds the leading slash so that its
- * output matches `new URL(...).href` (except that a stripped trailing slash is
- * not restored — see parity.test.ts).
+ * resolved and segments percent-encoded (matching `new URL(...)`), and the
+ * leading slash is stripped for a clean stored form. A trailing slash is kept
+ * (`a/b/` → `a/b/`); a root or empty path becomes `undefined`. `format` re-adds
+ * the leading slash so its output matches `new URL(...).href`.
  */
 function normalizePathname(pathname: string | undefined): string | undefined {
   if (pathname === undefined || pathname === '') {
@@ -136,9 +129,9 @@ function normalizePathname(pathname: string | undefined): string | undefined {
   const withLeadingSlash = pathname.startsWith('/') ? pathname : `/${pathname}`;
   const resolved = removeDotSegments(withLeadingSlash);
   const encoded = resolved.split('/').map(encodePathSegment).join('/');
-  const stripped = stripSlashes(encoded);
+  const withoutLeadingSlash = encoded.startsWith('/') ? encoded.slice(1) : encoded;
 
-  return stripped === '' ? undefined : stripped;
+  return withoutLeadingSlash === '' ? undefined : withoutLeadingSlash;
 }
 
 function normalizePort(port: string | number | undefined): number | undefined {
