@@ -5,15 +5,24 @@ import { searchParamsToIntermediate } from '../SearchParams/intermediate/searchP
 import type { Url } from '../Url.js';
 import type { $Url } from './$Url.js';
 
-// TODO: Ensure that the normalization functions are correct. The solution should work same as the globalThis.URL constructor, but without using it.
+// Normalization mirrors the `globalThis.URL` constructor for special schemes,
+// without using `URL` itself. The internal representation stores the pathname
+// without its leading/trailing slashes; `format` re-adds the leading slash so its
+// output matches `new URL(...).href`. Known divergences (out of scope): IDNA/
+// punycode of unicode hostnames, raw-query preservation of bare keys, and
+// restoring a stripped trailing slash. See parity.test.ts.
 
-function stripFirstSlash(value: string): string {
-  return value.startsWith('/') ? value.slice(1) : value;
-}
-
-function stripLastSlash(value: string): string {
-  return value.endsWith('/') ? value.slice(0, -1) : value;
-}
+/**
+ * Default ports per special scheme. A port equal to its scheme's default is
+ * dropped, matching `new URL(...).port === ''`.
+ */
+const defaultPorts: Readonly<Record<string, number>> = {
+  'ftp:': 21,
+  'http:': 80,
+  'https:': 443,
+  'ws:': 80,
+  'wss:': 443,
+};
 
 function normalizeHash(hash: string | undefined): string | undefined {
   if (hash === undefined || hash === '') {
@@ -24,15 +33,112 @@ function normalizeHash(hash: string | undefined): string | undefined {
 }
 
 function normalizeHostname(hostname: string): string {
-  return stripLastSlash(hostname.toLowerCase());
+  return hostname.toLowerCase();
 }
 
+/**
+ * Percent-encodes a path segment using the WHATWG "path percent-encode set":
+ * C0 controls, code points above U+007E, and the ASCII characters
+ * ``space " # < > ? ` { }``. Existing `%`-escapes are left intact.
+ */
+function encodePathSegment(segment: string): string {
+  let encoded = '';
+
+  for (const char of segment) {
+    const codePoint = char.codePointAt(0) ?? 0;
+    const shouldEncode = codePoint <= 0x1f || codePoint > 0x7e || ' "#<>?`{}'.includes(char);
+
+    encoded += shouldEncode ? globalThis.encodeURIComponent(char) : char;
+  }
+
+  return encoded;
+}
+
+/**
+ * Resolves `.` and `..` dot-segments following RFC 3986 §5.2.4. The input must
+ * start with `/`.
+ */
+function removeDotSegments(path: string): string {
+  let input = path;
+  let output = '';
+
+  while (input.length > 0) {
+    if (input.startsWith('../')) {
+      input = input.slice(3);
+      continue;
+    }
+
+    if (input.startsWith('./')) {
+      input = input.slice(2);
+      continue;
+    }
+
+    if (input.startsWith('/./')) {
+      input = `/${input.slice(3)}`;
+      continue;
+    }
+
+    if (input === '/.') {
+      input = '/';
+      continue;
+    }
+
+    if (input.startsWith('/../')) {
+      input = `/${input.slice(4)}`;
+      output = output.slice(0, Math.max(0, output.lastIndexOf('/')));
+      continue;
+    }
+
+    if (input === '/..') {
+      input = '/';
+      output = output.slice(0, Math.max(0, output.lastIndexOf('/')));
+      continue;
+    }
+
+    if (input === '.' || input === '..') {
+      input = '';
+      continue;
+    }
+
+    const nextSlash = input.indexOf('/', 1);
+    if (nextSlash === -1) {
+      output += input;
+      input = '';
+      continue;
+    }
+
+    output += input.slice(0, nextSlash);
+    input = input.slice(nextSlash);
+  }
+
+  return output;
+}
+
+function stripSlashes(value: string): string {
+  const withoutLeading = value.startsWith('/') ? value.slice(1) : value;
+
+  return withoutLeading.endsWith('/') ? withoutLeading.slice(0, -1) : withoutLeading;
+}
+
+/**
+ * Normalizes a pathname for the internal representation: dot-segments are
+ * resolved and segments percent-encoded (matching `new URL(...)`), but the
+ * leading and trailing slashes are stripped for a clean stored form. A root or
+ * empty path becomes `undefined`. `format` re-adds the leading slash so that its
+ * output matches `new URL(...).href` (except that a stripped trailing slash is
+ * not restored — see parity.test.ts).
+ */
 function normalizePathname(pathname: string | undefined): string | undefined {
-  if (pathname === undefined || pathname === '' || pathname === '/') {
+  if (pathname === undefined || pathname === '') {
     return undefined;
   }
 
-  return stripLastSlash(stripFirstSlash(pathname));
+  const withLeadingSlash = pathname.startsWith('/') ? pathname : `/${pathname}`;
+  const resolved = removeDotSegments(withLeadingSlash);
+  const encoded = resolved.split('/').map(encodePathSegment).join('/');
+  const stripped = stripSlashes(encoded);
+
+  return stripped === '' ? undefined : stripped;
 }
 
 function normalizePort(port: string | number | undefined): number | undefined {
@@ -44,7 +150,9 @@ function normalizePort(port: string | number | undefined): number | undefined {
     return port;
   }
 
-  return Number.parseInt(port, 10);
+  // A non-numeric port is invalid; the resulting NaN is rejected by
+  // validateIntermediate, matching `new URL(...)` throwing on such input.
+  return /^\d+$/.test(port) ? Number.parseInt(port, 10) : Number.NaN;
 }
 
 function normalizeProtocol(protocol: string): string {
@@ -63,13 +171,16 @@ function normalizeCredential(credential: string | undefined): string | undefined
 }
 
 function partsToIntermediate(parts: Url.Parts<never>): $Url {
+  const protocol = normalizeProtocol(parts.protocol);
+  const port = normalizePort(parts.port);
+
   return {
     hash: normalizeHash(parts.hash),
     hostname: normalizeHostname(parts.hostname),
     password: normalizeCredential(parts.password),
     pathname: normalizePathname(parts.pathname),
-    port: normalizePort(parts.port),
-    protocol: normalizeProtocol(parts.protocol),
+    port: port !== undefined && defaultPorts[protocol] === port ? undefined : port,
+    protocol,
     searchParams: searchParamsInputToIntermediate(parts.searchParams ?? []),
     username: normalizeCredential(parts.username),
   };

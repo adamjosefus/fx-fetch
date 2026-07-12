@@ -2,8 +2,6 @@ import { Option } from 'effect';
 import { describe, expect, test } from 'vitest';
 import { make, unsafeMake } from './make.js';
 
-// TODO: Check the test
-
 describe('Url.make', () => {
   test('minimal parts', () => {
     const url = unsafeMake({ protocol: 'https', hostname: 'Example.com' });
@@ -44,10 +42,22 @@ describe('Url.make', () => {
     expect(url.searchParams.get('q')).toEqual(['hello world', 'again']);
   });
 
-  test('root pathname normalizes to undefined', () => {
+  test('root pathname is stored as undefined', () => {
     const url = unsafeMake({ protocol: 'http', hostname: 'x.com', pathname: '/' });
 
     expect(url.pathname).toBeUndefined();
+  });
+
+  test('default port for the scheme is stripped', () => {
+    const url = unsafeMake({ protocol: 'https', hostname: 'x.com', port: 443 });
+
+    expect(url.port).toBeUndefined();
+  });
+
+  test('dot-segments in pathname are resolved', () => {
+    const url = unsafeMake({ protocol: 'https', hostname: 'x.com', pathname: '/a/./b/../c' });
+
+    expect(url.pathname).toBe('a/c');
   });
 
   test('make from existing Url clones searchParams', () => {

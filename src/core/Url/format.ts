@@ -9,7 +9,7 @@ import type { Url } from './Url.js';
  * import { Url } from 'fx-fetch';
  *
  * const url = Url.make('https://api.example.com/users');
- * const urlString = Url.format(url); // 'https://api.example.com/users/'
+ * const urlString = Url.format(url); // 'https://api.example.com/users'
  * ```
  *
  * @category Conversions
@@ -24,7 +24,7 @@ export function format(url: Url): string {
     url.username !== undefined ? '@' : '',
     url.hostname,
     url.port !== undefined ? `:${url.port}` : '',
-    url.pathname !== undefined ? `/${url.pathname}` : '',
+    url.pathname !== undefined ? `/${url.pathname}` : '/',
     url.searchParams.size > 0 ? `?${formatSearchParams(url.searchParams)}` : '',
     url.hash !== undefined ? `#${url.hash}` : '',
   ].join('');

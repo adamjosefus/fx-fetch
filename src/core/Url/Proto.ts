@@ -2,8 +2,6 @@ import { Inspectable, Pipeable } from 'effect';
 import { format } from './format.js';
 import { TypeId, type Url, type Proto as UrlProto } from './Url.js';
 
-// TODO: Ensure that the NodeInspectSymbol and toString work correctly
-
 export const Proto: UrlProto = {
   [TypeId]: TypeId,
   [Inspectable.NodeInspectSymbol]: Inspectable.BaseProto[Inspectable.NodeInspectSymbol],
