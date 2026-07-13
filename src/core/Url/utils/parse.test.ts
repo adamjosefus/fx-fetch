@@ -12,7 +12,7 @@ describe('parse', () => {
     expect(parts.username).toBeUndefined();
     expect(parts.password).toBeUndefined();
     expect(parts.hash).toBeUndefined();
-    expect(parts.searchParams).toEqual([]);
+    expect(parts.searchParams).toBe('');
   });
 
   test('port', () => {
@@ -51,14 +51,10 @@ describe('parse', () => {
     expect(parts.password).toBe('p:ass');
   });
 
-  test('query string becomes searchParams pairs', () => {
+  test('query string is returned raw (decoding is the SearchParams module job)', () => {
     const parts = parse('https://example.com/?q=hello+world&q=again&empty');
 
-    expect(parts.searchParams).toEqual([
-      ['q', 'hello world'],
-      ['q', 'again'],
-      ['empty', ''],
-    ]);
+    expect(parts.searchParams).toBe('q=hello+world&q=again&empty');
   });
 
   test('hash', () => {
@@ -77,7 +73,7 @@ describe('parse', () => {
     expect(parts.hostname).toBe('example.com');
     expect(parts.port).toBe('8443');
     expect(parts.pathname).toBe('/a/b');
-    expect(parts.searchParams).toEqual([['x', '1']]);
+    expect(parts.searchParams).toBe('x=1');
     expect(parts.hash).toBe('top');
   });
 

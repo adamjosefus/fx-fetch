@@ -1,7 +1,5 @@
+import { safeDecode } from '../../_utils/safeDecode.js';
 import type { Url } from '../Url.js';
-
-/** Matches every `+` in a string (global), used to turn `+` back into a space. */
-const plusSignPattern = /\+/g;
 
 /**
  * Matches (and captures) the leading `scheme://` of a URL.
@@ -12,62 +10,6 @@ const plusSignPattern = /\+/g;
  * - `:\/\/` — the literal `://` separator.
  */
 const schemePrefixPattern = /^([a-zA-Z][a-zA-Z0-9+.-]*):\/\//;
-
-/**
- * Percent-decodes a component, returning the raw input if it is malformed.
- *
- * `decodeURIComponent` throws a `URIError` on invalid percent-escape sequences
- * — e.g. a lone `%`, `%zz` (non-hex digits), a trailing `100%`, or bytes that
- * form an incomplete surrogate. Such strings appear in real-world URLs whenever
- * a `%` is written literally instead of being encoded as `%25`.
- *
- * The parser is deliberately tolerant: rather than failing the whole `parse`
- * over a single bad character, it degrades gracefully and keeps the component
- * in its raw (undecoded) form. This mirrors how the WHATWG URL parser handles
- * malformed input. The empty `catch {}` swallowing the error is intentional.
- */
-function safeDecode(value: string): string {
-  try {
-    return globalThis.decodeURIComponent(value);
-  } catch {
-    return value;
-  }
-}
-
-/**
- * Decodes an `application/x-www-form-urlencoded` component, where `+` denotes a
- * space. This mirrors the encoding used by `SearchParams.format`.
- */
-function decodeFormComponent(value: string): string {
-  return safeDecode(value.replace(plusSignPattern, ' '));
-}
-
-function parseSearch(search: string): readonly (readonly [key: string, value: string])[] {
-  if (search === '') {
-    return [];
-  }
-
-  const pairs: /* mutable */ (readonly [string, string])[] = [];
-
-  for (const part of search.split('&')) {
-    if (part === '') {
-      continue;
-    }
-
-    const separator = part.indexOf('=');
-    if (separator === -1) {
-      pairs.push([decodeFormComponent(part), '']);
-      continue;
-    }
-
-    pairs.push([
-      decodeFormComponent(part.slice(0, separator)),
-      decodeFormComponent(part.slice(separator + 1)),
-    ]);
-  }
-
-  return pairs;
-}
 
 function parseUserinfo(userinfo: string): {
   readonly username: string;
@@ -84,7 +26,10 @@ function parseUserinfo(userinfo: string): {
   };
 }
 
-function parseHostPort(hostport: string): { hostname: string; port: string | undefined } {
+function parseHostPort(hostport: string): {
+  readonly hostname: string;
+  readonly port: string | undefined;
+} {
   // IPv6 hosts are wrapped in brackets (e.g. `[::1]:8080`); the port, if any,
   // follows the closing bracket.
   if (hostport.startsWith('[')) {
@@ -109,12 +54,13 @@ function parseHostPort(hostport: string): { hostname: string; port: string | und
  * `scheme://[user[:password]@]host[:port][/path][?query][#fragment]` shape.
  *
  * The returned parts are unnormalized — `partsToIntermediate` applies casing,
- * slash, and credential normalization. Throws when the string lacks a
- * `scheme://` prefix or a hostname.
+ * slash, and credential normalization. The query string is returned raw (as
+ * `searchParams`); the `SearchParams` module owns its parsing and decoding.
+ * Throws when the string lacks a `scheme://` prefix or a hostname.
  *
  * @internal
  */
-export function parse(url: string): Url.Parts<never> {
+export function parse(url: string) {
   let rest = url.trim();
 
   let hash: string | undefined;
@@ -135,7 +81,12 @@ export function parse(url: string): Url.Parts<never> {
   if (scheme === null) {
     throw new Error(`Url cannot be parsed. Expected a "scheme://" prefix. Given: ${url}`);
   }
-  const protocol = scheme[1];
+
+  const protocol = scheme[1] ?? '';
+  if (protocol === '') {
+    throw new Error(`Url cannot be parsed. Expected a "scheme://" prefix. Given: ${url}`);
+  }
+
   rest = rest.slice(scheme[0].length);
 
   const pathIndex = rest.indexOf('/');
@@ -145,6 +96,7 @@ export function parse(url: string): Url.Parts<never> {
   let username: string | undefined;
   let password: string | undefined;
   let hostport = authority;
+
   const atIndex = authority.lastIndexOf('@');
   if (atIndex !== -1) {
     ({ username, password } = parseUserinfo(authority.slice(0, atIndex)));
@@ -159,11 +111,11 @@ export function parse(url: string): Url.Parts<never> {
   return {
     protocol,
     hostname,
-    searchParams: parseSearch(search),
+    searchParams: search !== '' ? search : undefined,
     ...(hash !== undefined ? { hash } : {}),
     ...(pathname !== undefined ? { pathname } : {}),
     ...(port !== undefined ? { port } : {}),
     ...(username !== undefined ? { username } : {}),
     ...(password !== undefined ? { password } : {}),
-  };
+  } as const satisfies Url.Parts<never>;
 }
