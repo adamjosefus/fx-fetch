@@ -1,9 +1,12 @@
 import type { SearchParams } from './SearchParams.js';
 
+/** Matches every `%20` (a percent-encoded space) in a string (global). */
+const encodedSpacePattern = /%20/g;
+
 function encodeComponent(value: string): string {
   // `encodeURIComponent` escapes a space as `%20`, but the
   // `application/x-www-form-urlencoded` serialization encodes it as `+`.
-  return globalThis.encodeURIComponent(value).replace(/%20/g, '+');
+  return globalThis.encodeURIComponent(value).replace(encodedSpacePattern, '+');
 }
 
 /**

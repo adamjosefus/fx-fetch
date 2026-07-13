@@ -1,5 +1,18 @@
 import type { Url } from '../Url.js';
 
+/** Matches every `+` in a string (global), used to turn `+` back into a space. */
+const plusSignPattern = /\+/g;
+
+/**
+ * Matches (and captures) the leading `scheme://` of a URL.
+ *
+ * - `^` — anchored at the start of the string.
+ * - `([a-zA-Z][a-zA-Z0-9+.-]*)` — captured scheme name: an ASCII letter followed
+ *   by any number of letters, digits, `+`, `.` or `-` (per RFC 3986 §3.1).
+ * - `:\/\/` — the literal `://` separator.
+ */
+const schemePrefixPattern = /^([a-zA-Z][a-zA-Z0-9+.-]*):\/\//;
+
 /**
  * Percent-decodes a component, returning the raw input if it is malformed.
  *
@@ -26,7 +39,7 @@ function safeDecode(value: string): string {
  * space. This mirrors the encoding used by `SearchParams.format`.
  */
 function decodeFormComponent(value: string): string {
-  return safeDecode(value.replace(/\+/g, ' '));
+  return safeDecode(value.replace(plusSignPattern, ' '));
 }
 
 function parseSearch(search: string): readonly (readonly [key: string, value: string])[] {
@@ -118,7 +131,7 @@ export function parse(url: string): Url.Parts<never> {
     rest = rest.slice(0, searchIndex);
   }
 
-  const scheme = rest.match(/^([a-zA-Z][a-zA-Z0-9+.-]*):\/\//);
+  const scheme = rest.match(schemePrefixPattern);
   if (scheme === null) {
     throw new Error(`Url cannot be parsed. Expected a "scheme://" prefix. Given: ${url}`);
   }

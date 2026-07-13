@@ -12,6 +12,9 @@ import type { $Url } from './$Url.js';
 // of scope): IDNA/punycode of unicode hostnames, and raw-query preservation of
 // bare keys. See format.test.ts.
 
+/** Matches a string consisting solely of one or more ASCII digits. */
+const digitsOnlyPattern = /^\d+$/;
+
 /**
  * Default ports per special scheme. A port equal to its scheme's default is
  * dropped, matching `new URL(...).port === ''`.
@@ -147,7 +150,7 @@ function normalizePort(port: string | number | undefined): number | undefined {
 
   // A non-numeric port is invalid; the resulting NaN is rejected by
   // validateIntermediate, matching `new URL(...)` throwing on such input.
-  return /^\d+$/.test(port) ? Number.parseInt(port, 10) : Number.NaN;
+  return digitsOnlyPattern.test(port) ? Number.parseInt(port, 10) : Number.NaN;
 }
 
 function normalizeProtocol(protocol: string): string {
