@@ -21,6 +21,42 @@ function jsUrlToCoreInput(jsUrl: globalThis.URL): CoreUrl.Input<never> {
   return parts;
 }
 
+function partsToCoreInput(parts: Url.Parts): CoreUrl.Input<never> {
+  const coreParts: CoreUrl.Parts<never> = {
+    hash: parts.hash,
+    hostname: parts.hostname,
+    password: parts.password,
+    pathname: parts.pathname,
+    port: parts.port === '' ? undefined : parts.port,
+    protocol: parts.protocol,
+    searchParams:
+      parts.searchParams !== undefined ? toCoreSearchParams(parts.searchParams) : undefined,
+    username: parts.username,
+  };
+
+  return coreParts;
+}
+
+function optionsToCoreInput(options: Url.Options): CoreUrl.Input<never> {
+  // TODO: globalThis.URL can throw a TypeError if the URL is invalid. We should handle that case
+  const jsUrl = new globalThis.URL(options.url);
+  const coreParts: CoreUrl.Parts<never> = {
+    hash: jsUrl.hash,
+    hostname: jsUrl.hostname,
+    password: jsUrl.password,
+    pathname: jsUrl.pathname,
+    port: jsUrl.port === '' ? undefined : jsUrl.port,
+    protocol: jsUrl.protocol,
+    searchParams:
+      options.searchParams !== undefined
+        ? toCoreSearchParams(options.searchParams)
+        : toCoreSearchParams(jsUrl.searchParams),
+    username: jsUrl.username,
+  };
+
+  return coreParts;
+}
+
 /**
  * @internal Converts a native `URL` (and nested native `URLSearchParams`) to a
  * core-compatible input; passes every other input through unchanged.
@@ -36,38 +72,11 @@ function toCoreInput(input: Url.Input): CoreUrl.Input<never> {
   }
 
   if (isParts(input)) {
-    const parts: CoreUrl.Parts<never> = {
-      hash: input.hash,
-      hostname: input.hostname,
-      password: input.password,
-      pathname: input.pathname,
-      port: input.port === '' ? undefined : input.port,
-      protocol: input.protocol,
-      searchParams:
-        input.searchParams !== undefined ? toCoreSearchParams(input.searchParams) : undefined,
-      username: input.username,
-    };
-
-    return parts;
+    return partsToCoreInput(input);
   }
 
   if (isOptions(input)) {
-    const jsUrl = new globalThis.URL(input.url);
-    const parts: CoreUrl.Parts<never> = {
-      hash: jsUrl.hash,
-      hostname: jsUrl.hostname,
-      password: jsUrl.password,
-      pathname: jsUrl.pathname,
-      port: jsUrl.port === '' ? undefined : jsUrl.port,
-      protocol: jsUrl.protocol,
-      searchParams:
-        input.searchParams !== undefined
-          ? toCoreSearchParams(input.searchParams)
-          : toCoreSearchParams(jsUrl.searchParams),
-      username: jsUrl.username,
-    };
-
-    return parts;
+    return optionsToCoreInput(input);
   }
 
   return input;
