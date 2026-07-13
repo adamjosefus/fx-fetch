@@ -29,11 +29,14 @@ function inputMapToIntermediate(input: ReadonlyMap<string, Value>): $SearchParam
 }
 
 /**
- * Narrows to an iterable of `[key, value]` entries. Maps and arrays are also
- * iterable, so this must only be reached after they have been ruled out.
+ * Narrows to an iterable of `[key, value]` entries. Maps, arrays and strings are
+ * also iterable, so this must only be reached after they have been ruled out.
+ * The object check is folded in (rather than a separate `&&` at the call site) so
+ * the negative branch narrows `Iterable`/`MapIterator` out of the union.
  */
-function isEntriesIterable(input: object): input is Iterable<readonly [string, Value]> {
+function isEntriesIterable(input: Input<never>): input is Iterable<readonly [string, Value]> {
   return (
+    Predicate.isObject(input) &&
     Symbol.iterator in input &&
     typeof (input as { readonly [Symbol.iterator]?: unknown })[Symbol.iterator] === 'function'
   );
@@ -101,7 +104,7 @@ export function inputToIntermediate(input: Input<never>): $SearchParams {
   // A non-Map, non-Array iterable of `[key, value]` pairs — e.g. the
   // `URLSearchParams.entries()` iterator the browser adapter passes through.
   // Checked before the plain-record branch, since an iterator is also an object.
-  if (Predicate.isObject(input) && isEntriesIterable(input)) {
+  if (isEntriesIterable(input)) {
     return inputEntriesToIntermediate(input);
   }
 
