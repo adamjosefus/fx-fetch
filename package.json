@@ -23,21 +23,13 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/universal/index.d.ts",
-      "import": "./dist/universal/index.js"
+    "./": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
     },
     "./browser": {
       "types": "./dist/browser/index.d.ts",
       "import": "./dist/browser/index.js"
-    },
-    "./bun": {
-      "types": "./dist/bun/index.d.ts",
-      "import": "./dist/bun/index.js"
-    },
-    "./node": {
-      "types": "./dist/node/index.d.ts",
-      "import": "./dist/node/index.js"
     }
   },
   "types": "./dist/index.d.ts",
