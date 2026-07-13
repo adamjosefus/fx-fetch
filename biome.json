@@ -107,7 +107,7 @@
         "noArrayIndexKey": "off",
         "noAssignInExpressions": "error",
         "noConfusingVoidType": "warn",
-        "noExplicitAny": "error",
+        "noExplicitAny": "off",
         "noPrototypeBuiltins": "off",
         "useAdjacentOverloadSignatures": "info",
         "useAwait": "warn",

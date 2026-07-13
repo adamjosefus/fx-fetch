@@ -1,7 +1,4 @@
 {
   "files": [],
-  "references": [
-    { "path": "./src/core" },
-    { "path": "./src/browser" }
-  ]
+  "references": [{ "path": "./src/core" }, { "path": "./src/browser" }]
 }
