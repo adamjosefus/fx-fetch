@@ -49,14 +49,14 @@ export namespace Url {
    * @since 0.1.0
    */
   export type Parts<T extends Env> = {
-    readonly hash?: string;
+    readonly hash?: string | undefined;
     readonly hostname: string;
-    readonly password?: string;
-    readonly pathname?: string;
-    readonly port?: string | number;
+    readonly password?: string | undefined;
+    readonly pathname?: string | undefined;
+    readonly port?: string | number | undefined;
     readonly protocol: string;
-    readonly searchParams?: SearchParams.Input<T['searchParams']>;
-    readonly username?: string;
+    readonly searchParams?: SearchParams.Input<T['searchParams']> | undefined;
+    readonly username?: string | undefined;
   };
 
   /**
