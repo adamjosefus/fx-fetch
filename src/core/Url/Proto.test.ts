@@ -1,3 +1,5 @@
+/// <reference types="node" />
+
 import * as util from 'node:util';
 import { describe, expect, test } from 'vitest';
 import { format } from './format.js';
