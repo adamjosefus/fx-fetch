@@ -86,5 +86,9 @@ export function inputToIntermediate(input: Input<never>): $SearchParams {
     return inputRecordToIntermediate(input);
   }
 
+  // TODO: `absurd` throws at runtime as a `never` exhaustiveness guard. Unlike the
+  // `Url.make` path, `SearchParams.make` does not wrap this in `liftThrowable`, so a
+  // caller that bypasses the types (a runtime boolean/symbol/etc.) gets an uncaught
+  // throw. Investigate: return an error value or wrap the public entry point.
   return absurd(input);
 }

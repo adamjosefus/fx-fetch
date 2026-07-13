@@ -51,6 +51,11 @@ function encodePathSegment(segment: string): string {
     const codePoint = char.codePointAt(0) ?? 0;
     const shouldEncode = codePoint <= 0x1f || codePoint > 0x7e || ' "#<>?`{}'.includes(char);
 
+    // TODO: `encodeURIComponent` throws a `URIError` on a lone surrogate (which
+    // `for...of` yields as a single unpaired char, and `shouldEncode` is always
+    // true for it). Via `Url.make` this is swallowed into `Option.none()`, but via
+    // `Url.unsafeMake` it leaks as a raw `URIError` instead of the documented
+    // `IllegalArgumentError`. Investigate: guard the encode or reject earlier.
     encoded += shouldEncode ? globalThis.encodeURIComponent(char) : char;
   }
 

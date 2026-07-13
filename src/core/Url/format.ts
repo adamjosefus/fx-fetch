@@ -19,6 +19,11 @@ export function format(url: Url): string {
   const urlString = [
     url.protocol,
     '//',
+    // TODO: `encodeURIComponent` throws a `URIError` when the credential contains
+    // a lone surrogate (e.g. "\uD800"). Credentials are stored raw (see
+    // `normalizeCredential`), so such a value survives `make` and only crashes here
+    // — including via `toString`/`toJSON`. Investigate: guard the encode (mirror
+    // `safeDecode` in utils/parse.ts) or reject the input earlier in validation.
     url.username !== undefined ? globalThis.encodeURIComponent(url.username) : '',
     url.password !== undefined ? `:${globalThis.encodeURIComponent(url.password)}` : '',
     url.username !== undefined ? '@' : '',

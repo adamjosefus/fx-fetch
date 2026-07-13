@@ -6,6 +6,11 @@ const encodedSpacePattern = /%20/g;
 function encodeComponent(value: string): string {
   // `encodeURIComponent` escapes a space as `%20`, but the
   // `application/x-www-form-urlencoded` serialization encodes it as `+`.
+
+  // TODO: `encodeURIComponent` throws a `URIError` on a lone surrogate (e.g.
+  // "\uD800"). This runs for both keys and values, which are stored verbatim, so
+  // a malformed key/value survives `make` and only crashes here (also via
+  // `toString`/`toJSON`). Investigate: guard the encode or reject earlier.
   return globalThis.encodeURIComponent(value).replace(encodedSpacePattern, '+');
 }
 

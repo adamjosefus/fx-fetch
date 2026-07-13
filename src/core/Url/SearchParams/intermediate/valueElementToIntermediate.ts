@@ -22,5 +22,9 @@ export function valueElementToIntermediate(value: ValueElement): $ValueElement |
     return value.toString(10);
   }
 
+  // TODO: `absurd` throws at runtime as a `never` exhaustiveness guard. Reached if a
+  // value element is a runtime type outside `string | bigint | number | undefined`.
+  // The `SearchParams.make` path does not wrap this in `liftThrowable`, so it can
+  // propagate uncaught. Investigate: return an error value or wrap the entry point.
   return absurd(value);
 }
