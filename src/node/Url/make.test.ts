@@ -1,0 +1,34 @@
+import { describe, expect, test } from 'vitest';
+import { format } from '../../core/Url/format.js';
+import { SearchParams, unsafeMake } from './index.js';
+
+describe('node Url runtime', () => {
+  test('accepts a native URL', () => {
+    const url = unsafeMake(new URL('https://x.com/a/'));
+
+    expect(format(url)).toBe('https://x.com/a/');
+  });
+
+  test('accepts a native URL with credentials, port and query', () => {
+    const input = 'https://user:pass@x.com:8443/a/./b/../c?q=1#top';
+    const url = unsafeMake(new URL(input));
+
+    expect(format(url)).toBe(new URL(input).href);
+  });
+
+  test('accepts a native URLSearchParams nested in options', () => {
+    const url = unsafeMake({
+      url: 'https://x.com',
+      searchParams: new URLSearchParams('a=1&a=2'),
+    });
+
+    expect(url.searchParams.get('a')).toEqual(['1', '2']);
+  });
+
+  test('SearchParams.make accepts a native URLSearchParams', () => {
+    const searchParams = SearchParams.make(new URLSearchParams('a=1&b=2'));
+
+    expect(searchParams.get('a')).toEqual(['1']);
+    expect(searchParams.get('b')).toEqual(['2']);
+  });
+});
