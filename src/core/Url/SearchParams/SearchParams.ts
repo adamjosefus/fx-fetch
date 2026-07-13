@@ -24,6 +24,9 @@ export type Value = ValueElement | readonly ValueElement[];
  */
 export type Input<T> =
   | { readonly [key: string]: Value }
+  | Iterable<readonly [string, Value]>
+  | MapIterator<readonly [string, Value]>
   | readonly (readonly [key: string, value: Value])[]
   | ReadonlyMap<string, Value>
+  | string
   | T;

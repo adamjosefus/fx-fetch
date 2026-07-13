@@ -1,8 +1,8 @@
 import { isUrl } from '../isUrl.js';
-import { parse } from '../utils/parse.js';
 import { inputToIntermediate as searchParamsInputToIntermediate } from '../SearchParams/intermediate/inputToIntermediate.js';
 import { searchParamsToIntermediate } from '../SearchParams/intermediate/searchParamsToIntermediate.js';
 import type { Url } from '../Url.js';
+import { parse } from '../utils/parse.js';
 import type { $Url } from './$Url.js';
 
 // Normalization mirrors the `globalThis.URL` constructor for special schemes,
