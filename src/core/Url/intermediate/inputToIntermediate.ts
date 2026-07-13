@@ -1,5 +1,5 @@
 import { isUrl } from '../isUrl.js';
-import { parse } from '../parse.js';
+import { parse } from '../utils/parse.js';
 import { inputToIntermediate as searchParamsInputToIntermediate } from '../SearchParams/intermediate/inputToIntermediate.js';
 import { searchParamsToIntermediate } from '../SearchParams/intermediate/searchParamsToIntermediate.js';
 import type { Url } from '../Url.js';
