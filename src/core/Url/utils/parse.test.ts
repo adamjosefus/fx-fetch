@@ -12,7 +12,7 @@ describe('parse', () => {
     expect(parts.username).toBeUndefined();
     expect(parts.password).toBeUndefined();
     expect(parts.hash).toBeUndefined();
-    expect(parts.searchParams).toBe('');
+    expect(parts.searchParams).toBeUndefined();
   });
 
   test('port', () => {
