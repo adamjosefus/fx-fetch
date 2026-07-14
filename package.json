@@ -42,7 +42,7 @@
     "check:write": "biome check . --write --error-on-warnings",
     "clean": "tsc --build --clean",
     "test": "vitest run ./src",
-    "validate": "tsc --build --noEmit"
+    "validate": "tsc --build --noEmit && tsc --project src/core/tsconfig.test.json"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.3",

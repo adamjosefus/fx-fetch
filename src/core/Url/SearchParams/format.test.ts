@@ -1,5 +1,3 @@
-/// <reference lib="dom" />
-
 import { describe, expect, test } from 'vitest';
 import { format } from './format.js';
 import { make } from './make.js';
