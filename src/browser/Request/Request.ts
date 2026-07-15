@@ -73,10 +73,6 @@ export interface Request extends Proto {
   readonly url: Url;
 }
 
-type Env = {
-  readonly searchParams: unknown;
-};
-
 export namespace Request {
   /**
    * @category Models
