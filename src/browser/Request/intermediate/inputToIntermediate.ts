@@ -3,11 +3,10 @@ import { inputToIntermediate as searchParamsInputToIntermediate } from '../../Ur
 import { headersToIntermediate } from '../Headers/intermediate/headersToIntermediate.js';
 import { inputToIntermediate as headersInputToIntermediate } from '../Headers/intermediate/inputToIntermediate.js';
 import { isRequest } from '../isRequest.js';
-import type { Method } from '../Method.js';
-import type { NormalizedReferrerPolicy, ReferrerPolicy, Request } from '../Request.js';
+import type { Request } from '../Request.js';
 import type { $Request } from './$Request.js';
 
-function normalizeMethod(method: Method | undefined): Method {
+function normalizeMethod(method: string | undefined): $Request['method'] {
   if (method === undefined) {
     return 'GET';
   }
@@ -18,7 +17,7 @@ function normalizeMethod(method: Method | undefined): Method {
 
 function normalizeReferrerPolicy(
   policy: ReferrerPolicy | undefined
-): NormalizedReferrerPolicy | undefined {
+): $Request['referrerPolicy'] | undefined {
   if (policy === undefined) {
     return undefined;
   }
@@ -27,7 +26,7 @@ function normalizeReferrerPolicy(
   return policy === '' ? 'no-referrer' : policy;
 }
 
-function partsToIntermediate(parts: Request.Parts<never>): $Request {
+function partsToIntermediate(parts: Request.Parts): $Request {
   return {
     cache: parts.cache,
     credentials: parts.credentials,
@@ -75,9 +74,7 @@ function requestToIntermediate(request: Request): $Request {
   };
 }
 
-function isOptions(
-  input: Request.Parts<never> | Request.Options<never>
-): input is Request.Options<never> {
+function isOptions(input: Request.Parts | Request.Options): input is Request.Options {
   return 'searchParams' in input;
 }
 
@@ -85,7 +82,7 @@ function isOptions(
  * @internal Normalizes any Request input into the intermediate representation.
  * A bare string is treated as the request `url`.
  */
-export function inputToIntermediate(input: Request.Input<never>): $Request {
+export function inputToIntermediate(input: Request.Input): $Request {
   if (isRequest(input)) {
     return requestToIntermediate(input);
   }

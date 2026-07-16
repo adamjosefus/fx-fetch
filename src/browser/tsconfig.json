@@ -5,6 +5,5 @@
     "lib": ["esnext", "dom", "dom.iterable"],
     "outDir": "../../dist/browser"
   },
-  "references": [{ "path": "../core" }],
   "include": ["**/*.ts"]
 }

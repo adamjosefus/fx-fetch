@@ -1,29 +1,20 @@
 import type { $Url } from '../../Url/intermediate/$Url.js';
 import type { $Headers } from '../Headers/intermediate/$Headers.js';
-import type { Method } from '../Method.js';
-import type {
-  NormalizedReferrerPolicy,
-  RequestCache,
-  RequestCredentials,
-  RequestMode,
-  RequestPriority,
-  RequestRedirect,
-} from '../Request.js';
 
 /**
  * @internal Represents a Request in an intermediate representation.
  */
 export interface $Request {
-  /* mutable */ cache: RequestCache | undefined;
-  /* mutable */ credentials: RequestCredentials | undefined;
+  /* mutable */ cache: globalThis.RequestCache;
+  /* mutable */ credentials: globalThis.RequestCredentials;
+  /* mutable */ destination: Exclude<globalThis.RequestDestination, ''> | undefined;
   /* mutable */ headers: $Headers;
   /* mutable */ integrity: string | undefined;
   /* mutable */ keepalive: boolean;
-  /* mutable */ method: Method;
-  /* mutable */ mode: RequestMode | undefined;
-  /* mutable */ priority: RequestPriority | undefined;
-  /* mutable */ redirect: RequestRedirect | undefined;
+  /* mutable */ method: string;
+  /* mutable */ mode: globalThis.RequestMode;
+  /* mutable */ redirect: globalThis.RequestRedirect;
+  /* mutable */ referrerPolicy: Exclude<globalThis.ReferrerPolicy, ''> | undefined;
   /* mutable */ referrer: string | undefined;
-  /* mutable */ referrerPolicy: NormalizedReferrerPolicy | undefined;
   /* mutable */ url: $Url;
 }

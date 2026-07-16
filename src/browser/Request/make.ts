@@ -10,7 +10,7 @@ import type { Request } from './Request.js';
  * @category Constructors
  * @since 0.1.0
  */
-export function unsafeMake(input: Request.Input<never>): Request {
+export function unsafeMake(input: Request.Input): Request {
   const result = pipe(input, inputToIntermediate, validateIntermediate);
   if (Result.isFailure(result)) {
     throw result.failure;

@@ -2,7 +2,6 @@ import type { Inspectable, Pipeable } from 'effect';
 import type * as SearchParams from '../Url/SearchParams/SearchParams.js';
 import type { Url } from '../Url/Url.js';
 import type * as Headers from './Headers/Headers.js';
-import type { Method } from './Method.js';
 
 /**
  * @category Symbols
@@ -73,6 +72,20 @@ export interface Request extends Proto {
   readonly url: Url;
 }
 
+type KnownMethod =
+  | 'CONNECT'
+  | 'DELETE'
+  | 'GET'
+  | 'HEAD'
+  | 'OPTIONS'
+  | 'PATCH'
+  | 'POST'
+  | 'PUT'
+  | 'QUERY'
+  | 'TRACE';
+
+type UnknownMethod = string & {};
+
 export namespace Request {
   /**
    * @category Models
@@ -84,7 +97,7 @@ export namespace Request {
     readonly headers?: Headers.Input | undefined;
     readonly integrity?: string | undefined;
     readonly keepalive?: boolean | undefined;
-    readonly method?: Method | undefined;
+    readonly method?: KnownMethod | UnknownMethod | undefined;
     readonly mode?: RequestMode | undefined;
     readonly priority?: RequestPriority | undefined;
     readonly redirect?: RequestRedirect | undefined;

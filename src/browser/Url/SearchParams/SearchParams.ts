@@ -1,14 +1,32 @@
-import {
-  type Input as CoreInput,
-  type SearchParams,
-  type Value,
-  type ValueElement,
-} from '../../../core/Url/SearchParams/SearchParams.js';
-
-export type { SearchParams, Value, ValueElement };
+/**
+ * Represents immutable URL search parameters.
+ *
+ * @category Models
+ * @since 2.0.0
+ */
+export type SearchParams = ReadonlyMap<string, readonly string[]>;
 
 /**
  * @category Models
  * @since 2.0.0
  */
-export type Input = CoreInput<globalThis.URLSearchParams>;
+export type ValueElement = string | bigint | number | undefined;
+
+/**
+ * @category Models
+ * @since 2.0.0
+ */
+export type Value = ValueElement | readonly ValueElement[];
+
+/**
+ * @category Models
+ * @since 2.0.0
+ */
+export type Input =
+  | { readonly [key: string]: Value }
+  | Iterable<readonly [string, Value]>
+  | MapIterator<readonly [string, Value]>
+  | readonly (readonly [key: string, value: Value])[]
+  | ReadonlyMap<string, Value>
+  | string
+  | globalThis.URLSearchParams;
