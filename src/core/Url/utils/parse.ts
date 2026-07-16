@@ -1,4 +1,4 @@
-import { safeDecode } from '../../_utils/safeDecode.js';
+import { safeDecodeUriComponent } from '../SearchParams/utils/safeDecodeUriComponent.js';
 import type { Url } from '../Url.js';
 
 /**
@@ -17,12 +17,12 @@ function parseUserinfo(userinfo: string): {
 } {
   const separator = userinfo.indexOf(':');
   if (separator === -1) {
-    return { username: safeDecode(userinfo), password: undefined };
+    return { username: safeDecodeUriComponent(userinfo), password: undefined };
   }
 
   return {
-    username: safeDecode(userinfo.slice(0, separator)),
-    password: safeDecode(userinfo.slice(separator + 1)),
+    username: safeDecodeUriComponent(userinfo.slice(0, separator)),
+    password: safeDecodeUriComponent(userinfo.slice(separator + 1)),
   };
 }
 

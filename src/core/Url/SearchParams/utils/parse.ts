@@ -1,4 +1,4 @@
-import { safeDecode } from '../../../_utils/safeDecode.js';
+import { safeDecodeUriComponent } from './safeDecodeUriComponent.js';
 import type { $SearchParams } from '../intermediate/$SearchParams.js';
 
 /** Matches every `+` in a string (global), used to turn `+` back into a space. */
@@ -9,7 +9,7 @@ const plusSignPattern = /\+/g;
  * space. This mirrors the encoding used by `SearchParams.format`.
  */
 function decodeFormComponent(value: string): string {
-  return safeDecode(value.replace(plusSignPattern, ' '));
+  return safeDecodeUriComponent(value.replace(plusSignPattern, ' '));
 }
 
 /**

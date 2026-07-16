@@ -11,7 +11,7 @@
  * (undecoded) form. This mirrors how the WHATWG URL parser handles malformed
  * input. The empty `catch {}` swallowing the error is intentional.
  */
-export function safeDecode(value: string): string {
+export function safeDecodeUriComponent(value: string): string {
   try {
     return globalThis.decodeURIComponent(value);
   } catch {
